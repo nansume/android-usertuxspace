@@ -1,0 +1,12 @@
+#!/bin/sh
+# /etc/local.d/crond.start
+
+RUN="crond"
+CRONDIR="/var/spool/cron/crontabs"
+
+test -e '/tmp/rc-local.lock' && exit
+
+until pgrep -x ${RUN} >/dev/null; do
+  ${RUN} -bS -l '8' -c ${CRONDIR}
+  usleep 100000
+done &

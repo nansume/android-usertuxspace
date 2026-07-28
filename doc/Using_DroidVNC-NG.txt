@@ -1,0 +1,125 @@
+
+Title: How install and setup DroidVNC-NG (VNC remote management).
+
+
+Step 1: Install DroidVNC-NG app from the F-Droid.
+
+How a setup and run
+
+Step 1: Launch DroidVNC-NG app.
+
+Step 2: Setup
+  Settings -> Interface: [Any]
+  Settings -> Port: [5900]
+  Settings -> Password: [enter-your-pass]
+  Settings -> Intent API Access Key: [skip-it]
+  Settings -> Start on Boot: [Disabled]
+  Settings -> Start Delay (s): [10]
+  Settings -> File Transfer: [Enabled]
+  Settings -> Scaling: [90%]
+  Settings -> View Only: [Enabled]
+  Settings -> Mouse Cursors: [Disabled]
+
+Step 3: Tap on START
+Step 4: Set permissions whom needed
+Step 5: Window: Exposing sensitive info during casting/recording CANCEL/START NOW
+
+  Tap on START NOW 
+
+  You should see it:
+  -------------------------------
+  Permissions Dashboard:
+    Screen Capturing    : GRANTED
+    Input:              : GRANTED
+    File Access         : GRANTED
+  -------------------------------
+
+
+Step 6: (optional): Connect to a listening viewer
+  Connect to a listening viewer -> [Host:Port]
+  Connect to a listening viewer -> [Max reconnect tries]
+  Tap on: OK
+
+
+Step 7: Connect to your device from a remote machine
+
+Hotkey From a VNC Viewer
+
+  - Ctrl-Shift-Esc triggers 'Recent Apps' overview
+  - Home/Pos1 acts as Home button
+  - End acts as Power button
+  - Escape acts as Back button
+
+
+# Port Forwarding:
+  -------------------
+  Name: VNC-SERVER
+  Protocol: TCP
+  External Port: 5900
+  -------------------
+
+
+  /storage/emulated/0/Android/data/net.christianbeier.droidvnc_ng/files/defaults.json:
+
+ {
+     "port": 5901,
+     "portReverse": 5555,
+     "portRepeater": 5556,
+     "scaling": 0.9,
+     "viewOnly": false,
+     "showPointers": true,
+     "fileTransfer": true,
+     "password": "<your-password>",
+     "accessKey": "",
+     "startOnBoot": true,
+     "startOnBootDelay": 10
+ }
+
+   net.christianbeier.droidvnc_ng.MainService
+   Actions set:
+
+  - net.christianbeier.droidvnc_ng.ACTION_START
+  - net.christianbeier.droidvnc_ng.ACTION_STOP
+  - net.christianbeier.droidvnc_ng.EXTRA_ACCESS_KEY: abc123abc123abc123abc123abc123
+  - net.christianbeier.droidvnc_ng.EXTRA_REQUEST_ID: abc123
+  - net.christianbeier.droidvnc_ng.EXTRA_PORT: [Optional: <port>/<-1> disable listening]
+  - net.christianbeier.droidvnc_ng.EXTRA_PASSWORD: <your-pass>
+  - net.christianbeier.droidvnc_ng.EXTRA_SCALING: 0.9
+  - net.christianbeier.droidvnc_ng.EXTRA_VIEW_ONLY: true
+  - net.christianbeier.droidvnc_ng.EXTRA_SHOW_POINTERS: false
+  - net.christianbeier.droidvnc_ng.EXTRA_FILE_TRANSFER: false
+  - net.christianbeier.droidvnc_ng.EXTRA_FALLBACK_SCREEN_CAPTURE: false (to Android 10 and newer)
+  - net.christianbeier.droidvnc_ng.ACTION_CONNECT_REVERSE: true/false
+  - net.christianbeier.droidvnc_ng.EXTRA_HOST: <your-host>
+  - net.christianbeier.droidvnc_ng.EXTRA_RECONNECT_TRIES: 3
+  - net.christianbeier.droidvnc_ng.ACTION_CONNECT_REPEATER
+  - net.christianbeier.droidvnc_ng.EXTRA_REPEATER_ID: <id-optional>
+  - net.christianbeier.droidvnc_ng.EXTRA_REQUEST_SUCCESS: <desc-request-optional>
+
+----
+
+Run from adb shell:
+
+ adb shell am start-foreground-service \
+  -n net.christianbeier.droidvnc_ng/.MainService \
+  -a net.christianbeier.droidvnc_ng.ACTION_START \
+  --es net.christianbeier.droidvnc_ng.EXTRA_ACCESS_KEY abc123abc123abc123abc123abc123 \
+  --es net.christianbeier.droidvnc_ng.EXTRA_REQUEST_ID abc123 \
+  --ei net.christianbeier.droidvnc_ng.EXTRA_PORT 5901 \
+  --es net.christianbeier.droidvnc_ng.EXTRA_PASSWORD <your-pass> \
+  --ez net.christianbeier.droidvnc_ng.EXTRA_VIEW_ONLY true
+
+
+----
+
+
+Stop the server:
+
+ adb shell am start-foreground-service \
+  -n net.christianbeier.droidvnc_ng/.MainService \
+  -a net.christianbeier.droidvnc_ng.ACTION_STOP \
+  --es net.christianbeier.droidvnc_ng.EXTRA_ACCESS_KEY abc123abc123abc123abc123abc123 \
+  --es net.christianbeier.droidvnc_ng.EXTRA_REQUEST_ID abc123
+
+
+https://github.com/bk138/droidVNC-NG

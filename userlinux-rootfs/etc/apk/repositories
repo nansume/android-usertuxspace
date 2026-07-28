@@ -1,0 +1,12 @@
+# BUG: WARNING: The indexes contain broken packages which are not installable.
+# FIX: keep the repos of one version
+
+#https://dl-cdn.alpinelinux.org/alpine/v3.15/main
+#https://dl-cdn.alpinelinux.org/alpine/v3.15/community
+
+https://dl-cdn.alpinelinux.org/alpine/v3.23/main
+https://dl-cdn.alpinelinux.org/alpine/v3.23/community
+https://dl-cdn.alpinelinux.org/alpine/edge/testing
+
+#http://dl-cdn.alpinelinux.org/alpine/latest-stable/main
+#http://dl-cdn.alpinelinux.org/alpine/latest-stable/community

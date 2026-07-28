@@ -1,0 +1,6 @@
+#!/bin/sh
+# /etc/local.d/inetd.start
+
+test -e '/tmp/rc-local.lock' && exit
+
+pgrep -x "inetd" >/dev/null || inetd "/etc/inetd.conf"

@@ -1,0 +1,33 @@
+# command examples
+
+apk update
+apk upgrade
+
+apk update --force-refresh
+apk fix
+apk cache clean
+
+apk add dropbear-dbclient dropbear-ssh dropbear-scp busybox-extras
+apk add miniupnpc inetutils-telnet dnsmasq microsocks 3proxy dante
+apk add stunnel privoxy shadowsocks-libev nano nano-syntax mc
+apk add tsocks
+
+#apk del bash sudo
+#apk add x11vnc xsetroot xterm xvfb
+
+apk fetch autossh
+mkdir ./autossh-1.4g-r3
+apk extract --allow-untrusted --destination ./autossh-1.4g-r3 ./autossh-1.4g-r3.apk
+mv ./autossh-1.4g-r3/usr/bin/autossh /bin/
+
+#mv c.nanorc .c.nanorc
+#mv css.nanorc .css.nanorc
+#mv default.nanorc .default.nanorc
+#mv lua.nanorc .lua.nanorc
+#mv markdown.nanorc .markdown.nanorc
+#mv patch.nanorc .patch.nanorc
+#mv sh.nanorc .sh.nanorc
+
+hosttoip google.com
+
+/etc/local.d/sshtunnel.start

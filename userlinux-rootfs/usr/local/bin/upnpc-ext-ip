@@ -1,0 +1,125 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/upnpc-ext-ip
+# ----------------------------------------
+# Usage: EXTIP=$(upnpc-ext-ip)
+# Optional: export USER_NET=<user-network>
+# Depend: upnpc, route or ip, nc (netcat)
+# ----------------------------------------
+# Date: 2026-05-29 17:00 UTC - last change
+# ----------------------------------------
+set -e -u -f
+
+IFS="$(printf '\n\t')"
+OLDIFS=${IFS}
+runuser=${USER_NET:-nobody}
+port="80"
+
+print_progver() {
+  printf '%s\n' "upnpc-ext-ip 0.0.2a written on Jan 09 2026 19:57:54"
+  printf '%s\n' "Copyright 2026 Artjom Slepnjov (shellgen@uncensored.citadel.org)"
+}
+
+print_help() {
+  print_progver; printf '\n'
+  cat >&2 <<_EOF_
+Usage: ${0##*/} -v -u USER -p PORT
+
+Options:
+  -u  user (drop privileges)
+  -p  port
+  -v  verbose (show uri)
+  -V  Print version information and exit
+  -h  Print usage help and exit
+_EOF_
+
+exit 1
+}
+
+case $(id -un) in
+  'root')
+    IFS=" " ARG=${@}; IFS=${OLDIFS}
+    while [ x"${1-}" != x ]; do
+      case ${1-} in
+        -u) runuser=${2:?required user}; shift;;
+        -h) print_help;;
+      esac
+      shift
+    done
+    [ -n "${runuser-}" ] || exit 1
+
+    su ${runuser} -c "${0##*/} ${ARG}";
+    exit $?
+  ;;
+esac
+
+while [ x"${1-}" != x ]; do
+  case $1 in
+    -p) g_port=${2:?required port}; port=${g_port}
+        shift;;
+
+    -u) shift;;
+
+    -v) verbose="1";;
+
+    -V) print_progver
+        exit 0;;
+
+    -h) print_help;;
+
+     *) print_help;;
+  esac
+  shift
+done
+
+[ -n "${UPNP_URI-}" ] || {
+if command -v ip >/dev/null; then
+  #IFS="${IFS} "; set -- "$(ip route show default 2>/dev/null || exit 0)"
+  #case ${1} in 'default') set -- ${3};; *'.0/'[0-9]*) set -- ${1%/*};; esac
+
+  for route in $(ip route show default 2>/dev/null) ''; do
+    IFS="$(printf '\n\t%1s')"; set -- ${route} ""
+    case ${1} in
+      'default') set -- ${3} break;;
+      '172.19.'*' tun0 '*) continue;;  # FIX for Android
+      *'.0/'[0-9]*) set -- ${1%/*} break;;
+    esac
+  done
+else
+  set -- $(route -A inet -n)
+  case ${3} in "0.0.0.0 "*) set -- ${3#* };; *) set -- ${3%% *};; esac
+fi
+set -- "${1#${1%%[![:space:]]*}}"
+gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
+
+#FIX: error: ip: bind: Permission denied
+case ${gw} in " "|"")
+  if nc -w 1 -n -z 192.168.1.1 80; then
+    gw="192.168.1.1"
+  elif nc -w 1 -n -z 192.168.0.1 80; then
+    gw="192.168.0.1"
+  fi
+;;
+esac
+
+[ -z "${g_port-}" ] && { nc -n -z ${gw:?} 52869 && port="52869";}  # FIX: for zte-router
+[ -n "${UPNP_URI-}" ] || UPNP_URI="http://${gw:?}:${port:?}/gatedesc.xml"
+}
+
+[ -n "${UPNP_URI:?required variable: <UPNP_URI>}" ] || exit
+[ "${verbose:-0}" -ne '0' ] && printf '%s\n' "UPNP_URI='${UPNP_URI}'"
+
+export IFS="${IFS} "
+for UPNP_URI in "${UPNP_URI}" ''; do
+command upnpc ${UPNP_URI:+-u }"${UPNP_URI}"${UPNP_URI:+ }-s | while IFS= read -r S; do  # Here child proc.
+  case ${S} in
+    'ExternalIPAddress = '*)
+      printf '%s\n' "${S##* }"
+      exit 1
+    ;;
+  esac
+done || exit
+done || exit 0
+
+printf '%s\n' "${0##*/}: IPADDR: not found... error" >&2
+exit 1

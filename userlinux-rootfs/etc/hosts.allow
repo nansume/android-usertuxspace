@@ -1,0 +1,37 @@
+ALL: 127.     : allow
+ALL: 192.168. : allow
+
+# your home pc ip addr
+ALL: xxx.xxx.xxx.xxx : allow
+
+dropbear: xxx.xxx.xxx.xxx    : allow
+dropbear: xxx.xxx.xxx.xxx    : allow
+
+#dropbear: [::]/128               : rfc931 1 : allow
+#dropbear: [xxxx:xxxx:xxxx::]/64  : rfc931 1 : allow
+
+socks: xxx.xxx.xxx.xxx    : allow
+socks: xxx.xxx.xxx.xxx    : allow
+
+dropbear: ALL : deny
+socks: ALL : deny
+micro_proxy: ALL : deny
+
+###############################
+ALL: xxx.xxx.xxx.       : allow
+ALL: xxx.xxx.0.0/16     : allow
+ALL: xxx.xxx.xxx.0/19   : allow
+###############################
+httpd: 1.1.1.1          : allow
+httpd: 8.8.8.8          : allow
+httpd: 8.8.4.4          : allow
+###############################
+
+ftpd:      ALL : deny
+httpd:     ALL : deny
+rsync:     ALL : deny
+nuttcp:    ALL : deny
+ircd:      ALL : deny
+dircproxy: ALL : deny
+
+ALL: ALL : deny

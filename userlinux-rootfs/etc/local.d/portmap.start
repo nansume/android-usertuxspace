@@ -1,0 +1,9 @@
+#!/bin/sh
+# /etc/local.d/portmap.start
+
+pgrep -x "inetd" >/dev/null || exit 0
+
+[ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
+[ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
+
+upnpc -u "${UPNP_URI}" -e SSH-SERVER -a "${LOCAL_IP}" 2222 2222 TCP 0 >/dev/null 2>&1

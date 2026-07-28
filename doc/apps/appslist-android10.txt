@@ -1,0 +1,205 @@
+
+          Android 7.0 / Android 8.0 / Android 10.0
+
+
+----------------------------------------------------------------
+
+AndroidMic 2.2.6 (2026-03-01)
+sha256: -
+Use your Android phone as a microphone for your PC (Wi-Fi: TCP,UDP / USB: serial,ADB)
+TIP!: -
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 6.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 13MB
+https://f-droid.org/en/packages/io.github.teamclouday.AndroidMic/
+https://f-droid.org/repo/io.github.teamclouday.AndroidMic_22.apk
+
+----------------------------------------------------------------
+
+Offline Translator 0.6.2 (2026-05-30)
+sha256: -
+On-device translation of text, images and pdf/odt files, with TTS
+TIP!: -
+Author: David Ventura
+License: GPLv3+
+Downloads: -
+Rating: -
+Requires: Android 6.0+
+ABIs: arm64-v8a
+ABIs: armeabi-v7a
+Size: 47MB
+Size: 40MB
+https://f-droid.org/en/packages/dev.davidv.translator/
+[arm64-v8a,47MB] https://f-droid.org/repo/dev.davidv.translator_202.apk
+[armeabi-v7a,40MB] https://f-droid.org/repo/dev.davidv.translator_201.apk
+
+----------------------------------------------------------------
+
+LibreTorrent 4.0.1 (2025-08-21)
+sha256: -
+Copylefted libre software torrent client.
+TIP!: -
+Author: -
+License: GPLv3+
+Downloads: 1M+
+Rating: 3.9
+Requires: Android 7.0+
+ABIs: arm64-v8a, armeabi-v7a
+Size: 22MB, 19MB
+https://f-droid.org/packages/org.proninyaroslav.libretorrent/
+[arm64-v8a,22MB] https://f-droid.org/repo/org.proninyaroslav.libretorrent_9000332.apk
+[armeabi-v7a,19MB] https://f-droid.org/repo/org.proninyaroslav.libretorrent_9000331.apk
+
+----------------------------------------------------------------
+
+Aurora Store 4.8.3 (2026-05-17)
+sha256: -
+An unofficial FOSS client to Google Play with an elegant design and privacy.
+TIP!: -
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 6.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 8.5MB
+https://f-droid.org/packages/com.aurora.store/
+https://f-droid.org/repo/com.aurora.store_75.apk
+
+----------------------------------------------------------------
+
+AI Hub 2.3.1 (2026-05-02)
+sha256: -
+All your AI tools together in one simple app.
+TIP!: chat ai: not history save
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 8.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 2.5MB
+https://f-droid.org/packages/com.foss.aihub/
+https://f-droid.org/repo/com.foss.aihub_12.apk
+
+----------------------------------------------------------------
+
+droidVNC-NG 2.19.0 (2026-05-14)
+sha256: -
+VNC server app that does not require root privileges.
+TIP!: AutoBoot: not working
+Author: -
+License: GPLv2
+Downloads: -
+Rating: 4.2
+Requires: Android 7.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 9MB
+https://f-droid.org/packages/net.christianbeier.droidvnc_ng/
+https://f-droid.org/repo/net.christianbeier.droidvnc_ng_59.apk
+
+----------------------------------------------------------------
+
+Android System WebView Dev 151.0.7872.3 (2026-06-04)
+sha256: -
+Android WebView is a pre-installed system component. [Non-Free]
+TIP!: -
+Author: -
+License: Proprietary
+Downloads: -
+Rating: 4.2
+Requires: Android 10.0+
+ABIs: armeabi-v7a, arm64-v8a
+Size: 92MB, 225.2MB
+https://play.google.com/store/apps/details?id=com.google.android.webview.dev
+https://apkpure.com/android-system-webview-dev/com.google.android.webview.dev/download
+[armeabi-v7a,92MB] https://d.apkpure.com/b/APK/com.google.android.webview.dev?versionCode=787200300
+[arm64-v8a,225.2MB] https://d.apkpure.com/b/APK/com.google.android.webview.dev?versionCode=787200301
+
+----------------------------------------------------------------
+
+Sayboard v4.2.1 (2024-09-06)
+sha256: -
+An open-source on-device voice IME (keyboard) for Android using the Vosk library [support empty [null] keyboard]
+TIP!: -
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 6.0+
+ABIs: armeabi-v7a, arm64-v8a
+Size: 10MB, 11MB
+https://f-droid.org/packages/com.elishaazaria.sayboard/
+[armeabi-v7a,10MB] https://f-droid.org/repo/com.elishaazaria.sayboard_402011.apk
+[arm64-v8a,11MB] https://f-droid.org/repo/com.elishaazaria.sayboard_402012.apk
+
+----------------------------------------------------------------
+
+Catapult 12.1-150804 (2015-08-28)
+sha256: -
+A launcher based on Cyanogen's Trebuchet.
+Features: -
+TIP!: -
+Author: -
+License: -
+Rating: -
+Requires: Android 5.0 - 6.0
+ABIs: undefine
+Size: 4.7MB
+https://apt.izzysoft.de/fdroid/index/apk/com.kaneoriley.cyanogenport.launcher3?repo=archive
+https://f-droid.org/archive/com.kaneoriley.cyanogenport.launcher3_1.apk
+
+----------------------------------------------------------------
+
+Yagni Launcher 0.7.3-alpha (2026-06-02)
+sha256: -
+Only 2 MB Android Launcher, total control, zero bloat, zero tracking.
+TIP!: -
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 7.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 2.5MB
+https://f-droid.org/packages/com.eblan.launcher/
+https://f-droid.org/repo/com.eblan.launcher_73.apk
+
+----------------------------------------------------------------
+
+FREE Browser 3.5 (2026-04-03)
+sha256: -
+Privacy browser with Greasemonkey style script support and Cookie Banner Blocker.
+TIP!: -
+Author: -
+License: GPLv3
+Downloads: -
+Rating: -
+Requires: Android 10.0+
+ABIs: undefine
+Size: 5.2MB
+https://f-droid.org/packages/org.woheller69.browser/
+https://f-droid.org/repo/org.woheller69.browser_3500.apk
+
+----------------------------------------------------------------
+
+TG WS Proxy Android 1.2.0 (2026-04-26)
+sha256: -
+It local MTProto-Proxy for Telegram on Android, redirect connect over CloudFlare.
+TIP!: proxy-bypass-dpi
+Author: -
+License: GPLv3
+Downloads: -
+Rating: - (1.3k stars - GitHub)
+Requires: Android 6.0+
+ABIs: arm64-v8a, armeabi-v7a
+Size: 5.2MB
+https://github.com/amurcanov/tg-ws-proxy-android/
+https://github.com/amurcanov/tg-ws-proxy-android/releases/download/v1.2.0/v1.2.0-release-arm64-v8a.apk
+https://github.com/amurcanov/tg-ws-proxy-android/releases/download/v1.2.0/v1.2.0-release-armeabi-v7a.apk
+
+----------------------------------------------------------------

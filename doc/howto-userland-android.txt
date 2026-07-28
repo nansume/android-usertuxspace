@@ -1,0 +1,183 @@
+Guide: Install UserLAnd + Automation App on Android
+
+-------------------------------------------------------------------------------
+
+Part 1: Install F-Droid Classic
+
+  Step 1: Download F-Droid Classic
+
+    Open your phone browser
+    Go to https://f-droid.org
+    Tap "Download F-Droid Classic"
+    If your phone warns you, allow installation from unknown sources
+
+  Step 2: Install F-Droid Classic
+
+    Open the downloaded file
+    Tap "Install"
+    Wait for installation to finish
+
+  Step 3: Open F-Droid Classic
+
+    Tap the F-Droid Classic icon
+    Let it update its app list (this takes a minute)
+
+-------------------------------------------------------------------------------
+
+Part 2: Install UserLAnd
+
+  Step 1: Get UserLAnd
+
+    Open the F-Droid on your Android phone
+    Search for "UserLAnd"
+    Tap "Install" and wait for it to download
+    Alternative: You can also download it from the official website (userland.tech)
+
+  Step 2: Open UserLAnd
+
+    Tap the UserLAnd icon to open it
+    You'll see a list of Linux systems (Alpine, Debian, Ubuntu, etc.)
+    Tap the one you want (Alpine is good for server)
+
+  Step 3: Set Up Your Linux System
+
+    Create a username (like "myuser")
+    Create a password (remember this!)
+    Optionally create a VNC password (for graphical apps)
+    Wait for UserLAnd to download and set up your Linux system
+
+  Step 4: Start Using Linux
+
+    Tap "Start Session" when ready
+    You can use the terminal to run Linux commands
+    Your files and settings stay saved even after you close the app
+
+  Step 5: Auto Start (once UserLAnd)
+
+    Choose apps
+    Tap your Linux system -> info app -> Enable Auto Start, and then it set on
+
+-------------------------------------------------------------------------------
+
+Part 3: Install Automation App (needed Auto Boot)
+
+  Step 1: Find the App
+
+    Open F-Droid
+    Tap the search icon (magnifying glass)
+    Type "Automation"
+    Look for the app by "Jens" (package name: com.jens.automation2)
+
+  Step 2: Install It
+
+    Tap on the Automation app
+    Tap "Install"
+    Wait for it to download and install
+
+  Step 3: Give Permissions
+
+    Open the Automation app
+    When it asks for permissions, tap "Allow" for:
+    Accessibility (to control your phone)
+    Storage (to save your rules)
+    Notifications (to trigger actions)
+
+-------------------------------------------------------------------------------
+
+Part 4: Make Your First Automation Rule (Example)
+
+  Step 1: Create a New Rule
+
+    Open the Automation app
+    Tap the "+" button (usually at the bottom)
+    Name your rule (like "Silent Mode at Night")
+
+  Step 2: Add a Trigger
+
+    Tap "Add Trigger"
+    Choose when the rule should run (examples):
+    Time (like 10 PM every night)
+    Location (when you arrive home)
+    Phone state (when battery is low)
+
+  Step 3: Add an Action
+
+    Tap "Add Action"
+    Choose what should happen (examples):
+    Turn on silent mode
+    Turn off Wi-Fi
+    Launch an app
+    Send a message
+
+  Step 4: Save and Test
+
+    Tap "Save" or the checkmark
+    Test your rule to make sure it works
+    The rule will now run automatically!
+
+-------------------------------------------------------------------------------
+
+  NOTE:
+
+    Note for "Start another program":
+
+    Select app > Method to select application: by activity
+                 Select start type: by startActivity()
+
+    Tap "Select app"
+      Package name: tech.ula
+      Activity/action name: tech.ula.MainActivity
+
+    Tap "Save"
+
+-------------------------------------------------------------------------------
+
+  Step 5: Create needed rules
+
+    1) Rule name: ScreenUP
+       Rule active: ON
+       Add Trigger: "screen is unlocked"
+       Add Action: "Set screen brightness to manual brightness / 1%"
+       Tap "Save Rule"
+
+    2) Rule name: UserLinux
+       Rule active: ON
+       Add Trigger: "device is starting: true"
+       Add Action: "Start another program:tech.ula" tech.ula.MainActivity (auto)
+
+    3) Rule name: WakeCPU1
+       Rule active: ON
+       Add Trigger: "screen is off"
+       Add Trigger: "device is starting: true"
+       Add Action: "Keep device awake: Activate"
+       Add Action: "Set screen brightness to manual brightness / 0%"
+       Add Action: "Start another program: giraffine.dimmer" (auto)
+
+    #4) Rule name: WakeCPU2
+    #   Rule active: OFF
+    #   Add Trigger: "screen is off"
+    #   Add Action: "Start another program: com.android.music" MediaPlaybackActivity
+
+  Step 6: Main menu
+
+    Overview > Status > Service: ON
+    Overview > Control center > Setings >
+      General settings
+        Start at system boot: ON
+        Show icon: OFF (Early a Android 7)
+        Display application news: OFF
+      HTTP(s) Requests
+        Accept all certificates: ON
+
+-------------------------------------------------------------------------------
+
+  Tips:
+
+    Keep F-Droid updated - Open F-Droid occasionally to check for app updates
+
+    Battery settings - Some phones may stop background apps.
+                   Check your battery settings to allow Automation to run in the background
+
+    Start simple - Try one small automation first before making complex rules
+
+    UserLAnd needs space - Make sure your phone has enough storage for the Linux system

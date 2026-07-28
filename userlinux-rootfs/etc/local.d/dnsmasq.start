@@ -1,0 +1,10 @@
+#!/bin/sh
+# /etc/local.d/dnsmasq.start
+
+test -e '/tmp/rc-local.lock' && exit
+
+#get-adblock-list
+
+#pgrep -x "dnsmasq" >/dev/null || dnsmasq -C "/etc/dnsmasq.conf" -a "127.0.0.1,$(netdev-ip)"
+
+pgrep -x "dnsmasq" >/dev/null || dnsmasq -C "/etc/dnsmasq.conf" -a "0.0.0.0" 2>/dev/null

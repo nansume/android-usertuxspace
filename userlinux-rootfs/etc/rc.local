@@ -1,0 +1,10 @@
+#!/bin/sh
+# /etc/rc.local
+
+test -e '/tmp/rc-local.lock' && exit
+
+for S in '/etc/local-boot.d/'*'.start'; do
+  ${S}
+done
+
+>/tmp/rc-local.lock

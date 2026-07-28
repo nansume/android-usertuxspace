@@ -1,0 +1,26 @@
+
+                                     How auto reconnect the SSH tunnel with Autossh
+
+   Autossh is a helper for auto restart connect SSH tunnel when it down.
+
+Step 1: Install Autossh
+
+ sudo apk add autossh
+
+Step 2: Run a SSH tunnel
+
+ ssh -L 8123:127.0.0.1:8123 <your-user>@<remote-ssh-server>
+
+Step 3: Over Autossh
+
+ autossh \
+  -M 0 -o "ServerAliveInterval 30" \
+  -o "ServerAliveCountMax 3" \
+  -N -f -L 8123:127.0.0.1:8123 <your-user>@<remote-ssh-server>
+
+It SSH command almost same.
+
+ -M 0                          enabled monitoring port for SSH tunnel
+ -o "ServerAliveInterval 30"   every 30 seconds, send alive packet
+ -o "ServerAliveCountMax 3"    attempt to reconnect when connect down
+ -N -f                         up the tunnel in the background without run remote cmd

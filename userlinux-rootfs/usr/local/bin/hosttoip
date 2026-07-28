@@ -1,0 +1,27 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/hosttoip 0755 root:root
+# ----------------------------------------
+# Date: 2023-11-23 12:00 UTC - last change
+# hosttoip ${HOSTNAME}
+# $1=HOSTNAME
+# ----------------------------------------
+
+IFS="$(printf '\n\t')"; IFS=${IFS%?}
+
+set -- ${1:?required - hostname}
+
+#test "X${USER}" != 'Xroot' &&
+
+for STRING in $(nslookup ${1} '1.1.1.1') ''; do
+  case ${PRE}:${STRING} in
+    "Name:"[[:space:]]*":Address"*":"[[:space:]]*[0-9].[0-9]*.*[0-9].[0-9]*)
+      set -- "${1}" "${STRING#*:[[:space:]]}"
+      set -- "${1}" "${2%%[[:space:]]*}"
+      break
+    ;;
+  esac
+  PRE=${STRING}
+done
+
+test -n "${2}" && printf '%s\n' "${2}"

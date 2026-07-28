@@ -1,0 +1,42 @@
+# /usr/share/nano/markdown.nanorc
+
+## Syntax highlighting for Markdown files.
+
+## Original authors:  Ryan Westlund and Benno Schulenberg
+## License:  GPL version 3 or newer
+
+syntax markdown "\.md$"
+comment "<!--|-->"
+
+# Quoted:
+color magenta "^[ 	]*>.*"
+
+# List-item markers:
+color magenta "^(    |	)* ? ? ?(\*|\+|-|[1-9]+\.)( +|	)"
+
+# Emphasis and strong:
+color green "\*[^* 	][^*]*\*|_[^_ 	][^_]*_"
+color green "\*\*[^*]+\*\*|__[^_]+__"
+
+# Strikethrough:
+color red "~~[^~]+~~"
+
+# Line breaks:
+color ,blue "  $"
+
+# URLs and links:
+color blue "\[[^]]+\]\([^)]+\)"
+color magenta "!?\[[^]]+\]"
+
+# Code snippet, indented code, and fenced code:
+color latte "`[^`]+`"
+color latte "^(    |	)+ *([^*+0-9> 	-]|[*+-]\S|[0-9][^.]).*"
+color latte start="```" end="```$"
+
+# Headings and the underlining of headings:
+color yellow "^#.*"
+color yellow "^(=+|-+)$"
+
+# HTML tags and comments:
+color cyan "<[^>]+>"
+color cyan start="<!--" end="-->"

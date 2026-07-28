@@ -1,0 +1,53 @@
+#!/bin/sh
+# /etc/local.d/conncheck.start
+
+# network supervisor
+
+check_inetd() (
+  nc -n -z 0.0.0.0 2222 && return
+  /etc/local.d/inetd.start
+)
+
+check_autossh() (
+  { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
+
+  nc -n -z 0.0.0.0 3130 && return
+
+  killall "autossh" 2>/dev/null
+  killall "dbclient" 2>/dev/null
+
+  /etc/local.d/autossh.start
+)
+
+check_sshsocks() (
+  { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
+
+  nc -n -z 0.0.0.0 3130 && return
+  sleep 15
+
+  nc -n -z 0.0.0.0 3130 && return
+
+  killall "autossh" 2>/dev/null
+  killall "dbclient" 2>/dev/null
+
+  /etc/local.d/sshsocks.start
+)
+
+check_sshssl() (
+  { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
+
+  nc -n -z 0.0.0.0 3130 && return
+  sleep 15
+
+  nc -n -z 0.0.0.0 3130 && return
+
+  killall "autossh" 2>/dev/null
+  killall "dbclient" 2>/dev/null
+
+  /etc/local.d/sshssl.start
+)
+
+check_inetd
+check_autossh
+check_sshsocks
+#check_sshssl

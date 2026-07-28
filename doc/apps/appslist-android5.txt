@@ -1,0 +1,955 @@
+
+          Android 5.1 (Without root)
+
+----------------------------------------------------------------
+
+Fulguris Web Browser 2.0.10 (2026-04-07)
+sha256: -
+Fast, customizable with sessions, ad blocking & privacy features
+Features: -
+TIP!: -
+Author: -
+License: MPL-2.0
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 8.9MB
+https://f-droid.org/en/packages/net.slions.fulguris.full.fdroid/
+https://f-droid.org/repo/net.slions.fulguris.full.fdroid_261.apk
+
+----------------------------------------------------------------
+
+Buran v1.12 (2022-11-12)
+sha256: -
+Simple Gemini browser for Android
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 2MB
+https://f-droid.org/en/packages/corewala.gemini.buran/
+https://f-droid.org/repo/corewala.gemini.buran_13.apk
+
+----------------------------------------------------------------
+
+Download Navi 1.6.2 (2022-03-19)
+sha256: -
+Download Navi is a free and Open Source download manager for Android 4.4+
+Features: -
+TIP!: -
+Author: Yaroslav Pronin
+License: GPLv3+
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 7.4MB
+https://f-droid.org/en/packages/com.tachibana.downloader/
+https://f-droid.org/repo/com.tachibana.downloader_15.apk
+
+----------------------------------------------------------------
+
+CoMaps-2026.05.06-11 (2026-05-09)
+sha256: -
+CoMaps - Hike, Bike, Drive Offline with Privacy. Easy map navigation.
+Features: -
+TIP!: -
+Author: -
+License: Apache License 2.0
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86_64
+Size: 62MB
+https://f-droid.org/en/packages/app.comaps.fdroid/
+https://f-droid.org/repo/app.comaps.fdroid_26050611.apk
+
+----------------------------------------------------------------
+
+MuPDF-viewer-1.27.1a (2026-02-06)
+sha256: -
+Lightweight document viewer
+Features: -
+TIP!: -
+Author: Artifex Software LLC
+License: AGPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86
+Size: 15MB
+https://f-droid.org/en/packages/com.artifex.mupdf.viewer.app/
+https://f-droid.org/repo/com.artifex.mupdf.viewer.app_210.apk
+
+----------------------------------------------------------------
+
+LxReader 0.8.6 (2025-11-08)
+sha256: -
+E-book reader
+Features: -
+TIP!: -
+Author: Aleksey Chernov
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 19MB
+https://f-droid.org/en/packages/io.gitlab.coolreader_ng.lxreader.fdroid/
+https://f-droid.org/repo/io.gitlab.coolreader_ng.lxreader.fdroid_80600.apk
+
+----------------------------------------------------------------
+
+Cool Reader 3.2.38-1 (2020-01-29)
+sha256: -
+Free books online and add your own OPDS shares.
+Features: -
+TIP!: -
+Author: Vadim Lopatin
+License: GPLv2
+Rating: -
+Requires: Android 1.5+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 19.6MB
+https://apt.izzysoft.de/fdroid/index/apk/org.coolreader?repo=archive
+https://f-droid.org/archive/org.coolreader_32380.apk
+
+----------------------------------------------------------------
+
+Cool Reader 3.2.58-1 (2021-08-21)
+sha256: -
+Free books online and add your own OPDS shares.
+Features: FB2, TXT, RTF, TCR, HTML, EPUB, CHM
+TIP!: The default dictionary app is non-free. However, you can choose.
+Author: Vadim Lopatin
+License: GPLv2
+Rating: -
+Requires: Android 1.6+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 33.3MB
+https://apt.izzysoft.de/fdroid/index/apk/org.coolreader.fdroid?repo=archive
+https://f-droid.org/archive/org.coolreader.fdroid_32580.apk
+
+----------------------------------------------------------------
+
+Simple Alarm Clock 3.15.04 (2023-12-12)
+sha256: -
+Smart alarm clock that includes many improvements over the stock alarm clock.
+Features: -
+TIP!: -
+Author: Yuriy Kulikov
+License: Apache License 2.0
+Rating: -
+Requires: Android 4.1+
+ABIs: undefine
+Size: 7.6MB
+https://apt.izzysoft.de/fdroid/index/apk/com.better.alarm?repo=archive
+https://f-droid.org/repo/com.better.alarm_31504.apk
+
+----------------------------------------------------------------
+
+QuickDic 5.8.2 (2025-11-11)
+sha256: -
+Offline translation dictionary
+Features: -
+TIP!: -
+Author: -
+License: Apache License 2.0
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 13MB
+https://f-droid.org/en/packages/de.reimardoeffinger.quickdic/
+https://f-droid.org/repo/de.reimardoeffinger.quickdic_131.apk
+
+----------------------------------------------------------------
+
+OSS Dict 2.0.2 (2026-05-20)
+sha256: -
+Offline Dictionaries
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 14.9MB
+https://apt.izzysoft.de/fdroid/index/apk/com.akylas.aard2?repo=archive
+https://f-droid.org/archive/com.akylas.aard2_75.apk
+
+----------------------------------------------------------------
+
+Translate You 12.0 (2025-02-09) or old version
+sha256: -
+Online Translation (multiple online services)
+Features: -
+TIP!: -
+Author: You Apps
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 16.4MB
+https://apt.izzysoft.de/fdroid/index/apk/com.bnyro.translate?repo=archive
+https://f-droid.org/archive/com.bnyro.translate_43.apk
+
+----------------------------------------------------------------
+
+AnkiDroid 2.16.5 (2023-09-12) or old version
+sha256: -
+AnkiDroid lets you learn flashcards.
+Features: -
+TIP!: -
+Author: AnkiDroid Open Source Team
+License: AGPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 73.8MB
+https://apt.izzysoft.de/fdroid/index/apk/com.ichi2.anki?repo=archive
+https://f-droid.org/archive/com.ichi2.anki_21605300.apk
+
+----------------------------------------------------------------
+
+OpenCalc 3.2.0 (2025-04-17)
+sha256: -
+Simple and beautiful calculator for Android
+Features: -
+TIP!: -
+Author: Darkempire78
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 2.2MB
+https://f-droid.org/en/packages/com.darkempire78.opencalculator/
+https://f-droid.org/repo/com.darkempire78.opencalculator_53.apk
+
+----------------------------------------------------------------
+
+Ghost Commander 1.64.1 (2025-09-05)
+sha256: -
+Dual-panel file manager
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 4.7MB
+https://f-droid.org/en/packages/com.ghostsq.commander/
+https://f-droid.org/repo/com.ghostsq.commander_475.apk
+
+----------------------------------------------------------------
+
+Material Files 1.7.4 (2024-07-03)
+sha256: -
+Open source Material Design file manager
+Features: Client: WebDav, FTP
+TIP!: -
+Author: Hai Zhang
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 9MB
+https://f-droid.org/en/packages/me.zhanghai.android.files/
+https://f-droid.org/repo/me.zhanghai.android.files_39.apk
+
+----------------------------------------------------------------
+
+Syncthing-Fork v1-1.30.0.4 (2025-09-13) or old version
+sha256: -
+Open and decentralized file synchronization
+Features: -
+TIP!: -
+Author: -
+License: MPL-2.0
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 58.4MB
+https://apt.izzysoft.de/fdroid/index/apk/com.github.catfriend1.syncthingandroid?repo=archive
+https://f-droid.org/archive/com.github.catfriend1.syncthingandroid_1300004.apk
+
+----------------------------------------------------------------
+
+MGit 1.7.0 (2023-01-04)
+sha256: -
+View and interact with git repositories
+Features: -
+TIP!: -
+Author: Manichord Pty Ltd
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 10MB
+https://f-droid.org/en/packages/com.manichord.mgit/
+https://f-droid.org/repo/com.manichord.mgit_240.apk
+
+----------------------------------------------------------------
+
+Dimmer 3.3.1 (2015-12-03)
+sha256: -
+Lower the brightness beyond the limit through a filter.
+Features: -
+TIP!: -
+Author: -
+License: Apache-2.0
+Rating: -
+Requires: Android 4.0+
+ABIs: undefine
+Size: 336KB
+https://apt.izzysoft.de/fdroid/index/apk/giraffine.dimmer?repo=archive
+https://f-droid.org/archive/giraffine.dimmer_37.apk
+
+----------------------------------------------------------------
+
+Always On AMOLED 0.9.5 (2016-10-02)
+sha256: -
+Always On Screen
+Features: -
+TIP!: -
+Author: Tomer Rosenfeld
+License: GPLv3
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 4.9MB
+https://apt.izzysoft.de/fdroid/index/apk/com.tomer.alwayson?repo=archive
+https://f-droid.org/archive/com.tomer.alwayson_213.apk
+
+----------------------------------------------------------------
+
+Memento 2.1.1 (2025-04-25)
+sha256: -
+Simple note taking supporting colorized categories
+Features: -
+TIP!: -
+Author: -
+License: MIT License
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 1.9MB
+https://f-droid.org/en/packages/de.mwarning.memento/
+https://f-droid.org/repo/de.mwarning.memento_211.apk
+
+----------------------------------------------------------------
+
+Markor 2.16.1 (2026-03-20)
+sha256: -
+Text editor - Notes & ToDo. Lightweight. Markdown and todo.txt support. (support: plain text)
+Features: -
+TIP!: -
+Author: Gregor Santner
+License: Apache License 2.0
+Rating: -
+Requires: Android 4.3+
+ABIs: undefine
+Size: 11MB
+https://f-droid.org/packages/net.gsantner.markor/
+https://f-droid.org/repo/net.gsantner.markor_163.apk
+
+----------------------------------------------------------------
+
+F-Droid Classic 1.2 (2022-06-01)
+sha256: -
+F-Droid client with the classic UI
+Features: -
+TIP!: -
+Author: Marcus Hoffmann
+License: GPLv3+
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 4.4MB
+https://f-droid.org/en/packages/eu.bubu1.fdroidclassic/
+https://f-droid.org/repo/eu.bubu1.fdroidclassic_1110.apk
+
+----------------------------------------------------------------
+
+Aurora Store 4.7.5 (2025-11-14) or old version
+sha256: -
+An unofficial FOSS client to Google Play
+Features: -
+TIP!: -
+Author: Rahul Kumar Patel
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 7.8MB
+https://apt.izzysoft.de/fdroid/index/apk/com.aurora.store?repo=archive
+https://f-droid.org/archive/com.aurora.store_71.apk
+
+----------------------------------------------------------------
+
+App Manager 4.1.0 (2026-06-30) or old version
+sha256: -
+A fully-featured package manager for android.
+Features: ADB data backups, Freeze apps, adb/root mode
+TIP!: -
+Author: Muntashir Al-Islam
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 26MB
+https://f-droid.org/en/packages/io.github.muntashirakon.AppManager/
+https://f-droid.org/repo/io.github.muntashirakon.AppManager_450.apk
+
+----------------------------------------------------------------
+
+Mumla 3.7.3 (2026-03-11)
+sha256: -
+Voice chat on Mumble servers
+Features: -
+TIP!: -
+Author: Daniel Lublin
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 11MB
+https://f-droid.org/en/packages/se.lublin.mumla/
+https://f-droid.org/repo/se.lublin.mumla_3070300.apk
+
+----------------------------------------------------------------
+
+Linphone 4.3.1 (2020-10-02) or old version
+sha256: -
+App offering free audio/video calls and text messaging. (SIP/VOIP phone)
+Features: -
+TIP!: -
+Author: Belledonne Communications
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 37.3MB
+https://apt.izzysoft.de/fdroid/index/apk/org.linphone?repo=archive
+https://f-droid.org/archive/org.linphone_4310.apk
+
+----------------------------------------------------------------
+
+Forkgram Classic 12.7.5.0 (2026-06-02)
+sha256: -
+A Telegram fork preserving the classic UI
+Features: -
+TIP!: -
+Author: 23rd
+License: GPLv2+
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a
+Size: 42MB
+https://f-droid.org/en/packages/org.forkgram.classic/
+https://f-droid.org/repo/org.forkgram.classic_675207.apk
+
+----------------------------------------------------------------
+
+yaxim 0.9.3 (2018-11-17)
+sha256: -
+Yet Another XMPP Instant Messenger.
+Features: -
+TIP!: -
+Author: Georg Lukas
+License: GPLv3
+Rating: -
+Requires: Android 2.1+
+ABIs: undefine
+Size: 1.9MB
+https://apt.izzysoft.de/fdroid/index/apk/org.yaxim.androidclient?repo=archive
+https://f-droid.org/archive/org.yaxim.androidclient_53.apk
+
+----------------------------------------------------------------
+
+monocles chat 1.7.1 (2023-06-18) or old version
+sha256: -
+XMPP (Jabber) Client [BUG:otr no work, app crash] (support: delete messages)
+Features: -
+TIP!: -
+Author: Arne-Brun Vogelsang
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a
+Size: 29.8MB
+https://apt.izzysoft.de/fdroid/index/apk/de.monocles.chat?repo=archive
+https://f-droid.org/archive/de.monocles.chat_13301.apk
+
+----------------------------------------------------------------
+
+Revolution IRC 0.5.5 (2023-04-25)
+sha256: -
+The next-generation IRC client
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 4.2+
+ABIs: undefine
+Size: 3.6MB
+https://f-droid.org/en/packages/io.mrarm.irc/
+https://f-droid.org/repo/io.mrarm.irc_13.apk
+
+----------------------------------------------------------------
+
+K-9 Mail 16.1 (2026-02-10) or old version
+sha256: -
+Full-featured email client
+Features: -
+TIP!: -
+Author: -
+License: Apache-2.0
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 12.8MB
+https://apt.izzysoft.de/fdroid/index/apk/com.fsck.k9?repo=archive
+https://f-droid.org/archive/com.fsck.k9_39033.apk
+
+----------------------------------------------------------------
+
+ScreenStream 3.10.6 (2023-02-09) or old version
+sha256: -
+Screen streaming over HTTP
+Features: -
+TIP!: -
+Author: Dmitriy Krivoruchko
+License: MIT
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 3.7MB
+https://apt.izzysoft.de/fdroid/index/apk/info.dvkr.screenstream?repo=archive
+https://f-droid.org/archive/info.dvkr.screenstream_31006.apk
+
+----------------------------------------------------------------
+
+ScreenCam 2.0.3-fdroid (2019-04-26)
+sha256: -
+Lightweight and functional screen recorder
+Features: -
+TIP!: This app tracks and reports your activity
+Author: -
+License: AGPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 2MB
+https://f-droid.org/en/packages/com.orpheusdroid.screenrecorder/
+https://f-droid.org/repo/com.orpheusdroid.screenrecorder_33.apk
+
+----------------------------------------------------------------
+
+Open FlashLight 1.2.0 (2015-10-31)
+sha256: -
+This one is basic, turn it on with the button and quit the app to turn it off.
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 2.2+
+ABIs: undefine
+Size: 26KB
+https://apt.izzysoft.de/fdroid/index/apk/io.github.sanbeg.flashlight?repo=archive
+https://f-droid.org/archive/io.github.sanbeg.flashlight_4.apk
+
+----------------------------------------------------------------
+
+InviZible Pro 7.4.0 (2026-03-03)
+sha256: -
+Tor & Firewall, DNSCrypt & I2P
+Features: -
+TIP!: -
+Author: Oleksandr Garmatin
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a
+Size: 38MB
+https://f-droid.org/en/packages/pan.alexander.tordnscrypt.stable/
+https://f-droid.org/repo/pan.alexander.tordnscrypt.stable_26602.apk
+
+----------------------------------------------------------------
+
+Exclave 0.17.46 (2026-07-10)
+sha256: -
+Proxy [http,https,socks5,ssh,other], blocklist.
+Features: TCP and UDP proxy
+TIP!: -
+Author: ExclaveNetwork
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a, arm64-v8a, x86_64, x86
+Size: 22MB
+https://f-droid.org/en/packages/com.github.dyhkwong.sagernet/
+https://f-droid.org/repo/com.github.dyhkwong.sagernet_1822.apk
+
+----------------------------------------------------------------
+
+DumDum 1.1.5 (2026-03-15)
+sha256: -
+Simple VPN over SOCKS/HTTP/HTTPS proxy
+Features: http,https,socks5,blocklist
+TIP!: -
+Author:  Project Mandarin
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 39MB
+https://f-droid.org/en/packages/app.dumdum/
+https://f-droid.org/repo/app.dumdum_14.apk
+
+----------------------------------------------------------------
+
+Matsuri 0.6.5 (2023-07-02)
+sha256: -
+Proxy [http,https,socks5,ssh,other], blocklist.
+Features: -
+TIP!: -
+Author: arm64_v8a
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a
+Size: 13.9MB
+https://apt.izzysoft.de/fdroid/index/apk/moe.matsuri.lite?repo=archive
+https://f-droid.org/archive/moe.matsuri.lite_916.apk
+
+----------------------------------------------------------------
+
+Open Camera 1.55 (2025-09-01)
+sha256: -
+Camera App
+Features: -
+TIP!: -
+Author: Mark Harman
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 4.7MB
+https://f-droid.org/en/packages/net.sourceforge.opencamera/
+https://f-droid.org/repo/net.sourceforge.opencamera_93.apk
+
+----------------------------------------------------------------
+
+Barcode Scanner 1.25.3 (2025-06-27) or old version
+sha256: -
+An open-source app that allows you to read and generate barcodes.
+Features: -
+TIP!: -
+Author: Atharok
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 7.4MB
+https://f-droid.org/packages/com.atharok.barcodescanner/
+https://f-droid.org/repo/com.atharok.barcodescanner_48.apk
+
+----------------------------------------------------------------
+
+HeliBoard 3.9 (2026-03-31)
+sha256: -
+Customizable open-source keyboard
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 21MB
+https://f-droid.org/en/packages/helium314.keyboard/
+https://f-droid.org/repo/helium314.keyboard_3901.apk
+
+----------------------------------------------------------------
+
+VirtualSoftKeys 0.2.0.180212.1 (2019-02-05)
+sha256: -
+A simple, safe and easy softKeys (navigation bar) [for VNC]
+Features: -
+TIP!: -
+Author: -
+License: Apache License 2.0
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 1.8MB
+https://f-droid.org/en/packages/tw.com.daxia.virtualsoftkeys
+https://f-droid.org/repo/tw.com.daxia.virtualsoftkeys_10.apk
+
+----------------------------------------------------------------
+
+LeafPic v0.6-beta-1 (2016-10-11)
+sha256: -
+Advanced replacement for the default image gallery.
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 4.4+
+ABIs: arm64-v8a, armeabi-v7a, x86, x86_64
+Size: 4.3MB
+https://apt.izzysoft.de/fdroid/index/apk/org.horaapps.leafpic?repo=archive
+https://f-droid.org/archive/org.horaapps.leafpic_13.apk
+
+----------------------------------------------------------------
+
+Just (Video) Player 0.190 (2025-04-09)
+sha256: -
+Simple video player based on ExoPlayer library.
+Features: -
+TIP!: -
+Author: Marcel Dopita
+License: The Unlicense
+Rating: -
+Requires: Android 5.0+
+ABIs: armeabi-v7a
+Size: 10MB
+https://f-droid.org/en/packages/com.brouken.player/
+https://f-droid.org/repo/com.brouken.player_1903.apk
+
+----------------------------------------------------------------
+
+NewPipe 0.28.7 (2026-05-28)
+sha256: -
+Lightweight YouTube frontend
+Features: -
+TIP!: -
+Author: Team NewPipe
+License: GPLv3+
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 10MB
+https://f-droid.org/en/packages/org.schabi.newpipe/
+https://f-droid.org/repo/org.schabi.newpipe_1012_cb84069.apk
+
+----------------------------------------------------------------
+
+Vanilla Music (old) 0.9.10 (2012-03-23)
+sha256: -
+Music player with a simple interface similar to the stock music player.
+Features: -
+TIP!: -
+Author: -
+License: MIT
+Rating: -
+Requires: Android 2.0+
+ABIs: undefine
+Size: 361KB
+https://apt.izzysoft.de/fdroid/index/apk/org.kreed.vanilla?repo=archive
+https://f-droid.org/archive/org.kreed.vanilla_910.apk
+
+----------------------------------------------------------------
+
+kure Music Player 0.9.3 (2014-10-23)
+sha256: -
+Customizable music player
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 4.1+
+ABIs: undefine
+Size: 458KB
+https://apt.izzysoft.de/fdroid/index/apk/com.kure.musicplayer?repo=archive
+https://f-droid.org/archive/com.kure.musicplayer_2.apk
+
+----------------------------------------------------------------
+
+Sound Recorder 1.3.0 (2017-05-25)
+sha256: -
+Simple sound recorder implementing material design.
+Features: -
+TIP!: -
+Author: Daniel Yehun Kim
+License: GPLv3
+Rating: -
+Requires: Android 4.1+
+ABIs: undefine
+Size: 1.2MB
+https://apt.izzysoft.de/fdroid/index/apk/com.danielkim.soundrecorder?repo=archive
+https://f-droid.org/archive/com.danielkim.soundrecorder_130.apk
+
+----------------------------------------------------------------
+
+Terminal Emulator 5.7.0/X (2026-05-12)
+sha256: -
+Turn your device into a computer terminal
+Features: -
+TIP!: -
+Author: -
+License: Apache License 2.0
+Rating: -
+Requires: Android 4.1+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 5.4MB
+https://f-droid.org/en/packages/com.termoneplus/
+https://f-droid.org/repo/com.termoneplus_570.apk
+
+----------------------------------------------------------------
+
+Automation-1.8.7 (2026-03-10)
+sha256: -
+Automate stuff on your device by creating rules
+Features: -
+TIP!: -
+Author: Jens Schroder
+License: GPLv3+
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 5.4MB
+https://f-droid.org/en/packages/com.jens.automation2/
+https://f-droid.org/repo/com.jens.automation2_148.apk
+
+----------------------------------------------------------------
+
+UserLAnd 2.8.3 (2021-11-20)
+sha256: -
+Easiest way to run GNU/Linux Distros on Android - no root required
+Features: -
+TIP!: -
+Author: UserLAnd Technologies
+License: MIT
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 15MB
+https://f-droid.org/en/packages/tech.ula/
+https://f-droid.org/repo/tech.ula_7438725.apk
+
+----------------------------------------------------------------
+
+QKSMS 3.9.4 (2021-03-01)
+sha256: -
+Replacement for the stock AOSP sms messaging app.
+Features: -
+TIP!: -
+Author: -
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a, armeabi-v7a, mips, x86, x86_64
+Size: 11.1MB
+https://apt.izzysoft.de/fdroid/index/apk/com.moez.QKSMS?repo=archive
+https://f-droid.org/archive/com.moez.QKSMS_2218.apk
+
+----------------------------------------------------------------
+
+Emerald Dialer 1.0.23 (2026-03-09)
+sha256: -
+Make calls, view call log
+Features: -
+TIP!: -
+Author: HenriDellal
+License: GPLv3
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 448KB
+https://f-droid.org/en/packages/ru.henridellal.dialer/
+https://f-droid.org/repo/ru.henridellal.dialer_24.apk
+
+----------------------------------------------------------------
+
+Yet Another Call Blocker 0.5.17 (2021-11-18)
+sha256: -
+Block unwanted calls effortlessly
+Features: -
+TIP!: -
+Author: Xynngh
+License: AGPLv3
+Rating: -
+Requires: Android 4.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 7.6MB
+https://f-droid.org/en/packages/dummydomain.yetanothercallblocker/
+https://f-droid.org/repo/dummydomain.yetanothercallblocker_5170.apk
+
+----------------------------------------------------------------
+
+Wi-Fi Widget 1.0 (2013-02-28)
+sha256: -
+Widget that shows the currently connected wi-fi
+Features: -
+TIP!: -
+Author: Henrique Rocha
+License: GPLv3+
+Rating: -
+Requires: Android 1.5+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 34KB
+https://apt.izzysoft.de/fdroid/index/apk/org.androidappdev.wifiwidget?repo=archive
+https://f-droid.org/archive/org.androidappdev.wifiwidget_3.apk
+
+
+================================================================
+
+
+    Required root!
+
+----------------------------------------------------------------
+
+USB Mountr 0.6 (2018-05-22)
+sha256: -
+A helper application to set the Mass Storage Device (requires root)
+Features: -
+TIP!: requires root
+Author: -
+License: MIT
+Rating: -
+Requires: Android 5.0+
+ABIs: undefine
+Size: 413KB
+https://apt.izzysoft.de/fdroid/index/apk/streetwalrus.usbmountr?repo=archive
+https://f-droid.org/archive/streetwalrus.usbmountr_8.apk
+
+----------------------------------------------------------------
+
+ADB-Manager-1.2.2 (2015-10-26)
+sha256: -
+ADB over Wi-Fi. (requires root)
+Features: -
+TIP!: requires root
+Author: Ilija Matoski
+License: Apache-2.0
+Rating: -
+Requires: Android 2.3.3+
+ABIs: undefine
+Size: 775KB
+https://apt.izzysoft.de/fdroid/index/apk/com.matoski.adbm?repo=archive
+https://f-droid.org/archive/com.matoski.adbm_27.apk
+
+----------------------------------------------------------------
+
+tun2proxy-0.8.3 (2026-07-23)
+sha256: -
+Desc: Tunnel (TUN) interface for SOCKS and HTTP proxies
+Features: -
+TIP!: -
+Author: -
+License: MIT
+Rating: -
+Requires: -
+ABIs: undefine
+Size: -
+https://github.com/tun2proxy/tun2proxy
+https://github.com/tun2proxy/tun2proxy/releases/download/v0.8.3/tun2proxy-android-libs.zip
+https://github.com/tun2proxy/tun2proxy/releases/download/v0.8.3/tun2proxy-armv7-unknown-linux-musleabi.zip
+
+----------------------------------------------------------------

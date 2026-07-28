@@ -1,0 +1,17 @@
+#!/bin/sh
+# /etc/local.d/stunnel.start
+
+test -e '/tmp/rc-local.lock' && exit
+pgrep -x "stunnel" >/dev/null && exit
+
+for port in <ssh-internal-port> <socks-internal-port> 8022 8123; do
+  nc -n -z 0.0.0.0 ${port} && { echo "Address in use [port: ${port}]... failed" >&2; exit 1; }
+done
+
+stunnel "/etc/stunnel.conf"
+
+[ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
+[ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
+
+upnpc -u "${UPNP_URI}" -e SSH-SERVER -a "${LOCAL_IP}" <ssh-internal-port> <ssh-ext-port> TCP 0 >/dev/null 2>&1
+upnpc -u "${UPNP_URI}" -e SOCKS-SERVER -a "${LOCAL_IP}" <socks-internal-port> <socks-ext-port> TCP 0 >/dev/null 2>&1

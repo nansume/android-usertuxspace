@@ -1,0 +1,51 @@
+## Android Dropbear Setup
+
+$ - user
+% - root
+
+===
+PRIVKEY [client]         = ${HOME}/.ssh/id_dropbear
+===
+HOSTKEY         [server] = /etc/dropbear/dropbear_ed25519_host_key
+AUTHORIZED_KEYS [server] = ${HOME}/.ssh/authorized_keys              (same <id_dropbear.pub>)
+===
+
+---
+
+### Server (Android)
+
+pkg update
+pkg install ldd make elinks qalc
+
+pkg install libandroid-posix-semaphore wget openssl-tool proot tar -y && hash -r &&
+wget https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Scripts/Installer/Alpine/alpine.sh &&
+bash alpine.sh
+./start-alpine.sh
+
+---
+
+#### chroot (alpine,Android)
+
+sudo apk update
+sudo apk upgrade
+sudo apk search dropbear
+apk add dropbear dropbear-scp mc busybox busybox-extras nano nano-syntax make miniupnpc elinks qalc
+mkdir /root/.ssh/ /var/www/
+#nc -l -p 2323 > /etc/inetd.conf
+nc -l -p 2323 > /etc/apk/repositories
+nc -l -p 2323 > /etc/dropbear/dropbear_ed25519_host_key
+nc -l -p 2323 > /root/.ssh/authorized_keys
+chmod 600 /root/.ssh/authorized_keys /etc/dropbear/dropbear_ed25519_host_key
+inetd /etc/inetd.conf
+
+
+### Client
+
+#$ nc -w 10 192.168.0.2 2323 < etc/inetd.conf
+$ nc -w 10 192.168.0.2 2323 < etc/apk/repositories
+$ nc -w 10 192.168.0.2 2323 < etc/dropbear/dropbear_ed25519_host_key
+$ nc -w 10 192.168.0.2 2323 < root/.ssh/authorized_keys
+$ nc 192.168.0.2 2323  # remote shell
+$ /bin/dbclient -i ${HOME}/.ssh/id_dropbear -p 2022 root@192.168.0.2
+
+---

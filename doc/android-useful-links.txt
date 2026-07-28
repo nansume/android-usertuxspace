@@ -1,0 +1,21 @@
+#######################################
+#  Android [utf-8,ipv4-only,lang-en]  #
+#######################################
+
+https://lite.duckduckgo.com/lite?q=samsung+android+unlock+screen+.png&kl=us-en
+https://lite.duckduckgo.com/lite?q=MHL+Converter+Cable+ebay&kl=us-en
+https://lite.duckduckgo.com/lite?q=otg+cable+adapter+type-c+usb+a&kl=us-en
+
+# github.com - phhusson/Superuser/archive/1.0.3.3.tar.gz [utf-8,ipv4-only,ssl-only]
+http://github.com/phhusson/Superuser/archive/1.0.3.3.tar.gz
+# f-droid.org - me.phh.superuser_1033.apk [utf-8,ipv4,ssl]
+http://f-droid.org/repo/me.phh.superuser_1033.apk
+# Should I root my device? - F-Droid [utf-8,ipv4,ssl]
+http://f-droid.org/wiki/page/Should_I_root_my_device%3F
+# superuser.phh.me - superuser.zip - Build bot [utf-8,ipv4,ssl]
+http://superuser.phh.me/superuser.zip
+
+# ftp pub archive - F-Droid Android (mirror)
+http://mirrors.dotsrc.org/fdroid/archive/
+http://mirrors.dotsrc.org/fdroid/repo/
+ftp://mirrors.dotsrc.org/fdroid/repo/

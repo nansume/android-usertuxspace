@@ -1,0 +1,33 @@
+#!/bin/sh
+# /etc/local.d/sshtunnel.start
+
+DAEMON_RUN="dbclient"
+SSH_USER="root"
+SSH_HOME="/root"
+AUTH_USER=$(cat /etc/sysconfig/remote_server/auth_user)
+AUTH_FILE="${SSH_HOME}/.ssh/${AUTH_USER}@shellgen.pwd"
+SSH_PORT=$(cat /etc/sysconfig/remote_server/ssh_port)
+DOMAINNAME=$(cat /etc/sysconfig/remote_server/domain)
+DOMAINNAME=$(hosttoip ${DOMAINNAME:?})
+LOGFILE="/var/log/${DAEMON_RUN}.log"
+
+pgrep -x ${DAEMON_RUN} >/dev/null && exit
+
+>> "${LOGFILE}"
+chown ${SSH_USER}:${SSH_USER} "${LOGFILE}"
+
+DROPBEAR_PASSWORD=$(cat ${AUTH_FILE}) \
+${DAEMON_RUN} \
+  -i ${SSH_HOME}/.ssh/id_dropbear_tunnel \
+  -L 0.0.0.0:5353:127.0.0.1:5353 \
+  -L 127.0.0.1:1873:127.0.0.1:873 \
+  -L 127.0.0.1:3128:127.0.0.1:3128 \
+  -L 127.0.0.1:3129:127.0.0.1:3129 \
+  -L 127.0.0.1:3130:127.0.0.1:3130 \
+  -L 127.0.0.1:8050:127.0.0.1:9050 \
+  -L 127.0.0.1:8053:127.0.0.1:9053 \
+  -R 127.0.0.1:2324:127.0.0.1:2323 \
+  -R 127.0.0.1:2223:127.0.0.1:2222 \
+  -R 127.0.0.1:5901:127.0.0.1:5900 \
+  -f -N -p ${SSH_PORT} \
+  ${AUTH_USER}@${DOMAINNAME} >> ${LOGFILE} 2>&1 &

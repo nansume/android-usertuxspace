@@ -1,0 +1,90 @@
+  How a fix cert on old Android 5.0
+
+
+    * We fix the connection insecurity warnings on Android device.
+
+    Installing a digital certificate on Android can be done in several ways,
+    depending on how you obtained the file and the type of certificate.
+
+
+    1) Add User certificate (without root) - "User Certificates"
+
+    -----------------------------------------------------------------------
+
+    Certificate installation:
+
+    Download the certificate "Let's Encrypt ISRG Root X1"
+
+    Let's Encrypt ISRG Root X1 and Privacy Browser - Stoutner
+    https://www.stoutner.com/lets-encrypt-isrg-root-x1-and-privacy-browser/
+
+    Here is the direct link to the certificate:
+    https://letsencrypt.org/certs/isrgrootx1.pem.txt
+
+    rename: isrgrootx1.pem.txt --> isrgrootx1.pem
+
+    * Transfer the file to the Android mobile
+      +++++++++++++++++++++++++++++++++++++++
+      - If you got the file from a computer, transfer it to your phone using USB, Bluetooth,
+        email (as an attachment), cloud storage apps (Google Drive, Dropbox), or messaging apps (Telegram).
+      - Save the file to a known folder, for example Download o Downloads.
+
+    Before: User Cert required set phone protected with a PIN lock e.g. "0000"
+
+    On the phone:
+    settings -> Security -> Install from SD card
+
+    In installing options set a: "for apps and VPN"
+    
+    After installing the certificate, a message from the Android system is possible:
+    "The network can be monitored by the administrator"
+    (the message is also possible after rebooting the smartphone).
+
+    Tips: The "User Certificates" list only shows those installed manually, not pre-installed or system certificates.
+
+    -----------------------------------------------------------------------
+
+
+    2) Replace RootCA certificates (required root)
+
+    -----------------------------------------------------------------------
+
+    The decision is to replace all built-in certificates with certificates from the
+    15th Android.
+
+    Download the latest official Android certificates archive.
+    files - platform/system/ca-certificates - Git at Google
+    and unpack, after preserving the contents/system/etc/secrets/cacerts
+
+      su
+
+      mount -o remount -t rw /dev/mmcblk0p8 /system
+
+      cd /system/etc/security/cacerts
+
+    We delete all certificates
+
+      rm *
+
+    and unpack
+
+      tar -xvf main-files.tar.gz
+
+      chmod 644 *
+
+      reboot
+
+    -----------------------------------------------------------------------
+
+    This completely solved a invalid certificate warnings.
+    
+Frequently asked questions about electronic certificates on Android
+
+     * Can I install multiple certificates at once? Yes, each one will appear with its name under "User
+       Certificates," and you can select the corresponding one when completing each procedure.
+
+
+References
+
+http://xdaforums.com/t/post-title-noroot-and-root-2-ways-to-overcome-certificate-problems-for-old-androids-4-2.4709800/
+https://en.androidguias.com/How-to-view-installed-certificates-on-Android/

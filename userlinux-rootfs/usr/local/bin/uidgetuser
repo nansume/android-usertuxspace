@@ -1,0 +1,20 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/uidgetuser 0755 root:root
+# ----------------------------------------
+
+set -- ${1:?required uid} '/etc/passwd'
+
+test -r ${2} &&
+while IFS= read -r STRING; do
+  case ${STRING} in
+    *:${1}:*)
+      set --  ${STRING%%:$1:*}
+      printf '%s\n' "${1%%:*}"
+      set --
+      break
+    ;;
+  esac
+done < ${2}
+
+test -z "${2}"

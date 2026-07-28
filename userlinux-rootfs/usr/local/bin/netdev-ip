@@ -1,0 +1,46 @@
+#!/bin/sh
+# File: /bin/netdev-ip 0755 root:root
+# Symlink: netdev-ip <-- /bin/wan-ip
+# Date: 2024-01-17 15:00 UTC - last change
+set -e -u -f
+
+IFS="$(printf '\n\t')"; IFS=${IFS%?}
+
+get_netdev(){
+  command -v ip >/dev/null &&
+  for NETDEV in $(ip route show default 2>/dev/null) ''; do
+    case ${NETDEV} in
+      '172.19.'*' tun0 '*) continue;;  # FIX for Android
+      'default '*|*'.0/'[0-9]*) NETDEV=${NETDEV#* dev }; NETDEV=${NETDEV%% *}; break;;
+    esac
+  done ||
+  for NETDEV in $(route -n -A "inet" 2>/dev/null) ''; do
+    case ${NETDEV} in
+      '0.0.0.0 '*|*' 0.0.0.0 '*' 255.255.255.0 '*) break;;
+    esac
+  done
+  [ -n "${NETDEV}" ] ||
+  for NETDEV in $(ifconfig -a 2>/dev/null) ''; do
+    NETDEV=${NETDEV%%[[:space:]]*}
+    case ${NETDEV} in
+      'lo'|'tun0') continue;;
+      *?*) break;;
+    esac
+  done
+  [ -n "${NETDEV}" ] && printf '%s\n' "${NETDEV##* }"
+}
+
+[ -n "${1-}" ] || set -- $(get_netdev)
+
+for IP in $(ifconfig -a "${1:-eth0}" 2>/dev/null) ''; do
+  case ${IP} in
+    *' addr:'*)
+      IP=${IP#*addr: }  # match: inet6 addr: <ipv6addr>
+      IP=${IP#*addr:}   # match: inet addr:<ipv4addr>
+      IP=${IP%%/[0-9]*} # surely for ipv6 ?
+      break
+    ;;
+  esac
+done
+
+[ -n "${IP}" ] && printf %s\\n "${IP%% *}"

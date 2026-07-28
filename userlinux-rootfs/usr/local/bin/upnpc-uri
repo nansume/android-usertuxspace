@@ -1,0 +1,125 @@
+#!/bin/sh
+# --------------------------------------------------------------
+# File: /bin/upnpc-uri
+# --------------------------------------------------------------
+# Usage: UPNP_URI=$(upnpc-uri)
+# Optional: export USER_NET=<user-network>
+# Depend: upnpc,route/ip,nc(netcat),usleep
+# --------------------------------------------------------------
+# Date: 2025-11-26 12:00 UTC, 2026-07-24 16:00 UTC - last change
+# --------------------------------------------------------------
+set -e -u -f
+
+IFS="$(printf '\n\t')"
+OLDIFS=${IFS}
+runuser=${USER_NET:-nobody}
+port="80"
+
+print_help() {
+  cat >&2 <<_EOF_
+Usage: ${0##*/} -u USER
+
+Options:
+  -u  user (drop privileges)
+  -p  port
+  -h  Print usage help and exit
+_EOF_
+
+exit 1
+}
+
+case $(id -un) in
+  'root')
+    IFS=" " ARG=${@}; IFS=${OLDIFS}
+    while [ x"${1-}" != x ]; do
+      case ${1-} in
+        -u) runuser=${2:?required user}; shift;;
+        -h) print_help;;
+      esac
+      shift
+    done
+    [ -n "${runuser-}" ] || exit 1
+
+    su ${runuser} -c "${0##*/} ${ARG}";
+    exit $?
+  ;;
+esac
+
+while [ x"${1-}" != x ]; do
+  case $1 in
+    -p) g_port=${2:?required port}; port=${g_port}; shift;;
+    -u) shift;;
+    -h) print_help;;
+     *) print_help;;
+  esac
+  shift
+done
+
+if command -v ip >/dev/null; then
+  #IFS="${IFS} "; set -- "$(ip route show default 2>/dev/null || exit 0)"
+  #case ${1} in 'default') set -- ${3};; *'.0/'[0-9]*) set -- ${1%/*};; esac
+
+  for route in $(ip route show default 2>/dev/null) ''; do
+    IFS="$(printf '\n\t%1s')"; set -- ${route} ""
+    case ${1} in
+      'default') set -- ${3} break;;
+      '172.19.'*' tun0 '*) continue;;  # FIX for Android
+      *'.0/'[0-9]*) set -- ${1%/*} break;;
+    esac
+  done
+else
+  set -- $(route -A inet -n)
+  case ${3} in "0.0.0.0 "*) set -- ${3#* };; *) set -- ${3%% *};; esac
+fi
+set -- "${1#${1%%[![:space:]]*}}"
+gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
+
+#FIX: error: ip: bind: Permission denied
+case ${gw} in " "|"")
+  if nc -w 1 -n -z 192.168.1.1 80; then
+    gw="192.168.1.1"
+  elif nc -w 1 -n -z 192.168.0.1 80; then
+    gw="192.168.0.1"
+  fi
+;;
+esac
+
+# upnpc -P
+# upnpc -u http://192.168.0.1:58673/rootDesc.xml -l
+# upnpc -u http://192.168.0.1:1900/igd.xml -l
+# wget http://192.168.0.1:1900/igd.xml
+# busybox wget -q -T10 -SO - http://192.168.0.1:58673/rootDesc.xml >/dev/null && echo open
+[ -z "${g_port-}" ] && {
+  if nc -w 1 -n -z ${gw:?} 52869; then
+    port="52869"  # FIX: for zte-router
+    UPNP_URI="http://${gw}:${port}/gatedesc.xml"
+  elif nc -w 1 -n -z ${gw} 58673; then
+    port="58673"  # D-Link
+    UPNP_URI="http://${gw}:${port}/rootDesc.xml"
+  elif nc -w 1 -n -z ${gw} 1900; then
+    port="1900"  # TP-Link
+    UPNP_URI="http://${gw}:${port}/igd.xml"
+  fi
+}
+[ -n "${UPNP_URI-}" ] || UPNP_URI="http://${gw:?}:${port:?}/gatedesc.xml"
+
+[ -n "${UPNP_URI:?required variable: <UPNP_URI>}" ] || exit
+
+busybox wget -q -T10 -SO - "${UPNP_URI}" >/dev/null 2>&1 || {
+export IFS="${IFS} "
+for UPNP_URI in "${UPNP_URI}" '' "${UPNP_URI}" "${UPNP_URI}"; do  # FIX: add repeat UPNP_URI for failed connect.
+command upnpc ${UPNP_URI:+-u }"${UPNP_URI}"${UPNP_URI:+ }-P | while IFS= read -r S; do  # Here child proc.
+  case ${S} in
+    'Found valid IGD :'*)
+      S=${S##*: }
+      printf '%s\n' "${S%/${S#*[0-9]/}}/gatedesc.xml"
+      exit 1
+    ;;
+  esac
+  usleep 400000
+done || exit 0
+done
+} && { printf '%s\n' "${UPNP_URI}"; exit 0; }
+
+printf '%s\n' "${0##*/}: UPnP Router URI: not found... error" >&2
+exit 1

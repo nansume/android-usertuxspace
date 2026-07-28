@@ -1,0 +1,75 @@
+=================================================================================
+=                             How setup to the rsyncd                           =
+=================================================================================
+
+=================================================================================
+=                                     Install                                   =
+=================================================================================
+# install in Archlinux-based distributive.
+ % pacman -S rsync
+# install from Shellgen-muslx32 in no-native system os.
+ % cd /tmp/pkg/; gunzip -dc /pkg/*-*/rsync_*_x32.cgz | cpio -uim; cd /
+=================================================================================
+
+=================================================================================
+=                                      Setup                                    =
+=================================================================================
+# get file through <netcat>.
+ $ nc -w 2 <ipaddr+server> 49999 > ${HOME}/download/rsyncd-android.conf
+ $ nc -w 2 <ipaddr+server> 49999 > ${HOME}/download/auth.conf
+# move files in system directory for daemon <rsyncd>.
+ % mv -n ${HOME}/download/rsyncd-android.conf /etc/rsync/rsyncd.conf
+ % mv -n ${HOME}/download/auth.conf /etc/rsync/
+
+# change permission to proper perm.
+ % chmod 644 /etc/rsync/rsyncd.conf
+ % chown root:root /etc/rsync/rsyncd.conf
+# change permission to proper perm for <root> (run from <root>).
+ % chmod 400 /etc/rsync/auth.conf
+ % chown root:root /etc/rsync/auth.conf
+
+
+# editor if required.
+ % nano /etc/rsync/rsyncd.conf
+======================================================================
+/etc/rsync/rsyncd.conf:
+======================================================================
+daemon uid = <user>
+daemon gid = <user>
+pid file = /run/rsyncd.pid
+use chroot = yes
+log file = /var/log/rsyncd_backup.log
+secrets file = /etc/rsync/auth.conf
+max connections = 10
+reverse lookup = no
+list = no
+open noatime = yes
+transfer logging = yes
+timeout = 10
+refuse options = delete delete-* list-only
+exclude from = /etc/rsync/android_phone_excludes.lst
+hosts allow = xxx.xxx.xxx.xxx 192.168.0.0/16 127.0.0.0/29
+
+[android]
+auth users = <phone-user>
+write only = yes
+read only = no
+path = /home/<user>/backup/<phone>
+======================================================================
+
+
+======================================================================
+/etc/rsync/auth.conf:
+======================================================================
+<user>:<password-plain-text>
+======================================================================
+
+
+# add daemon for systemd.
+ % systemctl enable rsyncd
+# runing daemon for systemd.
+ % systemctl start rsyncd
+
+# Sample: phone [local] --> pc [remote]
+ adb-shell$ rsync -avH --dry-run --exclude-from=/mnt/sdcard/rsync/android_phone_excludes.lst /mnt/sdcard/ rsync://<hostname|ipaddress>/android/<phone>/ > /mnt/sdcard/log/rsync_backup.log
+=================================================================================

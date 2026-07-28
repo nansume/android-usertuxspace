@@ -1,0 +1,41 @@
+=================================================================================
+=               How install and setup to the Sincopoli-v0.7.2                   =
+=================================================================================
+
+=================================================================================
+=                                     Install                                   =
+=================================================================================
+# In the x86-PC through adb (path to *.apk file in PC).
+ $ adb install <path>/org.amoradi.syncopoli.apk
+# Android device (emul-term) or adb shell (path to *.apk file in phone).
+ $ pm install <path>/org.amoradi.syncopoli.apk
+=================================================================================
+# or through <fdroid>.
+=================================================================================
+
+=================================================================================
+=                                      Setup                                    =
+=================================================================================
+
+========================================
+=            General menu              =
+========================================
+Settings ->
+ Protocol: Rsync
+ Server address: <ipaddr or domain-name>
+ Port: 873
+ #User: <auth-rsync-user>
+ #Rsync Password: <passwd-from-rsyncd>
+ Frequency (hours): 24
+ Wifi only: yes (checkbox)
+========================================
+=        Additional profile            =
+========================================
+push button (plus-sign) to add profile ->
+ 1) set: <Local to remote>
+ 2) Profile name: [phone --> pc (remote)]
+ 3) Origins: /mnt/sdcard/
+ 4) Destination: disk/upload/
+ #5) Additional rsync options: [empty]
+ and push button ok (green daw-sign).
+=================================================================================

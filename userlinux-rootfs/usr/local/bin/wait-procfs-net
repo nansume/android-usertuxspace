@@ -1,0 +1,29 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/wait-procfs-net
+# ----------------------------------------
+# Usage: wait-procfs-net
+# Depend: route or ip, upnpc-uri
+# ----------------------------------------
+# Date: 2026-05-31 12:00 UTC - last change
+# ----------------------------------------
+set -e -u -f
+
+IFS="$(printf '\n\t')"
+OLDIFS=${IFS}
+
+set -- '0'
+
+until [ "${1}" -ge 10 ]; do
+  set -- $(expr ${1} + 1)
+  if command -v ip >/dev/null; then
+    IFS="${IFS} "; set -- ${1} $(ip route show default 2>/dev/null || exit 0)
+    upnpc-uri >/dev/null 2>&1 && case ${2-} in 'default'|*'.0/'[0-9]*) set -- ;break ;; esac || true
+  else
+    set -- ${1} $(route -A inet -n || exit 0)
+    case ${4-} in "0.0.0.0 "*|*" 0.0.0.0 "*) set -- ;break ;; esac
+  fi
+  sleep 1
+done
+
+[ -z "${1-}" ]
