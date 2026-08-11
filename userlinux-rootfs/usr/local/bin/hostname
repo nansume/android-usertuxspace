@@ -1,0 +1,30 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/hostname 0755 root:root
+# ----------------------------------------
+# Name: hostname
+# Usage: hostname -f
+# Example: HOSTNAME=$(hostname)
+# compatible with Linux kernel (Linuxism)
+# Date: 2025-02-01 09:00 UTC, 2026-08-09 20:00 UTC - last change
+set -e -u -f
+
+set -- '/proc/sys/kernel/hostname' '/proc/sys/kernel/domainname' "${1-}"
+# ${1}=hostname; ${2}=domainname; ${3}=arg
+
+[ -r "${1}" ] || set -- '/etc/sysconfig/hostname' '/etc/sysconfig/domainname' "${3}"
+
+[ -r "${1}" ] && IFS= read -r HOSTNAME < "${1}" || true
+
+[ -n "${HOSTNAME}" ] || exit
+
+PHOSTNAME=${HOSTNAME}  # print hostname
+
+case ${3} in
+  -f)
+    IFS= read -r DOMAINNAME < "${2}" || true
+    PHOSTNAME="${HOSTNAME}.${DOMAINNAME}"  # print full hostname
+  ;;
+esac
+
+printf %s\\n "${PHOSTNAME:?}"

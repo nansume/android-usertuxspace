@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# http://data.gpo.zugaina.org/guru/net-misc/yacy/yacy-1.930.202405130205.ebuild
+# http://data.gpo.zugaina.org/guru/net-misc/yacy/files/yacy.rc
+# https://kb.shells.com/tutorials/Alpine_Linux_Latest/Yacy/
+
+# TIP!: nowork: #apk add openjdk25-jdk
+# TIP!: Prep: apk add openjdk11-jdk
+
+IFS="$(printf '%1s\n\t')"
+PN="yacy"
+YACY_USER="yacy"              #$(cat /etc/sysconfig/yacy/user)
+YACY_HOME="/usr/share/${PN}"  #$(cat /etc/sysconfig/yacy/home)
+YACY_USERID="8090"            #$(cat /etc/sysconfig/yacy/userid)
+workdir="/var/tmp/packages"
+S="${workdir}/${PN}"
+hash="65bda0eae8d12f41f9cc3558e888db0162d13ea7cfc9e91e3a5c0dff4ef333e7"
+
+mkdir "${workdir}/" "${S}/" "${YACY_HOME}/" "${YACY_HOME}/DATA"
+cd "${workdir}/"
+wget "https://download.yacy.net/yacy_v1.941_202603291103_f0464e7fb.tar.gz"
+
+gunzip -dc yacy_*.tar.gz | tar -C "${workdir}/" -xkf -
+
+# remove win-only stuff
+find "${S}" -name "*.bat" -exec rm '{}' \;
+# remove init-scripts
+rm "${S}"/*.sh
+# remove sources
+rm -r "${S}/source"
+rm "${S}/build.properties" "${S}/build.xml"
+
+cp -r "${S}"/* "${YACY_HOME}"
+echo "Install YACY... ok"
+
+# TIP!: it check a the user is exist, not group!
+if ! groups ${YACY_USER} >/dev/null 2>&1; then
+  addgroup -g ${YACY_USERID} ${YACY_USER}
+  adduser -u ${YACY_USERID} -D -G ${YACY_USER} -h ${YACY_HOME} -s "/bin/sh" ${YACY_USER}
+
+  printf %s\\n "adduser ${YACY_USER}"
+fi
+
+mkdir "/var/log/yacy/"
+chown yacy:yacy "/var/log/yacy"
+
+ln -s "${YACY_HOME}/DATA" /var/lib/yacy
+
+echo "yacy.logging will write logfiles into /var/lib/yacy/LOG"
+echo "To setup YaCy, open http://localhost:8090 in your browser."

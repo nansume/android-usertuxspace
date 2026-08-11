@@ -1,0 +1,16 @@
+#!/bin/sh
+# /etc/local.d/privoxy.start
+
+pre_start() (
+  for conffile in /etc/privoxy/*.new; do
+    [ -f "${conffile}" ] || break
+    cp -v -n "${conffile}" "${conffile%.new}"
+  done
+)
+
+nc -w1 -n -z 0.0.0.0 8118 || killall "privoxy" 2>/dev/null
+pgrep -x "privoxy" >/dev/null && exit
+
+[ -f "/etc/privoxy/config" ] || pre_start
+
+nice -n 19 privoxy --user root.root --pidfile /run/privoxy.pid "/etc/privoxy/config"

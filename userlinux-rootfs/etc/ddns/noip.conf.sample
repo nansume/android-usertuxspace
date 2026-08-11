@@ -1,0 +1,10 @@
+# /etc/ddns/noip.conf 0644 root:root
+# http://<service-domain>/nic/update?hostname=<your-hostname>
+
+service = http://dynupdate.no-ip.com
+login = <your-login>
+password = <your-pass>
+
+hostname1 = <your-hostname1>
+#hostname2 = <your-hostname2>
+# etc ...

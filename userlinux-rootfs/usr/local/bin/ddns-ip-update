@@ -1,0 +1,232 @@
+#!/bin/sh
+# -------------------------------------------------
+# File: /bin/ddns-ip-update
+# Copyright (C) 2025-2026 Artjom Slepnjov, Shellgen
+# -------------------------------------------------
+# Name: ddns-ip-update
+# Usage[crond]: 0 */4 * * * /bin/ddns-ip-update <myhost>.<domain>
+# default api: <ddns-service>/nic/update?hostname=<your-hostname>&myip=<your-ip>
+# another api: <ddns-service>/<api>
+# -------------------------------------------------
+# Date: 2025-11-30 18:00 UTC, 2026-05-13 20:00 UTC
+set -e -u
+
+IFS="$(printf '%1s\n\t')"
+OLDIFS=${IFS}
+runuser=${USER_NET:-nobody}
+LOG="/var/log/ddns-update.log"
+quit="0"
+verbose="1"
+dry_run="0"
+MYHOSTS=""
+custom_ddns_api="0"
+
+print_progver() {
+  printf '%s\n' "ddns-ip-update 0.0.1a written on Aug 08 2026 18:52:31"
+  printf '%s\n' "Copyright 2026 Artjom Slepnjov (shellgen@uncensored.citadel.org)"
+}
+
+print_help() {
+  print_progver; printf '\n'
+  cat >&2 <<_EOF_
+Usage: ${0##*/} -v -u USER -H HOST
+
+Options:
+  -u  user (drop privileges)
+  -s  provided/service
+  -l  login
+  -k  token/key
+  -p  password
+  -H  hostname
+  -i  external ip address
+  -q  quit
+  -v  verbose
+  -n  dry-run
+  -V  Print version information and exit
+  -h  Print usage help and exit
+_EOF_
+
+exit 1
+}
+
+case $(id -un) in
+  'root')
+    IFS=" " ARG=${@}; IFS=${OLDIFS}
+    while [ x"${1-}" != x ]; do
+      case ${1-} in
+        -u) runuser=${2:?required user}; shift;;
+        -h) print_help;;
+      esac
+      shift
+    done
+    [ -n "${runuser-}" ] || exit 1
+
+    su ${runuser} -c "${0##*/} ${ARG}";
+    exit $?
+  ;;
+esac
+
+while [ x"${1-}" != x ]; do
+  case $1 in
+    -q) quit="1";;
+
+    -v) verbose="1";;
+
+    -n) dry_run="1";;
+
+    -V) print_progver
+        exit 0;;
+
+    -h) print_help;;
+
+     *) print_help;;
+  esac
+  shift
+done
+
+[ "${quit}" -ne '0' ] && exec >>${LOG} 2>&1
+
+MYHOST=${1-}
+EXTIP=${2-}
+
+[ -n "${EXTIP}" ] || EXTIP=$(ext-ip 2>/dev/null || true)  # current ipv4
+[ -n "${MYHOST}" ] || MYHOST=$(domain-name 2>/dev/null || true)
+
+cd "/tmp/" || exit
+
+load_config() {
+  local X
+
+  while IFS= read -r X; do
+    X=${X%%#*}; X="${X%${X##*[![:space:]]}}"
+    case ${X} in
+      'service = '*)
+        [ -n "${SERV-}" ] || SERV=${X#* = }
+      ;;
+      'api = '*)
+        [ -n "${api-}" ] || api=${X#* = }
+      ;;
+      'login = '*)
+        [ -n "${LOGIN-}" ] || LOGIN=${X#* = }
+      ;;
+      'token = '*)
+        [ -n "${token-}" ] || token=${X#* = }
+      ;;
+      'password = '*)
+        [ -n "${PASS-}" ] || PASS=${X#* = }
+      ;;
+      'hostname = '*|'hostname'[0-9]' = '*)
+        MYHOSTS="${MYHOSTS}${MYHOSTS:+ }${X#* = }"
+      ;;
+    esac
+  done < ${1:?required config file}
+
+  printf '%s\n' "load_config '${1}'"
+}
+
+update_host() {
+  printf '%s\n' \
+  "update_host -s '${SERV}' '${_api-}' '${_LOGIN-}' '${_PASS-}' '${_token-}' -h '${MYHOST}' -i '${EXTIP}'"
+
+  while [ x"${1-}" != x ]; do
+    case $1 in
+      -s) SERV=${2:?required service}
+          shift;;
+
+      -a) api=${2:?required api}
+          shift;;
+
+      -l) LOGIN=${2:?required user}
+          shift;;
+
+      -k) token=${2:?required token}  # hostkey
+          shift;;
+
+      -p) PASS=${2:?required password}
+          shift;;
+
+      -H) MYHOST=${2:?required hostname}
+          shift;;
+
+      -i) EXTIP=${2:?required ipaddr}
+          shift;;
+    esac
+    shift
+  done
+
+  OLDIP=$(getent 'hosts' ${MYHOST}) ||
+  printf %s\\n "domain: ${MYHOST}... not found" >&2
+
+  OLDIP=${OLDIP-}
+  OLDIP=${OLDIP%% *}
+
+  if [ -n "${LOGIN}" ]; then
+    hash=$(printf '%s' "${LOGIN}:${PASS}" | base64)  #base64-hash
+    token=
+  else
+    token=${token:-$PASS}
+  fi
+
+  if [ -n "${api-}" ]; then
+    custom_ddns_api="1"
+    URL="${SERV}/"$(
+      printf %s "${api}" | sed "s/{hostname}/${MYHOST}/;s/{token}/${token}/;s/\({myip}\|{ip}\)/${EXTIP}/"
+    )
+  else
+    URL="${SERV}/nic/update?hostname=${MYHOST}"  # default api (ddns-api)
+    [ -n "${EXTIP}" ] && URL="${URL}&myip=${EXTIP}"
+  fi
+
+  : ${OLDIP:=0.0.0.0}
+
+  printf %s\\n "test10: MYHOST='${MYHOST}'"
+  printf %s\\n "test20: test x'${EXTIP}' != x'${OLDIP}'"
+
+  # update change to client ip or empty cache-ip
+  { [ "x${EXTIP}" != "x${OLDIP}" ] || [ "${dry_run}" -ne '0' ] ;} && {
+
+  printf '%s\n' "test25: true"
+
+  if [ "${custom_ddns_api-0}" -ne '0' ]; then
+  case ${EXTIP} in
+  '127.0.0.1')  # get only 127.0.0.1 of local-link addr otherwise return `nohost` (error).
+    printf %s\\n "wget -q -T 4 --header 'Authorization: Basic ${hash}' -O - ${URL}"
+    [ "${dry_run}" -ne '0' ] || wget -T 4 --header "Authorization: Basic ${hash}" -O - "${URL}"
+    sleep 1
+
+    EXTIP=$(ext-ip) || exit  # current ipv4
+    URL="${SERV}/nic/update?hostname=${MYHOST}&myip=${EXTIP}"
+    # TODO: make it $EXTIP != $OLDIP and next...
+  ;;
+  esac
+  fi
+
+  if [ -n "${hash-}" ]; then
+    printf '%s\n' "wget -q -T 4 --header 'Authorization: Basic ${hash}' -O - ${URL}"
+    [ "${dry_run}" -ne '0' ] || wget -T 4 --header "Authorization: Basic ${hash}" -O - "${URL}"
+    # TIP: if the return is `nohost`, then this is an error.
+    # TIP: return: `nochg {myip}` - no change, skip.
+    # TIP: return: `good {myip}` - update/ok.
+  else
+    printf '%s\n' "wget -q -T 4 -O - ${URL}"
+    [ "${dry_run}" -ne '0' ] || wget -T 4 -O - "${URL}"
+  fi
+  printf '\n'
+  printf %s\\n "update: hostname=${MYHOST} myip=${EXTIP}... ok"
+
+  } || printf '%s\n' "test28: false" >&2
+}
+
+for F in /etc/ddns/*.conf; do
+  MYHOSTS= SERV= api= LOGIN= PASS= token= OLDIP=
+  _api= _LOGIN= _PASS= _token=
+  load_config ${F}
+  for MYHOST in ${MYHOSTS}; do
+    _api=${api:+\-a }${api-}
+    _LOGIN=${LOGIN:+\-u }${LOGIN-}
+    _PASS=${PASS:+\-p }${PASS-}
+    _token=${token:+\-k }${token-}
+    [ -n "${1-}" ] && case ${MYHOST} in "${1}");; *) continue;; esac
+    update_host -s "${SERV}" "${_api-}" "${_LOGIN-}" "${_PASS-}" "${_token-}" -H "${MYHOST}" -i "${EXTIP}"
+  done
+done

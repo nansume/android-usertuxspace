@@ -1,0 +1,6 @@
+#!/bin/sh
+# /etc/local.d/logrm.start
+
+for LOG in /var/log/* /var/log/*/* /usr/share/yacy/DATA/LOG/*.log; do
+  [ -f "${LOG}" ] && >"${LOG}"
+done

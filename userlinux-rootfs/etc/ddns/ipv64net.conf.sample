@@ -1,0 +1,19 @@
+# /etc/ddns/ipv4-ipv64net.conf 0644 root:root
+# -----------------------------------------------------------------
+# https://ipv64.net/nic/update?key=<token>&domain=<host>
+# -----------------------------------------------------------------
+# http://ipv4.ipv64.net/nic/update?domain=<your-hostname>.ipv64.net
+# http://ipv6.ipv64.net/nic/update?domain=<your-hostname>.ipv64.net
+# -----------------------------------------------------------------
+# Login is: `none`
+# Password: <your-token>
+
+#service = https://ipv6.ipv64.net
+service = http://ipv4.ipv64.net
+api = nic/update?domain={hostname}
+login = none
+password = <token>
+hostname = <your-hostname>.ipv64.net
+#hostname = <your-hostname>.ipv64.net
+#hostname = <your-hostname>.ipv64.net
+period = 1800

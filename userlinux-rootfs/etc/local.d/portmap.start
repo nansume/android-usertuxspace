@@ -1,9 +1,29 @@
 #!/bin/sh
 # /etc/local.d/portmap.start
 
-pgrep -x "inetd" >/dev/null || exit 0
-
 [ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
 [ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
 
-upnpc -u "${UPNP_URI}" -e SSH-SERVER -a "${LOCAL_IP}" 2222 2222 TCP 0 >/dev/null 2>&1
+: ${LOCAL_IP:?} ${UPNP_URI:?}
+
+# ${DESC}:${PORT}@${PROTO}
+for P in $(cat /etc/sysconfig/ports); do
+  DESC=${P%%:*} P=${P#*:}
+  PORT=${P%@*}; RPORT=${PORT}
+  PROTO=${P#*@}
+
+  case ${RPORT} in
+    2021|2121) RPORT="21";;
+    2022|2222) RPORT="22";;
+    8080) RPORT="80";;
+    8443) RPORT="443";;
+  esac
+
+  nc -w1 -n -z 0.0.0.0 ${PORT:?} || continue
+  upnpc -u "${UPNP_URI}" -d ${PORT} ${PROTO:?} >/dev/null 2>&1
+  upnpc -u "${UPNP_URI}" -e ${DESC:?} -a "${LOCAL_IP}" ${PORT} ${PORT} ${PROTO} 0 >/dev/null 2>&1
+
+  [ x"${PORT}" != x"${RPORT}" ] || continue
+  upnpc -u "${UPNP_URI}" -d ${RPORT} ${PROTO:?} >/dev/null 2>&1
+  upnpc -u "${UPNP_URI}" -e ${DESC:?} -a "${LOCAL_IP}" ${PORT} ${RPORT} ${PROTO} 0 >/dev/null 2>&1
+done

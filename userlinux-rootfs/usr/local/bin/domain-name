@@ -1,0 +1,43 @@
+#!/bin/sh
+# File: /bin/domain-name
+# Copyright (C) 2023-2026 Artjom Slepnjov, Shellgen
+# -------------------------------------------------
+# Name: domain-name
+# Usage: domain-name
+# Example: DOMAINNAME=$(domain-name)
+# compatible with Linux kernel (Linuxism)
+# Date: 2024-02-03 14:00 UTC, 2026-08-09 20:00 UTC - last change
+set -e -u -f
+
+conf="/etc/domain-name.conf"
+
+set -- '/proc/sys/kernel/hostname' '/proc/sys/kernel/domainname'
+
+[ -r "${1}" ] || set -- '/etc/sysconfig/hostname' '/etc/sysconfig/domainname'
+
+[ x"$(id -un)" = x'root' ] && {
+[ -n "${USER_NET-}" ] || USER_NET="$(head -n1 /etc/sysconfig/netuser)"
+EXTIP=$(ext-ip -u ${USER_NET:?} || true)
+
+while IFS= read -r X; do
+  X=${X%%#*}; X="${X%${X##*[![:space:]]}}"
+  [ -n "${X-}" ] || continue
+
+  case ${X%%[[:space:]]*} in
+    ${EXTIP}|0.0.0.0) ;; *) continue ;;
+  esac
+
+  X=${X#*[[:space:]]}; X="${X#${X%%[![:space:]]*}}"
+  HOSTNAME=${X%%[[:space:]]*}
+  DOMAINNAME=${X##*[[:space:]]}
+  printf %s ${HOSTNAME} > "${1}"
+  printf %s ${DOMAINNAME} > "${2}"
+  break
+
+done < ${conf}
+}
+
+[ -r "${1}" ] && IFS= read -r HOSTNAME < ${1} || true
+[ -r "${2}" ] && IFS= read -r DOMAINNAME < ${2} || true
+
+printf %s\\n "${HOSTNAME:?}.${DOMAINNAME:?}"

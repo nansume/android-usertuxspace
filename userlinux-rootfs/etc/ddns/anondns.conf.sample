@@ -1,0 +1,7 @@
+# /etc/ddns/anondns.conf 0644 root:root
+# http://<service-domain>/api/set/<your-hostname>.anondns.net/<your-token>
+
+service = http://anondns.net
+api = api/set/{hostname}/{token}
+token = <your-token>
+hostname = <your-hostname>.anondns.net

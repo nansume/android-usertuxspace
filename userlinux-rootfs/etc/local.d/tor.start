@@ -1,0 +1,9 @@
+#!/bin/sh
+# /etc/local.d/tor.start
+
+pgrep -x "tor" >/dev/null && exit
+
+> /var/lib/tor/tor.log  # clean log
+
+echo "nice -n 19 tor -f /etc/tor/torrc --hush &"
+nice -n 19 tor -f /etc/tor/torrc --hush &

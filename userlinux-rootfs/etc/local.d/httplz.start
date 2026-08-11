@@ -1,0 +1,12 @@
+#!/bin/sh
+# /etc/local.d/httplz.start
+
+LOG="/dev/null"
+PORT=$(head -n1 /etc/sysconfig/httplz/port)
+AUTH=$(cat /etc/sysconfig/httplz/auth)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} || killall "httplz" 2>/dev/null
+pgrep -x "httplz" >/dev/null && exit
+
+#echo "httplz -w -d --path-auth ${AUTH} --auth ${AUTH##*=} -p ${PORT} -- /var/www &"
+nohup httplz -w -d --path-auth ${AUTH} -p ${PORT} -- /var/www >> ${LOG} 2>&1 &

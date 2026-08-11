@@ -18,3 +18,4 @@ set constantshow
 #set unix
 
 include "/usr/share/nano/*.nanorc"
+include "/usr/local/share/nano/*.nanorc"

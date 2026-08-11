@@ -1,0 +1,21 @@
+#!/bin/sh
+# /etc/local.d/i2pd.start
+
+pgrep -x "i2pd" >/dev/null && exit
+
+nice -n 19 i2pd \
+  --service \
+  --conf /etc/i2pd/i2pd.conf \
+  --tunconf /etc/i2pd/tunnels.conf \
+  --loglevel none \
+  --port $(head -n1 /etc/sysconfig/i2pd/main.port) \
+  --limits.openfiles 512 \
+  --limits.transittunnels 300 \
+  --httpproxy.inbound.length $(head -n1 /etc/sysconfig/i2pd/httpproxy_in.length) \
+  --httpproxy.outbound.length $(head -n1 /etc/sysconfig/i2pd/httpproxy_out.length) \
+  --httpproxy.inbound.quantity $(head -n1 /etc/sysconfig/i2pd/httpproxy_in.quantity) \
+  --httpproxy.outbound.quantity $(head -n1 /etc/sysconfig/i2pd/httpproxy_out.quantity) \
+  --exploratory.inbound.length $(head -n1 /etc/sysconfig/i2pd/extin.length) \
+  --exploratory.outbound.length $(head -n1 /etc/sysconfig/i2pd/extout.length) \
+  --exploratory.inbound.quantity $(head -n1 /etc/sysconfig/i2pd/extin.quantity) \
+  --exploratory.outbound.quantity $(head -n1 /etc/sysconfig/i2pd/extout.quantity) \

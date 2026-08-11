@@ -1,0 +1,18 @@
+#!/bin/sh
+# /etc/local.d/fossil.start
+
+REPOS_DIR=$(head -n1 /etc/sysconfig/fossil/repos_dir)
+PORT=$(head -n1 /etc/sysconfig/fossil/port)
+OPTS='server ${REPOS} --repolist --localauth --max-latency 40'
+OPTS="${OPTS:+${OPTS} }--port ${PORT}"
+
+pre_start() (
+  [ -d "${REPOS_DIR%/}" ] && mkdir -pm 0755 -- "${REPOS_DIR}"
+)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} || killall "fossil" 2>/dev/null
+pgrep -x "fossil" >/dev/null && exit
+
+pre_start
+
+nice -n 19 fossil ${OPTS} > /dev/null 2>&1 &

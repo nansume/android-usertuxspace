@@ -1,0 +1,24 @@
+#!/bin/sh
+# -------------------------------------------------
+# File: /sbin/uacme-client-new 0755 root:root
+# -------------------------------------------------
+
+# https://frostyfalls.org/2026/05/13/wildcard-certs-uacme/
+# https://github.com/Sickjuicy/caddy-ipv64  # (dns-01)
+
+DOMAIN_NAME=$(domain-name)
+
+# New account
+[ -d "/etc/ssl/uacme" ] || uacme -c /etc/ssl/uacme -y new
+
+# New issue cert (http-01)
+#uacme -v -c /etc/ssl/uacme -h /usr/share/uacme/uacme.sh issue "$(domain-name)"
+
+# New issue cert (dns-01)
+uacme -v -c /etc/ssl/uacme -h /usr/local/share/uacme/ipv64net.sh issue "${DOMAIN_NAME}"
+
+# FIXBUG: Failed link to cert.pem - not permission (Android-10 without root)
+if [ -f "/etc/ssl/uacme/${DOMAIN_NAME}/cert.pem" ] && [ -f "/etc/ssl/uacme/${DOMAIN_NAME}/cert.pem.tmp" ]; then
+  mv -v -f /etc/ssl/uacme/${DOMAIN_NAME}/cert.pem /etc/ssl/uacme/${DOMAIN_NAME}/cert.pem.old
+fi
+mv -v /etc/ssl/uacme/${DOMAIN_NAME}/cert.pem.tmp /etc/ssl/uacme/${DOMAIN_NAME}/cert.pem

@@ -1,0 +1,72 @@
+#User tor
+PIDFile /run/tor.pid
+Log notice file /var/lib/tor/tor.log
+
+#DataDirectory /var/lib/tor/data
+DataDirectory /var/lib/tor
+
+ClientUseIPv4 1
+ClientUseIPv6 1
+
+DNSPort 127.0.0.1:9053
+DNSPort [::1]:9053
+
+#ExcludeExitNodes {FR},{DE}
+#ExitNodes xxx.xxx.xxx.xxx
+#StrictNodes 1
+
+SocksPort 127.0.0.1:9050
+SocksPort [::1]:9050
+TransPort 127.0.0.1:9040
+TransPort [::1]:9040
+
+SocksPolicy accept 127.0.0.0/24
+#SocksPolicy accept 192.168.0.0/27
+SocksPolicy accept [::1]
+#SocksPolicy reject *
+
+#DisableAllSwap 1
+AvoidDiskWrites 1
+#NumCPUs 1
+#KeepalivePeriod 3600
+MaxClientCircuitsPending 10
+ConnLimit 32
+
+IPv6Exit 1
+#ClientPreferIPv6ORPort 1
+
+ExitPolicy reject6 *:*
+ExitPolicy reject *:*
+ExitPolicy reject 0.0.0.0/8:*,reject 169.254.0.0/16:*,reject 127.0.0.0/8:*,reject 192.168.0.0/16:*
+ExitPolicy reject 10.0.0.0/8:*,reject 172.16.0.0/12:*
+ExitPolicy reject 224.0.0.0/4:*,accept *:80,accept *:443,reject *:*
+
+RelayBandwidthRate 24000 KB
+RelayBandwidthBurst 48000 KB
+AutomapHostsOnResolve 1
+
+PaddingStatistics 0
+DirReqStatistics 0
+HiddenServiceStatistics 0
+ExtraInfoStatistics 0
+NoExec 1
+PublishServerDescriptor 0
+
+ClientOnly 1
+#BridgeRelay 1
+#HTTPTunnelPort 127.0.0.1:9443
+#ORPort 127.0.0.1:9090 NoAdvertise
+
+Address example.com
+Nickname anonymous
+ContactInfo anonymous
+
+#DirPort 80 NoListen
+#MaxOnionsPending 100
+#AllowDotExit 1
+#HTTPProxy 192.168.0.1:8123
+#HTTPSProxy 192.168.0.1:8123
+#HiddenServiceDir /var/lib/tor/hidden_service/
+#HiddenServicePort 80 127.0.0.1:80
+VirtualAddrNetworkIPv4 172.16.0.0/12
+VirtualAddrNetworkIPv6 [fc00::]/8
