@@ -4,14 +4,14 @@
 # network supervisor
 
 check_inetd() (
-  nc -n -z 0.0.0.0 2222 && return
+  nc -w1 -n -z 0.0.0.0 2222 && return
   /etc/local.d/inetd.start
 )
 
 check_autossh() (
   { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
 
-  nc -n -z 0.0.0.0 3130 && return
+  nc -w1 -n -z 0.0.0.0 3130 && return
 
   killall "autossh" 2>/dev/null
   killall "dbclient" 2>/dev/null
@@ -22,10 +22,10 @@ check_autossh() (
 check_sshsocks() (
   { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
 
-  nc -n -z 0.0.0.0 3130 && return
+  nc -w1 -n -z 0.0.0.0 3130 && return
   sleep 15
 
-  nc -n -z 0.0.0.0 3130 && return
+  nc -w1 -n -z 0.0.0.0 3130 && return
 
   killall "autossh" 2>/dev/null
   killall "dbclient" 2>/dev/null
@@ -36,10 +36,10 @@ check_sshsocks() (
 check_sshssl() (
   { pgrep -x "autossh" || pgrep -x "dbclient"; } >/dev/null || return 0
 
-  nc -n -z 0.0.0.0 3130 && return
+  nc -w1 -n -z 0.0.0.0 3130 && return
   sleep 15
 
-  nc -n -z 0.0.0.0 3130 && return
+  nc -w1 -n -z 0.0.0.0 3130 && return
 
   killall "autossh" 2>/dev/null
   killall "dbclient" 2>/dev/null

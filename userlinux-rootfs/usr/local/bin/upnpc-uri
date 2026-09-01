@@ -14,6 +14,7 @@ IFS="$(printf '\n\t')"
 OLDIFS=${IFS}
 runuser=${USER_NET:-nobody}
 port="80"
+busybox=
 
 print_help() {
   cat >&2 <<_EOF_
@@ -55,16 +56,19 @@ while [ x"${1-}" != x ]; do
   shift
 done
 
+command -v busybox >/dev/null && busybox="busybox"
+
 if command -v ip >/dev/null; then
   #IFS="${IFS} "; set -- "$(ip route show default 2>/dev/null || exit 0)"
   #case ${1} in 'default') set -- ${3};; *'.0/'[0-9]*) set -- ${1%/*};; esac
 
   for route in $(ip route show default 2>/dev/null) ''; do
-    IFS="$(printf '\n\t%1s')"; set -- ${route} ""
+    IFS="$(printf '\n\t%1s')"; set -- ${route:-''}
     case ${1} in
-      'default') set -- ${3} break;;
-      '172.19.'*' tun0 '*) continue;;  # FIX for Android
-      *'.0/'[0-9]*) set -- ${1%/*} break;;
+      'default') set -- ${3}; break;;
+      '172.19.'*|'172.19.'*' tun0 '*) continue;;  # FIX for Android
+      *'.0/'[0-9]*) set -- ${1%/*}; break;;
+      *) set -- ${1%/*}; break;;
     esac
   done
 else
@@ -76,9 +80,12 @@ gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
 
 #FIX: error: ip: bind: Permission denied
 case ${gw} in " "|"")
-  if nc -w 1 -n -z 192.168.1.1 80; then
+  if nc -w 1 -n -z 0.0.0.0 '0'; then
+    printf '%s\n' "network issue... exit" >&2
+    exit 1
+  elif nc -w 1 -n -z 192.168.1.1 '80'; then
     gw="192.168.1.1"
-  elif nc -w 1 -n -z 192.168.0.1 80; then
+  elif nc -w 1 -n -z 192.168.0.1 '80'; then
     gw="192.168.0.1"
   fi
 ;;
@@ -105,7 +112,7 @@ esac
 
 [ -n "${UPNP_URI:?required variable: <UPNP_URI>}" ] || exit
 
-busybox wget -q -T10 -SO - "${UPNP_URI}" >/dev/null 2>&1 || {
+${busybox} wget -q -T10 -SO - "${UPNP_URI}" >/dev/null 2>&1 || {
 export IFS="${IFS} "
 for UPNP_URI in "${UPNP_URI}" '' "${UPNP_URI}" "${UPNP_URI}"; do  # FIX: add repeat UPNP_URI for failed connect.
 command upnpc ${UPNP_URI:+-u }"${UPNP_URI}"${UPNP_URI:+ }-P | while IFS= read -r S; do  # Here child proc.

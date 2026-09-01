@@ -7,4 +7,6 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 export USER_NET=$(uidgetuser '2000')
 export UPNP_URI=$(upnpc-uri)
 
+#[ -n ${UPNP_URI-}" ] || unset UPNP_URI
+
 [ -e "/etc/profile.d/zzzzzzzzzzzzzzzz.sh" ] && rm /etc/profile.d/zzzzzzzzzzzzzzzz.sh

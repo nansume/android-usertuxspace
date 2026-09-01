@@ -4,6 +4,8 @@
 [ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
 [ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
 
+[ -n "${UPNP_URI-}" ] || exit 0
+
 : ${LOCAL_IP:?} ${UPNP_URI:?}
 
 # ${DESC}:${PORT}@${PROTO}

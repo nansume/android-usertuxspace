@@ -24,7 +24,8 @@ get_netdev(){
     NETDEV=${NETDEV%%[[:space:]]*}
     case ${NETDEV} in
       'lo'|'tun0') continue;;
-      *?*) break;;
+      'eth0'|'wlan0') break;;
+      #*?*) break;;
     esac
   done
   [ -n "${NETDEV}" ] && printf '%s\n' "${NETDEV##* }"

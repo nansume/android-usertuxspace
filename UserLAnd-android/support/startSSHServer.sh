@@ -34,7 +34,7 @@ done
 export UPNP_URI=$(upnpc-uri)
 export LOCAL_IP=$(netdev-ip)
 
-if pgrep -f "^dropbear .* -s" >/dev/null 2>&1; then
+if [ -n "${UPNP_URI}" ] && pgrep -f "^dropbear .* -s" >/dev/null 2>&1; then
   upnpc -u "${UPNP_URI}" -e SSH-SERVER -a "${LOCAL_IP}" 2022 22 TCP 0 >/dev/null 2>&1
   upnpc -u "${UPNP_URI}" -e SSH-SERVER -a "${LOCAL_IP}" 2022 2022 TCP 0 >/dev/null 2>&1
 fi

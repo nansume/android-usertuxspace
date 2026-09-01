@@ -6,10 +6,10 @@
 DAEMON_RUN="autossh"
 SSH_USER="root"
 SSH_HOME="/root"
-AUTH_USER=$(cat /etc/sysconfig/remote_server/auth_user)
-AUTH_FILE="${SSH_HOME}/.ssh/${AUTH_USER}@shellgen.pwd"
-SSH_PORT=$(cat /etc/sysconfig/remote_server/ssh_port)
-DOMAINNAME=$(cat /etc/sysconfig/remote_server/domain)
+AUTH_USER=$(head -n1 /etc/sysconfig/ssh-client/auth_user)
+AUTH_FILE=$(head -n1 /etc/sysconfig/ssh-client/auth_pass)
+SSH_PORT=$(head -n1 /etc/sysconfig/ssh-client/ssh_port)
+DOMAINNAME=$(head -n1 /etc/sysconfig/ssh-client/domain)
 DOMAINNAME=$(hosttoip ${DOMAINNAME:?})
 LOGFILE="/var/log/${DAEMON_RUN}.log"
 
@@ -22,7 +22,7 @@ pgrep -x "dbclient" >/dev/null && exit
 >> "${LOGFILE}"
 chown ${SSH_USER}:${SSH_USER} "${LOGFILE}"
 
-DROPBEAR_PASSWORD=$(cat ${AUTH_FILE}) \
+DROPBEAR_PASSWORD=$(head -n1 ${AUTH_FILE}) \
 ${DAEMON_RUN} \
   -M 0 -f -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" \
   -i ${SSH_HOME}/.ssh/id_dropbear_tunnel \

@@ -54,11 +54,12 @@ done
 
 if command -v ip >/dev/null; then
   for route in $(ip route show default 2>/dev/null) ''; do
-    IFS="$(printf '\n\t%1s')"; set -- ${route} ""
+    IFS="$(printf '\n\t%1s')"; set -- ${route:-''}
     case ${1} in
-      'default') set -- ${3} break;;
-      '172.19.'*' tun0 '*) continue;;  # FIX for Android
-      *'.0/'[0-9]*) set -- ${1%/*} break;;
+      'default') set -- ${3}; break;;
+      '172.19.'*|'172.19.'*' tun0 '*) continue;;  # FIX for Android
+      *'.0/'[0-9]*) set -- ${1%/*}; break;;
+      *) set -- ${1%/*}; break;;
     esac
   done
 else

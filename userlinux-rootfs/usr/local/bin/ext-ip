@@ -1,1 +1,15 @@
-upnpc-ext-ip
+#!/bin/sh
+# ----------------------------------------
+# File: /bin/ext-ip
+# ----------------------------------------
+# Usage: EXT_IP=$(ext-ip)
+# Depend: nc(netcat), netgw, upnpc-ext-ip/www-get-ip
+# ----------------------------------------
+# Date: 2026-08-29 19:00 UTC - last change
+# ----------------------------------------
+
+if nc -w1 -n -z $(netgw) '80'; then
+  upnpc-ext-ip ${@}
+else
+  www-get-ip ${@} 2>/dev/null
+fi

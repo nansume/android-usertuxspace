@@ -24,6 +24,7 @@ uhttpd -c /etc/uhttpd.conf -p ${HTTP_PORT} -S -R -h /var/www
 [ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
 [ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
 
+[ -n "${UPNP_URI-}" ] || exit 0
 upnpc -u "${UPNP_URI}" -e HTTP-WEBSERVER -a "${LOCAL_IP}" ${HTTP_PORT} ${HTTP_RPORT} TCP 0 >/dev/null 2>&1
 
 nc -w1 -n -z 0.0.0.0 ${HTTPS_PORT##*:} &&
