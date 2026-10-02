@@ -1,0 +1,12 @@
+#!/bin/sh
+# /etc/local.d/dnsmasq.start
+
+#test -e '/tmp/rc-local.lock' && exit
+nc -w1 -n -z 0.0.0.0 '2053' 2>/dev/null && exit
+
+exec 2>/dev/null
+
+#get-adblock-list
+
+# BUG: listen addr: `0.0.0.0` no working on android for dnsmasq!
+pgrep -x "dnsmasq" || dnsmasq -C "/etc/dnsmasq.conf" -a "127.0.0.1,$(netdev-ip)" -p 2053

@@ -1,0 +1,31 @@
+127.0.0.1          localhost localhost.localdomain
+::1                localhost localhost.localdomain
+
+127.0.0.1          ipv4.localhost ftp.localhost fossil.localhost
+127.0.0.1          yacy.localhost i2p.localhost
+
+0.0.0.0            wpad wpad.com
+::                 wpad wpad.com
+127.0.0.1          config.privoxy.org
+
+#127.0.0.1          home.myhost.server1.test
+#127.0.0.1          ftp.myhost.server1.test
+#127.0.0.1          en.myhost.server1.test
+#127.0.0.1          git.myhost.server1.test
+#127.0.0.1          rsync.myhost.server1.test
+#0.0.0.0            irc.myhost.server1.test
+#0.0.0.0            x
+
+#192.168.0.1        gateway router router.test
+#192.168.0.255      z
+
+#2002:ffff:ffff::2  nethost
+
+#99.73.32.195       eth0.me
+172.217.19.206     ipv4.google.com
+13.107.21.200      bing.com
+
+# iv.datura.network (Invidious)
+65.109.30.253      iv.datura.network youtube.com m.youtube.com
+# reddit.com --> teddit.net
+95.216.148.55      teddit.net reddit.com

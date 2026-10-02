@@ -1,0 +1,15 @@
+#!/bin/sh
+# /etc/local.d/umurmurd.start
+
+PORT=$(head -n1 /etc/sysconfig/umurmurd/port 2>/dev/null || echo 64738)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "umurmurd" >/dev/null && exit
+
+cd "/etc/umurmur/"
+if [ ! -e "/etc/umurmur/rootCA.crt" ]; then
+  openssl genrsa 4096 > rootCA.key
+  yes "" | openssl req -config /etc/ssl/openssl.cnf -new -x509 -key rootCA.key -out rootCA.crt -days 9999 2>/dev/null
+fi
+
+umurmurd -c "/etc/umurmur/umurmur.conf" -p "/run/umurmurd.pid" -a "0.0.0.0" -b ${PORT}

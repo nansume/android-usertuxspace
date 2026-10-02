@@ -1,0 +1,66 @@
+#!/bin/sh
+# /etc/local.d/jabberd2.start
+
+PORT="5222"
+fname=$(domain-name | sed 's/\./_/g')
+privkey="/etc/ssl/uacme/private/${fname}/key.pem"
+fullchain="/etc/ssl/uacme/${fname}/cert.pem"
+combined="/etc/ssl/${fname}-pound.pem"
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "jabberd2-c2s" >/dev/null && exit
+
+stopJabberServices() {
+  for pidfile in /var/run/jabber/*.pid; do
+    if [ -f "${pidfile}" ]; then
+      service=$(basename ${pidfile} .pid)
+      echo "Stopping ${service}"
+      pid=$(cat ${pidfile})
+      echo "kill -s SIGINT ${pid}"
+      kill -s SIGINT ${pid}
+      rm "${pidfile}"
+      echo "return: $?"
+    fi
+  done
+}
+
+start_pre() {
+  [ -d "/var/run/jabber" ] || mkdir -m 0750 -- /var/run/jabber/
+  [ -d "/var/log/jabber" ] || mkdir -m 0755 -- /var/log/jabber/
+  # The privkey.pem and fullchain.pem need to be merged for pound.
+  [ -e "${combined}" ] || cat ${privkey} ${fullchain} > ${combined}
+}
+
+start_daemon() {
+  echo "Starting Jabber Server ..."
+
+  services=$(grep -v ^# /etc/jabber/jabberd.cfg | grep '..*' | awk '{print $1 ":" $2}')
+
+  for service in ${services}; do
+    cfgfile=$(echo ${service} | cut -d ':' -f 2)
+    service=$(echo ${service} | cut -d ':' -f 1)
+    if [ ! -f "${cfgfile}" ]; then
+     if [ -f "/etc/jabber/${service}.xml" ]; then
+      cfgfile="/etc/jabber/${service}.xml"
+     else
+      echo "Can't find: ${cfgfile} or default /etc/jabber/${service}.xml"
+      stopJabberServices
+      return 1
+     fi
+    fi
+    executable="/usr/local/bin/$(echo ${service} | cut -d '.' -f 1)"
+
+    if [ ! -f "${executable}" ]; then
+      echo "Can't find executable: ${executable}"
+      stopJabberServices
+      return 1
+    fi
+    echo "Starting ${service} (${cfgfile})"
+    pidfile="$(grep -v ^# ${cfgfile} | grep '<pidfile>' | sed 's#<.\?pidfile>##g')"
+    ${executable} -c ${cfgfile} &
+    echo $?
+  done
+}
+
+start_pre
+start_daemon

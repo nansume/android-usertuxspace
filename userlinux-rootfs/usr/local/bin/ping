@@ -1,0 +1,46 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /usr/local/sbin/ping
+# ----------------------------------------
+# Example: ping -4 -c 3 -i 2 -q 1.1.1.1
+# Example: ping -4c3 1.1.1.1
+# ----------------------------------------
+# Date: 2026-09-21 20:00 UTC - last change
+# ----------------------------------------
+set -e -u -f
+
+IFS=$(printf '\n\t%1s')
+count="4"
+interval="1"
+quiet=
+
+print_help() {
+  cat >&2 <<_EOF_
+usage:  ping [-4|-6] [-c CNT] [-i SECS] [-q] HOST
+_EOF_
+
+exit 1
+}
+
+while [ x"${1-}" != x ]; do
+  case $1 in
+    -[ci][0-9]*) set -- "${1%${1#??}}" "${1#??}" ${@#$1}; : echo "\${@}='${@}'"; continue;;
+    -[46ciq][46ciq]*) set -- "${1%${1#??}}" "-${1#??}" ${@#$1}; continue;;
+    #[0-9][46ciq]*) set -- "${1%${1#??}}" "-${1#??}" ${@#$1}; continue;;
+    -[46]);;
+    -c) shift
+        case $1 in [0-9]*[!0-9]) set -- ${1%%[!0-9]*} "-${@#${1%%[!0-9]*}}";; esac
+        count=${1:?required count}; count=${count%%[!0-9]*};;
+    -i) shift
+        case $1 in [0-9]*[!0-9]) set -- ${1%%[!0-9]*} "-${@#${1%%[!0-9]*}}";; esac
+        interval=${1:?required interval};;
+    -q) quiet="-quiet";;
+    -h) print_help;;
+    [a-z0-9]*[a-z0-9]) break;;
+     *) print_help;;
+  esac
+  shift
+done
+host=${1:?required host}
+
+http_ping -count ${count} -interval ${interval} ${quiet} http://${host}

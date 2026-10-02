@@ -1,0 +1,25 @@
+Date: 2026-09-22
+Version: fiche-v20181220
+------------------------
+
+patching file fiche.c
+Hunk #4 succeeded at 215 (offset 2 lines).
+Hunk #5 succeeded at 625 (offset 3 lines).
+Hunk #6 succeeded at 643 (offset 3 lines).
+Hunk #7 succeeded at 658 (offset 3 lines).
+Hunk #8 succeeded at 715 (offset 3 lines).
+Hunk #9 succeeded at 755 (offset 3 lines).
+Hunk #10 succeeded at 769 (offset 3 lines).
+Hunk #11 succeeded at 781 (offset 3 lines).
+patching file fiche.h
+Hunk #1 succeeded at 90 (offset 5 lines).
+patching file main.c
+patch -p1 -E < /usr/local/ports/patches/fiche-20181220/fiche-disable-subdir-v08.diff
+cc main.c fiche.c -pthread -O2 -Wall -Wextra -Wpedantic -Wstrict-overflow -fno-strict-aliasing -std=gnu11 -g -O0 -o fiche
+fiche.c: In function 'handle_connection':
+fiche.c:622:13: warning: pointer 'c' used after 'free' [-Wuse-after-free]
+  622 |             close(c->socket);
+      |             ^~~~~~~~~~~~~~~~
+fiche.c:620:13: note: call to 'free' here
+  620 |             free(c);
+      |             ^~~~~~~

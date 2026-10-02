@@ -1,0 +1,4 @@
+# hexhash(from-cert), address, ban->mask, ban->name, ban->reason, ban->time, ban->duration
+# SHA1:abc...,192.0.2.5,Alice,Trolling,2026-05-01,never
+
+SHA1:abc123,192.168.0.100/16,Alice,Trolling,2026-09-22,never

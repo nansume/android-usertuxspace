@@ -1,0 +1,111 @@
+<!-- c2s configuration -->
+<c2s>
+  <!-- Our ID on the network (default: c2s) -->
+  <id>c2s</id>
+
+  <pidfile>/var/run/jabber/jabberd2-c2s.pid</pidfile>
+
+  <!-- Router connection configuration -->
+  <router>
+    <!-- IP/port the router is waiting for connections on -->
+    <ip>127.0.0.1</ip>            <!-- default: 127.0.0.1 -->
+    <port>5347</port>             <!-- default: 5347 -->
+
+    <!-- Username/password to authenticate as -->
+    <user>jabberd</user>          <!-- default: jabberd -->
+    <pass>secret</pass>           <!-- default: secret -->
+
+    <!-- Router connection retry -->
+    <retry>
+      <init>3</init>
+      <lost>3</lost>
+      <sleep>2</sleep>
+    </retry>
+  </router>
+
+  <log type='file'>
+    <file>/var/log/jabber/c2s.log</file>
+  </log>
+
+  <!-- Local network configuration -->
+  <local>
+    <id realm='im.myhost.server1.test'
+        pemfile='/etc/ssl/myhost_server1_test-pound.pem'
+        verify-mode='4'
+        cachain='/etc/ssl/uacme/myhost.server1.test/cert.pem'
+        register-enable='mu'
+        password-change='mu'
+    >im.myhost.server1.test</id>
+
+    <id realm='im2.myhost.server1.test'
+        pemfile='/etc/ssl/myhost_server1_test-pound.pem'
+        verify-mode='4'
+        cachain='/etc/ssl/uacme/myhost.server1.test/cert.pem'
+        register-enable='mu'
+        password-change='mu'
+    >im2.myhost.server1.test</id>
+
+    <ip>0.0.0.0</ip>
+    <port>5222</port>
+  </local>
+
+  <!-- Input/output settings -->
+  <io>
+    <max_fds>1024</max_fds>
+
+    <!-- Rate limiting -->
+    <limits>
+      <bytes>0</bytes>
+      <stanzas>1000</stanzas>
+      <connects seconds='5' throttle='5'>2</connects>
+      <stanzasize>65535</stanzasize>
+    </limits>
+
+    <!-- Enable XEP-0138: Stream Compression -->
+    <compression/>
+
+    <access>
+      <order>allow,deny</order>
+    </access>
+
+    <!-- Timed checks -->
+    <check>
+      <interval>0</interval>
+      <idle>0</idle>
+      <keepalive>0</keepalive>
+    </check>
+
+  </io>
+
+  <!-- Authentication/registration database configuration -->
+  <authreg>
+    <!-- Dynamic authreg modules path -->
+    <path>/usr/local/lib/jabberd</path>
+
+    <!-- Backend module to use -->
+    <module>db</module>
+
+    <!-- Available authentication mechanisms -->
+    <mechanisms>
+      <sasl>
+        <digest-md5/>
+      </sasl>
+    </mechanisms>
+    <ssl-mechanisms>
+      <sasl>
+        <plain/>
+      </sasl>
+    </ssl-mechanisms>
+
+    <!-- Berkeley DB module configuration -->
+    <db>
+      <path>/var/spool/jabber/db</path>
+      <sync/>
+    </db>
+
+  </authreg>
+
+</c2s>
+<!--
+  vim: syntax=xml
+-->

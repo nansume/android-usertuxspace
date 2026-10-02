@@ -1,0 +1,8 @@
+#!/bin/sh
+# /etc/local.d/ngircd.start
+set -e
+
+nc -w1 -n -z 0.0.0.0 '6667' 2>/dev/null && exit
+pgrep -x "ngircd" >/dev/null && exit
+
+ngircd -p -f "/etc/ngircd.conf"

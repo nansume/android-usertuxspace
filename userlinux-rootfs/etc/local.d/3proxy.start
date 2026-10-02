@@ -1,0 +1,12 @@
+#!/bin/sh
+# /etc/local.d/3proxy.start
+
+PORT=$(cat /etc/3proxy/3proxy.cfg | grep -om1 -- '-p[0-9]\+')
+
+nc -w1 -n -z 0.0.0.0 ${PORT#-p} 2>/dev/null && exit
+pgrep -x "3proxy" >/dev/null && exit
+
+[ -L "/var/log/3proxy" ] && rm /var/log/3proxy
+[ -d "/var/log/3proxy" ] || mkdir -m 0755 "/var/log/3proxy/"
+
+3proxy /etc/3proxy/3proxy.cfg

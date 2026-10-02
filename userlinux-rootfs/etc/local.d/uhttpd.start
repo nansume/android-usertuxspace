@@ -1,6 +1,7 @@
 #!/bin/sh
 # /etc/local.d/uhttpd.start
 
+WWWDIR=$(head -n1 /etc/sysconfig/uhttpd/wwwpath)
 HTTP_PORT=$(head -n1 /etc/sysconfig/uhttpd/http_port)
 HTTPS_PORT=$(head -n1 /etc/sysconfig/uhttpd/https_port)
 CERT=$(head -n1 /etc/sysconfig/uhttpd/cert_path)
@@ -9,23 +10,26 @@ KEY=$(head -n1 /etc/sysconfig/uhttpd/key_path)  # privkey
 HTTP_RPORT=${HTTP_PORT}
 HTTPS_RPORT=${HTTPS_PORT}
 
-nc -w1 -n -z 0.0.0.0 ${HTTP_PORT##*:} || killall "uhttpd" 2>/dev/null
+: ${WWWDIR:=/var/www/localhost}
+
+nc -w1 -n -z 0.0.0.0 ${HTTP_PORT##*:} 2>/dev/null || killall "uhttpd" 2>/dev/null ||:
 pgrep -x "uhttpd" >/dev/null && exit
 
 [ "${HTTP_PORT-}" = '8080' ] && HTTP_RPORT="80"
-[ "${HTTPS_PORT-}" = '8443' ] && HTTPS_RPORT="443"
+[ "${HTTPS_PORT-}" = '4443' ] && HTTPS_RPORT="443"
 
 if [ -n "${HTTPS_PORT-}" ] && [ -f "${CERT}" ]; then
   HTTP_PORT="${HTTP_PORT} -s ${HTTPS_PORT} -C ${CERT} -K ${KEY}"
 fi
 
-uhttpd -c /etc/uhttpd.conf -p ${HTTP_PORT} -S -R -h /var/www
+uhttpd -c /etc/uhttpd.conf -p ${HTTP_PORT} -S -R -h ${WWWDIR}
 
+exit
 [ -n "${LOCAL_IP-}" ] || LOCAL_IP=$(netdev-ip)
 [ -n "${UPNP_URI-}" ] || UPNP_URI=$(upnpc-uri)
 
 [ -n "${UPNP_URI-}" ] || exit 0
 upnpc -u "${UPNP_URI}" -e HTTP-WEBSERVER -a "${LOCAL_IP}" ${HTTP_PORT} ${HTTP_RPORT} TCP 0 >/dev/null 2>&1
 
-nc -w1 -n -z 0.0.0.0 ${HTTPS_PORT##*:} &&
+nc -w1 -n -z 0.0.0.0 ${HTTPS_PORT##*:} 2>/dev/null &&
 upnpc -u "${UPNP_URI}" -e HTTPS-WEBSERVER -a "${LOCAL_IP}" ${HTTPS_PORT} ${HTTPS_RPORT} TCP 0 >/dev/null 2>&1

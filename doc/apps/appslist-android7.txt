@@ -1,0 +1,69 @@
+
+          Android 7.0 / Android 8.0 / Android 10.0
+
+
+----------------------------------------------------------------
+
+UserLAnd 2.8.3 (2021-11-20)
+sha256: -
+Easiest way to run GNU/Linux Distros on Android - no root required
+Features: -
+TIP!: AutoBoot: not working (once into app for select a chroot)
+Author: UserLAnd Technologies
+License: MIT
+Rating: -
+Requires: Android 5.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 15MB
+https://f-droid.org/en/packages/tech.ula/
+https://f-droid.org/repo/tech.ula_7438725.apk
+
+----------------------------------------------------------------
+
+Automation-1.8.8 (2026-08-26)
+sha256: -
+Automate stuff on your device by creating rules
+Features: -
+TIP!: -
+Author: Jens Schroder
+License: GPLv3+
+Rating: -
+Requires: Android 4.4+
+ABIs: undefine
+Size: 5.7MB
+https://f-droid.org/en/packages/com.jens.automation2/
+https://f-droid.org/repo/com.jens.automation2_149.apk
+
+----------------------------------------------------------------
+
+Rethink: DNS + Firewall + VPN v0.5.7 (2026-09-22)
+sha256: -
+Local VPN Proxy [https,socks5,vpn], blocklist.
+Features: Local-VPN, VPN, TCP/UDP proxy, DNS, blocklist, Firewall
+TIP!: -
+Author: The RethinkDNS Authors
+License: Apache License 2.0
+Rating: -
+Requires: Android 6.0+
+ABIs: armeabi-v7a, arm64-v8a, x86_64, x86
+Size: 29MB
+https://f-droid.org/en/packages/com.celzero.bravedns/
+https://f-droid.org/repo/com.celzero.bravedns_693.apk
+
+----------------------------------------------------------------
+
+droidVNC-NG 2.22.0 (2026-09-19)
+sha256: -
+VNC server app that does not require root privileges.
+TIP!: AutoBoot: not working
+Author: -
+License: GPLv2
+Downloads: -
+Rating: 4.2
+Requires: Android 7.0+
+ABIs: arm64-v8a armeabi-v7a x86 x86_64
+Size: 6.3MB
+https://f-droid.org/packages/net.christianbeier.droidvnc_ng/
+https://f-droid.org/repo/net.christianbeier.droidvnc_ng_65.apk
+
+----------------------------------------------------------------

@@ -1,0 +1,109 @@
+#!/bin/sh
+# File: /bin/zte-portmap
+# Name: zte-portmap
+# Description: For ZTE Router ZXHN E5502
+# Version: v0.1.2025.11.11
+# Usage: zte-portmap -d ${RPORT} ${PROTO}
+# Usage: zte-portmap -a ${LANIP} ${LPORT} ${RPORT} ${PROTO} ${NAME}
+# Example (deprecated): DESC=${DESC%${DESC#???????????????}}; zte-portmap -a ${ARGS} "${DESC%_*}
+# Date: 2025-11-26 12:00 UTC, 2026-07-24 14:00 UTC
+set -e -u -f
+
+IFS="$(printf '\n\t')"; IFS=${IFS%?}
+USER_NET=$(head -n1 /etc/sysconfig/netuser)
+ADMIN_USER=$(head -n1 /etc/sysconfig/router/login)
+ADMIN_PASS=$(head -n1 /etc/sysconfig/router/passwd)
+
+groups ${USER_NET} >/dev/null 2>&1 && {
+case $(id -un) in
+  "${USER_NET}");;  # It support user, otherwise exit.
+  'root') IFS="${IFS} "; su ${USER_NET} -c "${0##*/} $(printf '%s ' ${@})"; exit;;
+  'root'|*) printf '%s\n' "${0##*/}: wrong user... error" >&2; exit 1;;
+esac
+}
+
+GW=$(netdev-gw)
+GW_HOST=${GW}
+REFERER="http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch"
+
+#FIX: error: private iprange: Permission denied
+if nc -w1 -n -z ${GW_HOST} 80 || { EXT_IP=$(ext-ip); false; }; then
+  true
+elif nc -w1 -n -z ${EXT_IP} 80; then
+  GW_HOST=${EXT_IP}
+fi
+
+busybox wget \
+  -q --no-check-certificate --spider \
+  --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
+  -O - "http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch" \
+  >/dev/null 2>&1
+
+if [ "${1}" = '-d' ]; then
+  RPORT=${2:?required remote port}
+  PROTO=${3:?required protocol}
+elif [ "${1}" = '-a' ]; then
+  LANIP=${2:?}
+  LPORT=${3:?}
+  RPORT=${4:?}
+  PROTO=${5:?}
+  NAME=${6:?}
+  [ -n "${NAME%${NAME#???????????????}}" ] && NAME="${NAME%${NAME#???????????????}}"
+  NAME=${NAME%_*}
+else
+  printf '%s\n' "missed arg: ${0##*/} [ -a | -d ] ..." >&2
+  printf '%s\n' "Example: ${0##*/} -a \${LANIP} \${LPORT} \${RPORT} \${PROTO} \${NAME}" >&2
+  printf '%s\n' "Example: ${0##*/} -d \${RPORT} \${PROTO}" >&2
+  exit 1
+fi
+
+if POSTDATA=$(zte-portmap-check ${PROTO} ${RPORT}); then
+  if [ "${1}" = '-a' ]; then
+    printf '%s\n' "${0##*/}: it exists - [${LANIP} ${LPORT} ${RPORT} ${PROTO} ${NAME}]... failed" >&2
+    exit 1
+  elif [ "${1}" != '-d' ]; then
+    printf '%s\n' "missed arg: ${0##*/} <-d> ..." >&2
+    exit 1
+  fi
+
+  [ -z "${RPORT#${RPORT%%[!0-9]*}}" ] || { printf '%s\n' "required port: ${0##*/} <port> <proto>" >&2; exit 1;}
+  [ -z "${PROTO#${PROTO%%[0-9]*}}" ] || { printf '%s\n' "required port: ${0##*/} <port> <proto>" >&2; exit 1;}
+
+  # Port Forwarding Mapping - Delete
+  busybox wget \
+    -q --no-check-certificate \
+    --header "'Referer: ${REFERER}'" \
+    --post-data "IF_ACTION=Delete&${POSTDATA}&WANCViewName=null" \
+    -O - "http://${GW_HOST}/common_page/PortForwarding_lua.lua" | \
+    grep -q '<IF_ERRORSTR>SUCC</IF_ERRORSTR>' || {
+      printf %s\\n "wrong opts: '${POSTDATA}'... error" >&2
+      exit 1
+    }
+  printf %s\\n "remove portmapping: [${RPORT} ${PROTO}] - success... ok"
+  exit $?
+elif [ "${1}" = '-d' ]; then
+  printf %s\\n "it not found: '${PROTO} ${RPORT}'... skip" >&2
+  exit 1
+elif [ "${1}" = '-a' ]; then
+  case ${PROTO} in 'TCP') PRT="0";; 'UDP') PRT="1";; esac
+
+  POSTDATA="IF_ACTION=Apply&Enable=1&_InstID=-1&InternalHost=${LANIP}&Name=${NAME}"
+  POSTDATA="${POSTDATA}&MinExtPort=${RPORT}&MaxExtPort=${RPORT}&MinIntPort=${LPORT}&MaxIntPort=${LPORT}"
+  POSTDATA="${POSTDATA}&Btn_cancel_PortForwarding=&Btn_apply_PortForwarding=&Protocol=${PRT}&WANCViewName=IGD.WANIF"
+
+  # Port Forwarding Mapping - Apply
+  busybox wget \
+    -q --no-check-certificate \
+    --header "'Referer: ${REFERER}'" \
+    --post-data "${POSTDATA}" \
+    -O - "http://${GW_HOST}/common_page/PortForwarding_lua.lua" | \
+    grep -q '<IF_ERRORSTR>SUCC</IF_ERRORSTR>' || {
+      printf %s\\n "wrong opts: '${POSTDATA}'... error" >&2
+      exit 1
+    }
+  printf %s\\n "add portmapping: [${LANIP} ${LPORT} ${RPORT} ${PROTO} ${NAME}] - success... ok"
+  exit $?
+fi
+
+printf %s\\n "Unknown: error: '${PROTO} ${RPORT}'... failed" >&2
+exit 1

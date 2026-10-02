@@ -1,0 +1,71 @@
+#!/bin/sh
+# File: /bin/zte-portmap-check
+# Name: zte-portmap
+# Description: For ZTE Router ZXHN E5502
+# Description: Check here, that it exist and then skip.
+# Version: v0.1.2025.11.11
+# Usage: zte-portmap-check <string-mapping-port>
+# Sample: zte-portmap-check "TCP 80"
+# Date: 2025-11-26 12:00 UTC, 2026-07-24 14:00 UTC
+set -e -u -f
+
+USER_NET=$(head -n1 /etc/sysconfig/netuser)
+
+groups ${USER_NET} >/dev/null 2>&1 && {
+case $(id -un) in
+  "${USER_NET}");;  # It support user, otherwise exit.
+  'root') su ${USER_NET} -c "${0##*/}"; exit;;
+  'root'|*) printf '%s\n' "${0##*/}: wrong user... error" >&2; exit 1;;
+esac
+}
+
+set -- "${*#${1%%[![:space:]]*}}"
+set -- "${1#[0-9]*[[:space:]]}"
+set -- "${1#${1%%[![:space:]]*}}"
+set -- "${1%${1##*[![:space:]]}}"
+set -- "${1%%->*}"
+set -- "${1%%[[:space:]]*} ${1##* }"
+
+zte-show-portmap | while IFS= read -r S; do  # Here child proc.
+  S="${S#${S%%[![:space:]]*}}"
+  set -- "${1}" "${S}"
+  S="${S%%->*}"
+  case ${S} in
+    [0-9]' TCP '*|[0-9][0-9]' TCP '*|[0-9][0-9][0-9]' TCP '*)
+      S="${S#* TCP }"; S="TCP ${S#${S%%[![:space:]]*}}"
+    ;;
+    [0-9]' UDP '*|[0-9][0-9]' UDP '*|[0-9][0-9][0-9]' UDP '*)
+      S="${S#* UDP }"; S="UDP ${S#${S%%[![:space:]]*}}"
+    ;;
+    'TCP '*|'UDP '*) S="${S%%[[:space:]]*} ${S##* }";;
+    *) continue;;
+  esac
+  case ${S} in
+    "${1}"*)
+      # index
+      I="IGD.FWPM${2%% *}"; set -- "${1}" "${2#* }"
+      set -- "${1}" "${2#${2%%[![:space:]]*}}"
+
+      # protocol
+      case ${2} in 'UDP '*) PROTO="1";; 'TCP '*) PROTO="0";; esac
+      set -- "${1}" "${2#* }"; set -- "${1}" "${2#${2%%[![:space:]]*}}"
+
+      PORT=${2%%:*}; set -- "${1}" "${2#*:}"
+      PORT=${2%%->*}; set -- "${1}" "${2#*->}"
+      LANIP=${2%%%*}; set -- "${1}" "${2#*%}"
+      PORT=${2%%:*}; set -- "${1}" "${2#*:}"
+      PORT=${2%% *}; set -- "${1}" "${2#* }"
+      NAME=${2%% *}; set -- "${1}" "${2#* }"
+
+      ON=${2##* }
+
+      printf '%s' "Enable=${ON}&_InstID=${I}&InternalHost=${LANIP}&Name=${NAME}"
+      printf '%s' "&MinExtPort=${PORT}&MaxExtPort=${PORT}&MinIntPort=${PORT}&MaxIntPort=${PORT}"
+      printf '%s\n' "&Btn_cancel_PortForwarding=&Btn_apply_PortForwarding=&Protocol=${PROTO}"
+      exit 1
+    ;;
+  esac
+done || exit 0
+
+printf '%s\n' "${0##*/}: it not found - [${1}]... false" >&2
+exit 1

@@ -1,1 +1,3 @@
-<your-hostname-without-dots>  # acceptable: [a-z0-9-]
+localhost
+
+#<your-hostname-without-dots>  # acceptable: [a-z0-9-]

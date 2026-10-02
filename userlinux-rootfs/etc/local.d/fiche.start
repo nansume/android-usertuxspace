@@ -1,0 +1,12 @@
+#!/bin/sh
+# /etc/local.d/fiche.start
+
+LOG="/var/log/fiche.log"
+PORT=$(head -n1 /etc/sysconfig/fiche/port)
+DOMAINNAME=$(head -n1 /etc/sysconfig/fiche/host)
+WWWDIR=$(head -n1 /etc/sysconfig/fiche/wwwpath)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "fiche" >/dev/null && exit
+
+fiche -u nobody -d "${DOMAINNAME}/pastebin" -S -L 127.0.0.1 -p ${PORT} -o ${WWWDIR} -T >> ${LOG} 2>&1 &

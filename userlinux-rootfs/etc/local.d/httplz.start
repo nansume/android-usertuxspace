@@ -1,12 +1,18 @@
 #!/bin/sh
 # /etc/local.d/httplz.start
+set -e
 
-LOG="/dev/null"
-PORT=$(head -n1 /etc/sysconfig/httplz/port)
+LOG="/var/log/httplz.log"  # or: LOG=/dev/null
 AUTH=$(cat /etc/sysconfig/httplz/auth)
+ADDR=$(head -n1 /etc/sysconfig/httplz/addr 2>/dev/null ||:)
+PORT=$(head -n1 /etc/sysconfig/httplz/port 2>/dev/null ||:)
+WWWDIR=$(head -n1 /etc/sysconfig/httplz/wwwpath 2>/dev/null ||:)
 
-nc -w1 -n -z 0.0.0.0 ${PORT} || killall "httplz" 2>/dev/null
+: ${ADDR:=127.0.0.1} ${PORT:=8080} ${WWWDIR:=/var/www/localhost}
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null || killall "httplz" 2>/dev/null ||:
 pgrep -x "httplz" >/dev/null && exit
 
-#echo "httplz -w -d --path-auth ${AUTH} --auth ${AUTH##*=} -p ${PORT} -- /var/www &"
-nohup httplz -w -d --path-auth ${AUTH} -p ${PORT} -- /var/www >> ${LOG} 2>&1 &
+#echo "httplz -w -d --path-auth ${AUTH} --auth ${AUTH##*=} -p ${PORT} -- /var/www/localhost &"
+nohup httplz -w -d --auth ${AUTH} -a ${ADDR} -p ${PORT} -- ${WWWDIR} >> ${LOG} 2>&1 &
+#httplz -w -d --auth ${AUTH} -a ${ADDR} -p ${PORT} -- ${WWWDIR}  # for debug (stdout)

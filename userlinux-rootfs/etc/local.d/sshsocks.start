@@ -7,7 +7,7 @@ DAEMON_RUN="autossh"
 SSH_USER="root"
 SSH_HOME="/root"
 AUTH_USER=$(head -n1 /etc/sysconfig/ssh-client/auth_user)
-AUTH_FILE=$(head -n1 /etc/sysconfig/ssh-client/auth_pass)
+AUTH_FILE="/etc/sysconfig/ssh-client/auth_pass"
 SSH_PORT=$(head -n1 /etc/sysconfig/ssh-client/ssh_port)
 DOMAINNAME=$(head -n1 /etc/sysconfig/ssh-client/domain)
 DOMAINNAME=$(hosttoip ${DOMAINNAME:?})
@@ -22,7 +22,7 @@ export AUTOSSH_GATETIME="0"
 pgrep -x ${DAEMON_RUN} >/dev/null && exit
 pgrep -x "dbclient" >/dev/null && exit
 pgrep -x "stunnel" >/dev/null || exit 0
-nc -w1 -n -z 0.0.0.0 3130 && exit
+nc -w1 -n -z 0.0.0.0 '3130' 2>/dev/null && exit
 
 >> "${LOGFILE}"
 chown ${SSH_USER}:${SSH_USER} "${LOGFILE}"

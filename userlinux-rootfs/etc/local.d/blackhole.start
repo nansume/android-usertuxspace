@@ -1,0 +1,11 @@
+#!/bin/sh
+# /etc/local.d/blackhole.start
+
+PORT="8484"
+
+apk add netcat-openbsd  # for multi connect support
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+
+# BUG: netcat from busybox without multi connect support
+pgrep -x "nc" >/dev/null || nc -lk -n -s 127.0.0.1 -p ${PORT} -i 65535 >/dev/null 2>&1 &

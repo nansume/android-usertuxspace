@@ -8,7 +8,7 @@ pre_start() (
   done
 )
 
-nc -w1 -n -z 0.0.0.0 8118 || killall "privoxy" 2>/dev/null
+nc -w1 -n -z 0.0.0.0 '8118' 2>/dev/null || killall "privoxy" 2>/dev/null
 pgrep -x "privoxy" >/dev/null && exit
 
 [ -f "/etc/privoxy/config" ] || pre_start

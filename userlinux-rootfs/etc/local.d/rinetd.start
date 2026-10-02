@@ -1,0 +1,4 @@
+#!/bin/sh
+# /etc/local.d/rinetd.start
+
+pgrep -x "rinetd" >/dev/null || rinetd -c "/etc/rinetd.conf"

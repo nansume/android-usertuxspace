@@ -6,7 +6,8 @@ set -e -u -f
 
 IFS="$(printf '\n\t')"; IFS=${IFS%?}
 
-get_netdev(){
+command -v netdev >/dev/null ||
+netdev(){
   command -v ip >/dev/null &&
   for NETDEV in $(ip route show default 2>/dev/null) ''; do
     case ${NETDEV} in
@@ -31,7 +32,7 @@ get_netdev(){
   [ -n "${NETDEV}" ] && printf '%s\n' "${NETDEV##* }"
 }
 
-[ -n "${1-}" ] || set -- $(get_netdev)
+[ -n "${1-}" ] || set -- $(netdev)
 
 for IP in $(ifconfig -a "${1:-eth0}" 2>/dev/null) ''; do
   case ${IP} in

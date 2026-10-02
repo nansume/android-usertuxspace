@@ -1,0 +1,9 @@
+#!/bin/sh
+# /etc/local.d/smartdns.start
+
+PORT=$(cat /etc/smartdns/smartdns.conf | grep -om1 -- 'bind .*'); PORT=${PORT##*:}
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "smartdns" >/dev/null && exit
+
+smartdns -c "/etc/smartdns/smartdns.conf" -p "/var/run/smartdns.pid" -R

@@ -10,7 +10,7 @@ pre_start() (
   [ -d "${REPOS_DIR%/}" ] && mkdir -pm 0755 -- "${REPOS_DIR}"
 )
 
-nc -w1 -n -z 0.0.0.0 ${PORT} || killall "fossil" 2>/dev/null
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null || killall "fossil" 2>/dev/null
 pgrep -x "fossil" >/dev/null && exit
 
 pre_start

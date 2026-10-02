@@ -1,0 +1,25 @@
+#!/bin/sh
+# /etc/local.d/sslh.start
+
+RUN="sslh-ev"
+USER_NET=$(head -n1 /etc/sysconfig/netuser)
+LOGFILE="/var/log/${RUN}.log"
+DAEMON_OPTS=$(cat /etc/sysconfig/sslh/opts)
+PORT="8443"
+ADDR="0.0.0.0:${PORT}"
+PORTS="WEBSERVER:${PORT}@TCP"
+LANIP=$(netdev-ip)
+PIDFILE="/run/${RUN}.pid"
+
+nc -w1 -n -z 0.0.0.0 ${PORT##*:} 2>/dev/null || killall ${RUN} 2>/dev/null
+pgrep -x ${RUN} >/dev/null && exit
+
+opts() { set --
+  for OPT in ${DAEMON_OPTS}; do
+    printf %s "${1:+ }${OPT}"; set -- ${OPT}
+  done
+}
+DAEMON_OPTS=$(opts)
+
+#${RUN} -p ${ADDR} ${DAEMON_OPTS} --pidfile ${PIDFILE} -F /etc/sslh-ev.conf >>${LOGFILE} 2>&1
+${RUN} -F "/etc/sslh-ev.conf"

@@ -1,0 +1,9 @@
+#!/bin/sh
+# /etc/local.d/rsyncd.start
+
+PORT=$(head -n1 /etc/sysconfig/rsyncd/port 2>/dev/null || echo 1873)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "rsync" >/dev/null && exit
+
+rsync --daemon --config=/etc/rsync/rsyncd.conf --port=${PORT}

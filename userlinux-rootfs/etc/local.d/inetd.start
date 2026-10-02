@@ -1,6 +1,7 @@
 #!/bin/sh
 # /etc/local.d/inetd.start
 
-test -e '/tmp/rc-local.lock' && exit
+#if here zombi proc, then: killall -9 inetd
+ps -o comm,stat | grep -qom1 '^inetd *[[:space:]] Z ' && { pgrep -x "inetd" >/dev/null && killall -9 'inetd'; }
 
-pgrep -x "inetd" >/dev/null || inetd "/etc/inetd.conf"
+pgrep -x "inetd" >/dev/null || inetd -R 120 "/etc/inetd.conf"

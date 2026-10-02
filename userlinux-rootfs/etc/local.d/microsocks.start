@@ -1,0 +1,11 @@
+#!/bin/sh
+# /etc/local.d/microsocks.start
+
+LOG="/var/log/microsocks.log"
+ADDR=$(head -n1 /etc/sysconfig/microsocks/addr 2>/dev/null || echo 127.0.0.1)
+PORT=$(head -n1 /etc/sysconfig/microsocks/port 2>/dev/null || echo 1080)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "microsocks" >/dev/null && exit
+
+microsocks -i ${ADDR} -p ${PORT} >>${LOG} 2>&1 &

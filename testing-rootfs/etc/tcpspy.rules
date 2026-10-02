@@ -1,0 +1,12 @@
+#user "root" and rport 53
+#user 2000  # user id [uid]
+user "root" and lport 2121 or lport 21
+lport 53 or lport 2053 or lport 9053 or lport 5353
+#(lport 5353 and user "root") or raddr 10.0.0.1
+lport 2022 or lport 2222 or lport 22
+lport 7681
+lport 8080 or lport 80
+lport 8443 or lport 4443 or lport 443
+lport 874
+lport 8090 or lport 8091
+lport 9050

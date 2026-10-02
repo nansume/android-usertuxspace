@@ -1,1 +1,3 @@
-/=<user0>:<password0> --path-auth path1=<user1>:<password1> --path-auth path2=<user2>:<password2>
+<global-user0>:<password0> --path-auth path1=<user1>:<password1> --path-auth path2=<user2>:<password2>
+
+# mkdir -m 0755 -- /var/www/<host>/ /var/www/<host>/path1/ /var/www/<host>/path2/

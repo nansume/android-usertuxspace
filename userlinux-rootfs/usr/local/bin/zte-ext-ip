@@ -1,0 +1,77 @@
+#!/bin/sh
+# File: /bin/zte-ext-ip
+# Name: zte-ext-ip
+# Description: For ZTE Router ZXHN E5502
+# Version: v0.1.2026.09.14
+# Usage: zte-ext-ip -u USER -i ROUTER_IP
+# Example: EXT_IP=$(zte-ext-ip)
+# Date: 2026-09-14 13:00 UTC
+set -e -u -f
+
+IFS="$(printf '\n\t')"; IFS=${IFS%?}
+OLDIFS=${IFS}
+USER_NET=${USER_NET:-$(head -n1 /etc/sysconfig/netuser 2>/dev/null ||:)}
+runuser=${USER_NET:-nobody}
+ADMIN_USER=$(head -n1 /etc/sysconfig/router/login)
+ADMIN_PASS=$(head -n1 /etc/sysconfig/router/passwd)
+IPADDR=$(head -n1 /etc/sysconfig/router/ip 2>/dev/null ||:); IPADDR="${IPADDR:-${EXT_IP-}}"
+
+print_help() {
+  cat >&2 <<_EOF_
+Usage: ${0##*/} -u USER
+
+Options:
+  -u  user (drop privileges)
+  -i  reorder fallback for ip address a the gateway router
+  -h  Print usage help and exit
+_EOF_
+
+exit 1
+}
+
+case $(id -un) in
+  'root')
+    IFS=" " ARG=${@}; IFS=${OLDIFS}
+    while [ x"${1-}" != x ]; do
+      case ${1-} in
+        -u) runuser=${2:?required user}; shift;;
+        -i) IPADDR=${2:?required ip addr}; shift;;
+        -h) print_help;;
+      esac
+      shift
+    done
+    [ -n "${runuser-}" ] || exit 1
+
+    su ${runuser} -c "${0##*/} ${ARG}";
+    exit $?
+  ;;
+esac
+
+GW=$(netdev-gw)
+GW_HOST=${GW}
+S_PAGE="getpage.lua?pid=1002&nextpage=home_a_t.gch"
+
+#FIX: error: private iprange: Permission denied
+if nc -w1 -n -z ${GW_HOST} 80 || IPADDR=${IPADDR:-$(ext-ip)}; false; then
+  true
+elif nc -w1 -n -z ${IPADDR} 80; then
+  GW_HOST=${IPADDR}
+fi
+
+busybox wget \
+  -q --no-check-certificate --spider \
+  --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
+  -O - "http://${GW_HOST}/${S_PAGE}" \
+  >/dev/null 2>&1
+
+# return waninfo page
+busybox wget \
+  -q --no-check-certificate \
+  --header "'Referer: http://${GW}/${S_PAGE}'" \
+  -O - "http://${GW_HOST}/common_page/InternetReg_lua.lua" \
+  | while IFS= read -r S || [ -n "${S}" ]; do  # Here child proc.
+
+  WAN_ADDR=${S#*<ParaName>IPAddress</ParaName><ParaValue>}
+  printf %s\\n "${WAN_ADDR%%</ParaValue>*}"
+  break
+done

@@ -1,1 +1,3 @@
-/etc/ssl/uacme/private/<your-domain>/key.pem
+/etc/ssl/uacme/private/localhost/key.pem
+
+#/etc/ssl/uacme/private/<your-domain>/key.pem

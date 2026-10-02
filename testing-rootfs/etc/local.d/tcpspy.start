@@ -1,0 +1,11 @@
+#!/bin/sh
+# /etc/local.d/tcpspy.start
+
+# BUG [unrooted Android-9]: /proc/net/tcp: Permission denied
+# FIX [required perm]: setenforce 0
+
+LOG="/var/log/tcpspy.log"
+
+exec >>${LOG}
+
+pgrep -x "tcpspy" >/dev/null || tcpspy -d -U nobody -G nogroup -f "/etc/tcpspy.rules" -i 4000

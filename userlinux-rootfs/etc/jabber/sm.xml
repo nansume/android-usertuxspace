@@ -1,0 +1,411 @@
+<!-- Session manager configuration -->
+<sm>
+  <!-- Our ID on the network (default: sm) -->
+  <id>sm</id>
+
+  <pidfile>/var/run/jabber/jabberd2-sm.pid</pidfile>
+
+  <!-- Router connection configuration -->
+  <router>
+    <!-- IP/port the router is waiting for connections on -->
+    <ip>127.0.0.1</ip>            <!-- default: 127.0.0.1 -->
+    <port>5347</port>             <!-- default: 5347 -->
+
+    <!-- Username/password to authenticate as -->
+    <user>jabberd</user>          <!-- default: jabberd -->
+    <pass>secret</pass>           <!-- default: secret -->
+
+    <!-- Router connection retry -->
+    <retry>
+      <init>3</init>
+      <lost>3</lost>
+      <sleep>2</sleep>
+    </retry>
+  </router>
+
+  <log type='file'>
+    <file>/var/log/jabber/sm.log</file>
+  </log>
+
+  <!-- Local network configuration -->
+  <local>
+    <id>im1.myhost.server1.test</id>
+    <id>im2.myhost.server1.test</id>
+  </local>
+
+  <!-- Storage database configuration -->
+  <storage>
+    <!-- Dynamic storage modules path -->
+    <path>/usr/local/lib/jabberd</path>
+
+    <!-- By default, we use the SQLite driver for all storage -->
+    <driver>db</driver>
+
+    <!-- Its also possible to explicitly list alternate drivers for
+         specific data types. -->
+
+    <!-- Store vcards in a ldapvcard database instead -->
+    <!--
+    <driver type='vcard'>ldapvcard</driver>
+    -->
+
+    <!-- Only ldapvcard driver implements published-roster: -->
+    <!--
+    <driver type='published-roster'>ldapvcard</driver>
+    -->
+
+    <!-- Use ldapvcard driver for published-roster-groups.
+         See description in section sm/user/template/mapped-groups.
+         Used by mod_published_roster.
+         See ldapvcard section for options.
+         When resolving group id to group name, it searches for
+         groupsobjectclass objects at groupsdn base using group id
+         (in groupsidattr) as key and returns the first value of 
+         groupattr of first found entry.
+         E.g.. in general case, if group id is "some-dep", and groupsdn
+         is o=org, and class is jabberGroup, it searches for
+         (&(objectClass=jabberGroup)(cn=some-dep)) and returns value of
+         jabberPublishedItem attribute, which may contain textual description.
+         -->
+    <!--
+    <driver type='published-roster-groups'>ldapvcard</driver>
+    -->
+
+    <!-- Rate limiting -->
+    <limits>
+      <!-- Maximum queries per second - if more than X queries are sent in Y
+           seconds, connection is throttled for Z seconds. The format
+           is:
+
+             <queries seconds='Y' throttle='Z'>X</bytes>
+
+           Default Y is 5, default Z is 60. set X to 0 to disable. -->
+      <!--
+      <queries>3</queries>
+      -->
+    </limits>
+
+    <!-- Berkeley DB driver configuration.  This does not support roster
+         maxitems or offline userquota (because the mod_roster
+         implementation does not implement the 'count' callback). -->
+    <db>
+      <!-- Directory to store database files under -->
+      <path>/var/spool/jabber/db</path>
+
+      <!-- Synchronize the database to disk after each write. If you
+           disable this, database accesses may be faster, but data may
+           be lost if jabberd crashes. -->
+      <sync/>
+    </db>
+
+    <!-- Filesystem driver configuration -->
+    <fs>
+      <!-- Directory to store database files under. -->
+      <path>/var/spool/jabber/fs</path>
+    </fs>
+
+  </storage>
+
+  <!-- Access control information -->
+  <aci>
+    <!-- The JIDs listed here will get access to all restricted
+         functions, regardless of restrictions further down -->
+    <acl type='all'>
+      <jid>admin@localhost.localdomain</jid>
+    </acl>
+
+    <!-- These JIDs can send broadcast messages (announce, motd) -->
+    <!--
+    <acl type='broadcast'>
+      <jid>nocstaff1@localhost.localdomain</jid>
+      <jid>nocstaff2@localhost.localdomain</jid>
+    </acl>
+    -->
+
+    <!-- These JIDs will receive messages addressed to the sm itself
+         (help requestes and such) -->
+    <!--
+    <acl type='messages'>
+      <jid>support@localhost.localdomain</jid>
+    </acl>
+    -->
+
+    <!-- These JIDs can discover active user/session information -->
+    <!--
+    <acl type='disco'>
+      <jid>webstatus@localhost.localdomain</jid>
+    </acl>
+    -->
+  </aci>
+
+  <!-- Module chain configuration
+
+       Modules listed in a chain are called in the order specified at
+       the appropriate time for that chain (assuming that the module
+       knows how to work with that chain; otherwise it simply ignores
+       it).
+
+       Removing a module from these lists will stop the module being
+       called, even if it's compiled into the server.
+
+       Serveral modules have a presence in more than one chain. It is
+       possible to remove a module from one chain but not others, but
+       this may cause strange behaviour. Make sure you know what you're
+       doing.
+
+       When configuring sm for ANONYMOUS access, remove all instances
+       of the following modules:
+         active announce amp offline privacy
+         roster template-roster roster-publish pep vacation status
+         iq-last iq-private iq-vcard
+       and do not enable auto-create option. -->
+  <modules>
+    <!-- Dynamic sm modules path -->
+    <path>/usr/local/lib/jabberd</path>
+
+    <!-- sess-start. The modules in this chain are called when a session
+         is first started (usually on request by c2s as part of the
+         authentication process). This is normally used to load
+         per-session data. -->
+    <chain id='sess-start'>
+      <module>status</module>           <!-- record status information -->
+    </chain>
+
+    <!-- sess-end. The modules in this chain are called just before a
+         session is destroyed (after the client has disconnected). -->
+    <chain id='sess-end'>
+      <module>status</module>           <!-- update status information -->
+      <module>iq-last</module>          <!-- update logout time -->
+    </chain>
+
+    <!-- in-sess. The modules in this chain are called when a packet
+         arrives from an active user session. Note that this chain is
+         also responsible for delivering packets to their destinations -
+         this is usually handled by the "deliver" module. -->
+    <chain id='in-sess'>
+      <module>validate</module>         <!-- validate packet type -->
+      <module>status</module>           <!-- update status information -->
+      <module>privacy</module>          <!-- manage privacy lists -->
+      <module>roster</module>           <!-- handle roster get/sets and s10ns -->
+      <module>vacation</module>         <!-- manage vacation settings -->
+      <!-- <module>pep</module>         <!- - personal eventing -->
+      <module>iq-vcard</module>         <!-- store and retrieve the user's vcard -->
+      <module>iq-ping</module>          <!-- return the server ping -->
+      <module>iq-private</module>       <!-- manage the user's private data store -->
+      <module>disco</module>            <!-- respond to agents requests from sessions -->
+      <!-- <module>amp</module>              <!- - advanced message processing -->
+      <module>offline</module>          <!-- if we're coming online for the first time, deliver queued messages -->
+      <module>announce</module>         <!-- deliver motd -->
+      <!-- <module>verify</module>      <!- - verify user by e-mail -->
+      <module>presence</module>         <!-- process and distribute presence updates -->
+      <module>deliver</module>          <!-- deliver packets with full jids directly -->
+    </chain>
+
+    <!-- out-sess. The modules in this chain are called just before a
+         packet is delivered to an active user session. -->
+    <chain id='out-sess'>
+      <!-- <module>pep</module>         <!- - personal eventing -->
+    </chain>
+
+    <!-- in-router. The modules in this chain are called when a packet
+         arrives from the router (ie another component or s2s), but
+         before any processing is done. This is a good place to filter
+         incoming packets. -->
+    <chain id='in-router'>
+      <module>session</module>          <!-- perform session actions as required by c2s -->
+      <module>validate</module>         <!-- validate packet type -->
+      <module>presence</module>         <!-- drop incoming presence if user not online -->
+      <module>privacy</module>          <!-- filter incoming packets based on privacy rules -->
+    </chain>
+
+    <!-- out-router. The modules in this chain are called just before a
+         packet is delivered to the router (destined for another
+         component or s2s). This is a good place to filter outgoing
+         packets. -->
+    <chain id='out-router'>
+      <module>privacy</module>          <!-- filter outgoing packets based on privacy rules -->
+    </chain>
+
+    <!-- pkt-sm. The modules in this chain are called when a packet
+         arrives that is addressed to the session manager itself (ie the
+         to JID has no node part). This is normally used to provide
+         session-manager-wide services (like service discovery). -->
+    <chain id='pkt-sm'>
+      <module>iq-last</module>          <!-- return the server uptime -->
+      <module>iq-ping</module>          <!-- return the server ping -->
+      <module>iq-time</module>          <!-- return the current server time -->
+      <module>iq-version</module>       <!-- return the server name and version -->
+      <!-- <module>amp</module>              <!- - advanced message processing -->
+      <module>disco</module>            <!-- build the disco list; respond to disco queries -->
+      <module>announce</module>         <!-- send broadcast messages (announce, motd, etc) -->
+      <module>help</module>             <!-- resend sm messages to administrators -->
+      <module>echo</module>             <!-- echo messages sent to /echo -->
+      <module>status</module>           <!-- track status information -->
+      <module>presence</module>         <!-- proces server presence subscriptions -->
+    </chain>
+
+    <!-- pkt-user. The modules in this chain are called when a packet
+         arrives that is address to a specific user. Note that this
+         chain is also responsible for delivering packets to user
+         sessions as appropriate - this is usually handled by the
+         "deliver" module. -->
+    <chain id='pkt-user'>
+      <module>roster</module>           <!-- handle s10n responses -->
+      <module>presence</module>         <!-- process and distribute incoming presence from external entities -->
+      <module>disco</module>            <!-- respond to disco queries -->
+      <module>iq-vcard</module>         <!-- grab user vcards -->
+      <!-- <module>amp</module>              <!- - advanced message processing -->
+      <module>deliver</module>          <!-- deliver the packet to an active session if we can -->
+      <module>vacation</module>         <!-- send vacation messages -->
+      <module>offline</module>          <!-- save messages and s10ns for later -->
+      <module>iq-last</module>          <!-- return time since last logout -->
+    </chain>
+
+    <!-- pkt-router. The modules in this chain are called when a
+         special-purpose packet arrives from the router (eg domain
+         advertisements). -->
+    <chain id='pkt-router'>
+      <module>session</module>          <!-- take sessions offline if their c2s disappears -->
+      <module>disco</module>            <!-- query new components for service information -->
+    </chain>
+
+    <!-- user-load. The modules in this chain are called to load
+         per-user data. This will happen before a user can be used (ie
+         before a session is created). -->
+    <chain id='user-load'>
+      <module>active</module>           <!-- get active status -->
+      <module>roster</module>           <!-- load the roster and trust list -->
+      <module>roster-publish</module>   <!-- load the published roster -->
+      <module>privacy</module>          <!-- load privacy lists -->
+      <module>vacation</module>         <!-- load vacation settings -->
+      <!-- <module>verify</module>      <!- - verify user by e-mail -->
+    </chain>
+
+    <!-- user-unload. The modules in this chain are called right
+         after last per-user session is destroyed. -->
+    <chain id='user-unload'>
+    </chain>
+
+    <!-- user-create. The modules in this chain are called when a user
+         creation request is received (usually from c2s as part of a
+         registration request). This initialises any per-user data. -->
+    <chain id='user-create'>
+      <module>active</module>           <!-- activate new users -->
+      <module>template-roster</module>  <!-- populate roster from template -->
+    </chain>
+
+    <!-- user-delete. The modules in this chain are called when a user
+         deletion request is received (usually from c2s as part of a
+         registration removal request). This deletes all data that may
+         have been previously created for the user during normal
+         operation. -->
+    <chain id='user-delete'>
+      <module>active</module>           <!-- deactivate users -->
+      <module>announce</module>         <!-- delete motd data -->
+      <module>offline</module>          <!-- bounce queued messages -->
+      <module>privacy</module>          <!-- delete privacy lists -->
+      <module>roster</module>           <!-- delete roster -->
+      <module>vacation</module>         <!-- delete vacation settings -->
+      <module>status</module>           <!-- delete status information -->
+      <module>iq-last</module>          <!-- delete last logout time -->
+      <module>iq-private</module>       <!-- delete private data -->
+      <module>iq-vcard</module>         <!-- delete vcard -->
+      <!-- <module>verify</module>      <!- - verify user by e-mail -->
+    </chain>
+
+    <!-- disco-extend. The modules in this chain are called when a disco
+         info request is send to session manager. It implements XEP-0128
+     Service Discovery Extensions mechanizm to add additional
+     information to disco#info reply. -->
+    <chain id='disco-extend'>
+      <module>iq-version</module>       <!-- add XEP-xxxx Software Information -->
+      <module>help</module>             <!-- add XEP-0157 Contact Addresses -->
+    </chain>
+
+  </modules>
+
+  <!-- Service discovery configuration -->
+  <discovery>
+
+    <!-- Service identity. these specify the category, type and name of
+         this service that will be included in discovery information
+         responses. -->
+    <identity>
+      <category>server</category>       <!-- default: server -->
+      <type>im</type>                   <!-- default: im -->
+      <name>Jabber IM server</name>     <!-- default: Jabber IM server -->
+    </identity>
+
+    <!-- The discovery module can respond to jabber:iq:agents queries
+         for compatibility with older clients. Comment this out to
+         disable this. -->
+    <!-- <agents/> -->
+
+    <!-- Static service list.
+
+         The discover module can discover disco-capable services
+         automatically as they come online. Most XEP-0114 components,
+         however, will not support discovery. In order to get them to
+         appear in disco/agents lists returned to the client, they
+         should be listed here.
+
+         Note that if a disco-capable service with the same name as one
+         listed below comes online, the information it provides will
+         override the information listed below.
+
+         The "category" and "type" attributes, and the list of supported
+         namespaces are only used for agents compatibility. If you have
+         disabled this above, you may omit them. -->
+    <items>
+
+      <!-- example entry for a user directory -->
+      <!--
+      <item category='service' type='jud' jid='users.jabber.org' name='Jabber User Directory'/>
+      -->
+
+      <!-- example entry for a groupchat (conference) service -->
+      <!--
+      <item category='conference' type='public' jid='conference.jabber.org' name='Text conferencing'/>
+      -->
+
+    </items>
+
+    <!-- Server information added to server discovery information -->
+    <serverinfo>
+      <admin-addresses>
+        <value>mailto:xmpp@localhost.localdomain</value>
+        <value>xmpp:admin@im.myhost.server1.test</value>
+      </admin-addresses>
+      <abuse-addresses>
+        <value>mailto:abuse@localhost.localdomain</value>
+        <value>xmpp:abuse@localhost.localdomain</value>
+      </abuse-addresses>
+      <feedback-addresses>
+        <value>http://example.org/feedback.php</value>
+      </feedback-addresses>
+      <sales-addresses/>
+      <security-addresses/>
+      <support-addresses/>
+    </serverinfo>
+
+  </discovery>
+
+  <!-- User options -->
+  <user>
+    <!-- Define maximum size in bytes of fields of vcards --> 
+    <vcard>
+        <max-field-size>
+            <default>16384</default>
+            <avatar>16384</avatar>
+        </max-field-size>
+    </vcard>
+
+    <template>
+      <roster>/etc/jabber/templates/roster.xml</roster>
+    </template>
+  </user>
+
+</sm>
+<!--
+  vim: syntax=xml
+-->

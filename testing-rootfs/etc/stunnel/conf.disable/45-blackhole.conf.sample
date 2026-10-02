@@ -1,0 +1,12 @@
+# 8484 stream tcp nowait.20 nobody /usr/local/sbin/tcpd /usr/bin/stunnel /etc/stunnel/stunnel-blackhole.conf
+# blackhole via ssl (server-mode) [TIP!: Fork mode]
+[blackhole-server]
+accept = 127.0.0.1:8484
+;TIMEOUTclose = 0
+exec = /bin/cat
+execargs = cat -
+
+;cert = /etc/ssl/android-rootCA-cert.pem
+;key = /etc/ssl/android-rootCA.key
+cert = /etc/ssl/uacme/localhost/cert.pem
+key = /etc/ssl/uacme/private/localhost/key.pem

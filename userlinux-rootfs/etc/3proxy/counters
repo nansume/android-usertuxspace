@@ -1,0 +1,5 @@
+# /etc/3proxy/counters
+
+countin "0/user1" D 20000 user1
+countin "1/user2" D 20000 user2
+countin "2/user3" D 20000 user3

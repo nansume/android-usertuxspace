@@ -1,0 +1,36 @@
+                         [ IRC Anonymous ]
+|------------------------------------------------------------------------|
+| Republic of Void, Earth.                                               |
+| Hello Earthlings! Hello World!                                         |
+|                                                                        |
+|                                    John Doe, 01st January 1970         |
+|------------------------------------------------------------------------|
+
+===============================================
+See below links to same the server:
+  # site
+  http://mysite.myhost.server1.test:443/
+  https://mysite.myhost.server1.test/
+  # wiki
+  http://wiki.myhost.server1.test/
+  # fossil
+  http://git.myhost.server1.test/
+  # ftp
+  ftp://ftp.myhost.server1.test:443/
+  http://ftp.myhost.server1.test:443/
+  # rsync
+  rsync://rsync.myhost.server1.test/
+  # irc
+  irc://irc.myhost.server1.test:443/
+  # opentracker (bittorrent)
+  http://bt.myhost.server1.test:6969/
+  # pastebin service
+  https://paste.myhost.server1.test/
+===============================================
+
+Contact info:
+  irc:    irc.myhost.server1.test  #support nick:admin
+  xmpp:   admin@im.myhost.server1.test:443
+  sip:    admin@sip.myhost.server1.test
+  e-post: admin@mail.myhost.server1.test
+  tel:    999999-999999

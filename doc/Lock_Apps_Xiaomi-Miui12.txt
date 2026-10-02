@@ -1,0 +1,21 @@
+
+                                  How to Lock Recent Apps in Xiaomi on MIUI 12
+
+
+  If your smartphone is Xiaomi Redmi/Poco on MIUI 12 or newer, to lock apps, do it like this:
+
+Step 1: Open the Security app.
+
+Step 2: Tap the settings icon in the top right corner.
+
+Step 3: Select the Speed Booster.
+
+Step 4: Then scroll down and tap App Lock.
+
+Step 5: Enable any apps that you want to lock.
+
+Step 6: Done, then the app that is locked in the recent app will be marked with a padlock icon on the top right.
+
+----
+
+https://www.droidbeep.com/how-to-lock-xiaomi-miui-12-recent-apps/

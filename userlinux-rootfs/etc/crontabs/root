@@ -8,6 +8,7 @@
 
 #*/4 * * * * /etc/local.d/sshtunnel.start
 */4 * * * * /etc/local.d/conncheck.start
+*/8 * * * * /etc/local.d/inetd.start
 */10 * * * * /etc/local.d/portmap.start
 */20 * * * * /etc/local.d/ttyd.start
 */30 * * * * ddns-ip-update -q

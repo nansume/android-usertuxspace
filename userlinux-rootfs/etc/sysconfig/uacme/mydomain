@@ -1,0 +1,5 @@
+<myhost1> *.<myhost1>
+
+#<myhost1> *.<myhost1> <myhost2> *.<myhost2>
+
+#TIP!: If you know what youre doing!: <myhost1> \*.<myhost1> <myhost2> \*.<myhost2>

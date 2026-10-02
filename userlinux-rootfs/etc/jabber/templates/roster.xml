@@ -1,0 +1,5 @@
+<!-- This is the roster template. If enabled in sm.xml, new users will
+     get this roster by default. -->
+<query xmlns='jabber:iq:roster'>
+  <item name='Helpdesk' jid='support@im.myhost.server1.test' subscription='none'><group>Support</group></item>
+</query>

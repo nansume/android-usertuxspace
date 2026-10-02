@@ -1,0 +1,91 @@
+<!-- s2s configuration -->
+<s2s>
+  <!-- Our ID on the network (default: s2s) -->
+  <id>s2s</id>
+
+  <pidfile>/var/run/jabber/jabberd2-s2s.pid</pidfile>
+
+  <!-- Router connection configuration -->
+  <router>
+    <!-- IP/port the router is waiting for connections on -->
+    <ip>127.0.0.1</ip>            <!-- default: 127.0.0.1 -->
+    <port>5347</port>             <!-- default: 5347 -->
+    <!-- Username/password to authenticate as -->
+    <user>jabberd</user>          <!-- default: jabberd -->
+    <pass>secret</pass>           <!-- default: secret -->
+    <!-- Router connection retry -->
+    <retry>
+      <init>3</init>
+      <lost>3</lost>
+      <sleep>2</sleep>
+    </retry>
+  </router>
+
+  <log type='file'>
+    <file>/var/log/jabber/s2s.log</file>
+  </log>
+
+  <!-- Local network configuration -->
+  <local>
+    <ip>0.0.0.0</ip>
+    <port>5269</port>
+    <pemfile>/etc/ssl/myhost_server1_test-pound.pem</pemfile>
+    <cachain>/etc/ssl/uacme/myhost.server1.test/cert.pem</cachain>
+  </local>
+
+  <!-- input/output settings -->
+  <io>
+    <!-- Maximum number of file descriptors -->
+    <max_fds>1024</max_fds>
+
+    <!-- Rate limiting -->
+    <limits>
+      <stanzasize>65535</stanzasize>
+    </limits>
+
+    <!-- Enable XEP-0138: Stream Compression -->
+    <compression/>
+
+  </io>
+
+  <!-- Timed checks -->
+  <check>
+    <interval>60</interval>
+    <queue>60</queue>
+    <retry>300</retry>
+    <idle>86400</idle>
+    <keepalive>0</keepalive>
+    <dnscache>300</dnscache>
+  </check>
+
+  <lookup>
+    <!-- xmpp-server is mandated by the XMPP spec -->
+    <srv>xmpp-server</srv>
+    <!-- traditionally, jabber has been used -->
+    <srv>jabber</srv>
+    <!-- Minimum time that DNS lookup results are cached (overrides max below). -->
+    <min-ttl>30</min-ttl>
+    <!-- Maximum time that DNS lookup results are cached. -->
+    <max-ttl>86400</max-ttl>
+    <!-- Time /etc/hosts lookup results are cached for (default: 86400). -->
+    <etc-hosts-ttl>86400</etc-hosts-ttl>
+
+    <bad-host-timeout>3600</bad-host-timeout>
+  </lookup>
+
+  <security>
+    <require_tls/>
+    <!--
+    <enable_whitelist/>
+    <whitelist_domain>4ept.net</whitelist_domain>
+    <whitelist_domain>jabber.nu</whitelist_domain>
+    <whitelist_domain>meckerspace.de</whitelist_domain>
+    <whitelist_domain>creep.im </whitelist_domain>
+    <whitelist_domain>xmpp.sg</whitelist_domain>
+    <whitelist_domain>yax.im</whitelist_domain>
+    -->
+  </security>
+</s2s>
+<!--
+  vim: syntax=xml
+-->

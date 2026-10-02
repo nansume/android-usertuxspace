@@ -1,0 +1,11 @@
+#!/bin/sh
+# /etc/local.d/turnserver.start
+
+domain=$(domain-name)
+PORT="3478"
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "turnserver" >/dev/null && exit
+
+turnserver --daemon -c "/etc/turnserver.conf" -p "/var/run/turnserver.pid" \
+ --realm ${domain} --server-name ${domain} --listening-ip $(netdev-ip) --external-ip $(ext-ip)

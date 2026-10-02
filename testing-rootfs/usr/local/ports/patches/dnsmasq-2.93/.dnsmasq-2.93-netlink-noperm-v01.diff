@@ -1,0 +1,19 @@
+Author: Artjom Slepnjov "Shellgen"
+Description: Ignore a cannot create netlink socket: Permission denied
+Ver: dnsmasq-2.91 or newer version.
+Date: 2026-09-29 17:00 UTC
+==============================================================
+--- a/src/netlink.c
++++ b/src/netlink.c
+@@ -81,11 +81,6 @@
+ 	}
+     }
+   
+-  if (daemon->netlinkfd == -1 || 
+-      getsockname(daemon->netlinkfd, (struct sockaddr *)&addr, &slen) == -1)
+-    die(_("cannot create netlink socket: %s"), NULL, EC_MISC);
+-  
+-  
+   /* save pid assigned by bind() and retrieved by getsockname() */ 
+   netlink_pid = addr.nl_pid;
+   

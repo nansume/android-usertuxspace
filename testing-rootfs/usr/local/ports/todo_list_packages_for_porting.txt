@@ -1,0 +1,16 @@
+
+libtrash
+https://aur.archlinux.org/packages/libtrash
+https://pages.stern.nyu.edu/~marriaga/software/libtrash/
+
+----
+
+bind_hook
+https://github.com/hrimfaxi/bind_hook/tree/main
+hrimfaxi/bind_hook: LD_PRELOAD hook that injects SO_REUSEPORT into bind() calls,
+allowing multiple programs (e.g. dnsmasq + xray) to share the same port.
+
+----
+
+Using wolfIP with LD_PRELOAD | wolfSSL/wolfip | DeepWiki
+deepwiki.com/wolfSSL/wolfip/9.2-using-wolfip-with-ld_preload

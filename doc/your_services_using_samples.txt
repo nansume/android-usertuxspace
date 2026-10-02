@@ -1,0 +1,15 @@
+http://192.168.0.100:6969/announce
+https://192.168.0.100:9696/announce
+http://192.168.0.100/announce
+https://bt.myhost.server1.test/announce
+
+http://bt.myhost.server1.test:6969/stats
+
+----------------------------------------
+
+rsync --list-only rsync://rsync.myhost.server1.test/dir/
+rsync-ssl --type=stunnel --list-only rsync://rsync.myhost.server1.test:443/dir/
+
+----------------------------------------
+
+git clone git://git.myhost.server1.test/myrepo.git

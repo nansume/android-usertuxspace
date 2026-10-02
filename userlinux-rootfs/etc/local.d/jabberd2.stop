@@ -1,0 +1,19 @@
+#!/bin/sh
+# /etc/local.d/jabberd2.stop
+
+stopJabberServices() {
+  for pidfile in /var/run/jabber/*.pid; do
+    if [ -f "${pidfile}" ]; then
+      service=$(basename ${pidfile} .pid)
+      echo "Stopping ${service}"
+      pid=$(cat ${pidfile})
+      echo "kill -s SIGINT ${pid}"
+      kill -s SIGINT ${pid}
+      rm "${pidfile}"
+      echo "return: $?"
+    fi
+  done
+}
+
+echo "Stopping Jabber Server"
+stopJabberServices

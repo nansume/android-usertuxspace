@@ -1,0 +1,16 @@
+#!/bin/sh
+# /etc/local.d/opentracker.start
+set -e
+
+LOG="/var/log/opentracker.log"  # LOG=/dev/null
+PORT="6969"
+DOMAINNAME=$(head -n1 /etc/sysconfig/opentracker/host)
+
+nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
+pgrep -x "opentracker" >/dev/null && exit
+
+opentracker \
+  -i "127.0.0.1" -p ${PORT} \
+  -r "http://${DOMAINNAME}:443/stats" \
+  -f "/etc/opentracker/opentracker.conf" \
+  >> ${LOG} 2>&1 &

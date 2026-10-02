@@ -1,0 +1,28 @@
+Issue: Android - Stupid/Idiot Google Dev's - Hardlink
+Issue: UnRemove hardlink files
+Date: 2026-09-22
+Version: Android-12
+========================================================
+
+--------------------------------------------------------
+
+  cp -l ${WORKDIR}/${PN} /usr/local/bin/
+  rm -r ${WORKDIR}/
+
+rmdir: '/var/tmp/progname': Directory not empty
+
+--------------------------------------------------------
+
+  rm /usr/local/bin/${PN}
+
+rm: can't stat '/usr/local/bin/progname': Operation not permitted
+
+--------------------------------------------------------
+
+  # it working.
+  mv /usr/local/bin/${PN} ${WORKDIR} /tmp/bug_undelete/
+
+--------------------------------------------------------
+
+https://www.reddit.com/r/termux/comments/12lsswr/hard_linking_error/
+https://github.com/termux/termux-packages/issues/21167

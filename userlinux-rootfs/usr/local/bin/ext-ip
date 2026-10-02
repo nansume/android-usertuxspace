@@ -8,8 +8,10 @@
 # Date: 2026-08-29 19:00 UTC - last change
 # ----------------------------------------
 
-if nc -w1 -n -z $(netgw) '80'; then
+if nc -w1 -n -z $(netgw) '80' || IPADDR=${EXT_IP-}; false; then
   upnpc-ext-ip ${@}
+elif nc -w1 -n -z ${IPADDR:-$(head -n1 /etc/sysconfig/router/ip 2>/dev/null)} '80'; then
+  router-ext-ip ${@}
 else
-  www-get-ip ${@} 2>/dev/null
+  www-get-ip ${@} 2>/dev/null || printf '%s\n' "${IPADDR}"
 fi

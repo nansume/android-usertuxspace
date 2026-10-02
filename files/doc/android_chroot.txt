@@ -1,0 +1,14 @@
+
+Running Native glibc (Debian) Binaries on Android 15 Without PRoot
+----
+Android 15 broke PRoot with stricter seccomp filters.
+After ~10 hours of debugging, I found a working solution
+using patchelf + LD_PRELOAD= to run native Linux...
+----
+xdaforums.com/t/running-native-glibc-debian-binaries-on-android-15-without-proot.4788725/
+
+========
+
+github.com/stfnw/LD_PRELOAD-demo
+
+https://lite.duckduckgo.com/lite?q=ns+resolv+ld+preload&kl=us-en

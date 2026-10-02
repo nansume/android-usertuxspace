@@ -1,0 +1,5 @@
+- /rsyncd.motd
+- /rsyncd.lock
++ /some/path/
+- /tmp/*
+- /.*

@@ -4,7 +4,7 @@
 LOG="/var/log/ttyd.log"
 LOG="/dev/null"
 
-nc -w1 -n -z 127.0.0.1 7681 || killall "ttyd" 2>/dev/null
+nc -w1 -n -z 0.0.0.0 '7681' 2>/dev/null || killall "ttyd" 2>/dev/null
 pgrep -x "ttyd" >/dev/null && exit
 
 ttyd -i lo -p 7681 -m 2 -W -a busybox sh >> ${LOG} 2>&1 &

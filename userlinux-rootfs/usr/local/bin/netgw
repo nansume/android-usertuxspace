@@ -52,6 +52,7 @@ while [ x"${1-}" != x ]; do
   shift
 done
 
+get_route_gw() {
 if command -v ip >/dev/null; then
   for route in $(ip route show default 2>/dev/null) ''; do
     IFS="$(printf '\n\t%1s')"; set -- ${route:-''}
@@ -66,8 +67,29 @@ else
   set -- $(route -A inet -n)
   case ${3} in "0.0.0.0 "*) set -- ${3#* };; *) set -- ${3%% *};; esac
 fi
+}
+
+###################
+for s in $(ip route show default) $(route -A inet -n) $(ifconfig -a `netdev`); do
+  [ -n "${s#${s%%[![:space:]]*}}" ] || continue
+  IFS="$(printf '\n\t%1s')"; set -- ${s:-''}
+  case ${1} in
+    'lo'|'teredo'|'sit0'|'tun0') continue;;
+    'default') set -- ${3}; break;;
+    '0.0.0.0'|*'.0') case ${2} in "192.168."*) set -- ${2}; break;; esac;;
+  esac
+  case ${2-} in
+    'Link'|'addr:127.0.0.1') continue;;
+    'addr:'*) set -- ${2#*:}; set -- "${1%.*}.1"; break;;
+    'dev')
+      case ${3} in 'lo'|'teredo'|'sit0'|'tun0') continue;; esac
+      set -- ${1%/*}; break;;
+  esac
+done 2>/dev/null
+
 set -- "${1#${1%%[![:space:]]*}}"
 gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
+###################
 
 #FIX: error: ip: bind: Permission denied
 case ${gw} in " "|"")

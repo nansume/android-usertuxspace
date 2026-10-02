@@ -21,7 +21,7 @@ for P in $(cat /etc/sysconfig/ports); do
     8443) RPORT="443";;
   esac
 
-  nc -w1 -n -z 0.0.0.0 ${PORT:?} || continue
+  nc -w1 -n -z 0.0.0.0 ${PORT:?} 2>/dev/null || continue
   upnpc -u "${UPNP_URI}" -d ${PORT} ${PROTO:?} >/dev/null 2>&1
   upnpc -u "${UPNP_URI}" -e ${DESC:?} -a "${LOCAL_IP}" ${PORT} ${PORT} ${PROTO} 0 >/dev/null 2>&1
 
