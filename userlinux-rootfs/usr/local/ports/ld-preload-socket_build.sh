@@ -30,6 +30,11 @@ cd ${build_dir}/ || exit
 
 sed -e '/^#include <netinet\/in.h>$/a #include <string.h>' -i ld-preload-socket.c
 
+[ -e ".patched" ] ||
+for F in "/usr/local/ports/patches/${PN}-${PV}/"*".diff"; do
+  [ -e "${F}" ] && { patch -p1 -E < "${F}"; echo "patch -p1 -E < ${F}"; >.patched; }
+done
+
 gcc -O2 -std=c99 -Wall -shared -fPIC ld-preload-socket.c -o ld-preload-socket.so -ldl ||
 { echo "Failed make build" >&2; exit 1; }
 

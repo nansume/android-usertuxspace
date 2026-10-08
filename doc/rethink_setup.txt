@@ -1,0 +1,63 @@
+**Rethink: DNS + Firewall + VPN**
+
+### Rethink VPN Setup Manual (Android 7+)
+## Rethink DNS + Firewall - Full Configuration (UserLAnd / Tor / SmartDNS)
+
+**Goal:** Route traffic through UserLAnd (TOR/SOCKS) with a strict firewall, while exempting local services.
+
+## Simple setup
+
+Step 1. **Install Rethink VPN**
+    - Open **F-Droid** -> search **Rethink VPN**
+    - Download/Install it from F-Droid.
+
+Step 2. **Run it**
+    - Open **Rethink** and tap **Start**.
+    - Allow the **VPN connection** permission when Android asks.
+    - **Enable Always-On Protection**
+
+Step 3. **Always-on VPN + Block**
+    - Android **Settings** -> **Network & Internet** -> **VPN** -> tap the **gear** next to *Rethink*
+    - Toggle **Always-on VPN** **ON**
+    - Enable **Block connections without VPN** **ON**.
+    * Rethink uses Android's VPN system for its DNS/firewall functions.
+
+Step 4. **Configure UserLAnd (TOR SOCKS Proxy)**
+    - Open **UserLAnd** - Install a Linux distribution (e.g., Alpine Linux).
+    - Open the terminal inside UserLAnd and install TOR: `sudo apk add tor`.
+    - Start the daemon: `sudo /etc/local.d/tor.start`.
+    - Note the SOCKS port (default: `9050`).
+    - *Note:* Ensure UserLAnd is configured to allow port binding to the host (`127.0.0.1`).
+
+Step 5. **Configure UserLAnd (SmartDNS)**
+    - Inside UserLAnd, install `smartdns` or configure `resolv.conf`.
+    - Point it to upstream DNS (e.g., `1.1.1.1`, `8.8.8.8`).
+    - Ensure UserLAnd listens on `127.0.0.1` for DNS requests (e.g., port `1053` or `2053`).
+
+Step 6. **Turn on Firewall**
+    - Open **Firewall** -> choose which apps are allowed or blocked.
+    - You can block an app completely or restrict it when running in the background.
+
+Step 6. **Set Firewall to Restricted Mode**
+    - Go to **Rethink** -> **Firewall**.
+    - Set **Default Policy** to **Block** (All forbidden).
+    - This blocks all apps unless explicitly allowed.
+
+Step 6. **Fix DNS Leaks**
+    - In **Rethink** -> **DNS**.
+    - Set DNS Mode to **Use custom DNS**.
+    - Enter the local SmartDNS port from UserLAnd (e.g., `127.0.0.1:53`).
+    - Ensure **Force DNS** is enabled.
+
+Step 7. **Rule for UserLAnd**
+    - In **Rethink** -> **Firewall**.
+    - Find **UserLAnd** in the app list.
+    - Set to **Allow**. This bypasses the restricted firewall rule for UserLAnd services.
+
+Step 8. **Exclude Private IP Ranges**
+    - In **Rethink** -> **Settings** -> **VPN**.
+    - Enable **Bypass private networks**.
+    - If manual entry is required, add: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`.
+
+Step 10. **Done.**
+   - When the main screen says **Protected**, Rethink is running.

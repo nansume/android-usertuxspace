@@ -11,8 +11,9 @@ set -e -u -f
 
 IFS="$(printf '\n\t')"; IFS=${IFS%?}
 USER_NET=$(head -n1 /etc/sysconfig/netuser)
-ADMIN_USER=$(head -n1 /etc/sysconfig/router/login)
-ADMIN_PASS=$(head -n1 /etc/sysconfig/router/passwd)
+ADMIN_USER=$(head -n1 /etc/sysconfig/router/login 2>/dev/null || echo admin)
+ADMIN_PASS=$(head -n1 /etc/sysconfig/router/passwd 2>/dev/null || echo admin)
+bb=$(command -v "busybox" ||:)
 
 groups ${USER_NET} >/dev/null 2>&1 && {
 case $(id -un) in
@@ -27,15 +28,14 @@ GW_HOST=${GW}
 REFERER="http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch"
 
 #FIX: error: private iprange: Permission denied
-if nc -w1 -n -z ${GW_HOST} 80 || { EXT_IP=$(ext-ip); false; }; then
+if nc -w1 -n -z ${GW_HOST} '80' 2>/dev/null || { EXT_IP=$(ext-ip); false; }; then
   true
-elif nc -w1 -n -z ${EXT_IP} 80; then
+elif nc -w1 -n -z ${EXT_IP} '80' 2>/dev/null; then
   GW_HOST=${EXT_IP}
 fi
 
-busybox wget \
-  -q --no-check-certificate --spider \
-  --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
+${bb} wget \
+  -q --spider --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
   -O - "http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch" \
   >/dev/null 2>&1
 
@@ -70,9 +70,8 @@ if POSTDATA=$(zte-portmap-check ${PROTO} ${RPORT}); then
   [ -z "${PROTO#${PROTO%%[0-9]*}}" ] || { printf '%s\n' "required port: ${0##*/} <port> <proto>" >&2; exit 1;}
 
   # Port Forwarding Mapping - Delete
-  busybox wget \
-    -q --no-check-certificate \
-    --header "'Referer: ${REFERER}'" \
+  ${bb} wget \
+    -q --header "'Referer: ${REFERER}'" \
     --post-data "IF_ACTION=Delete&${POSTDATA}&WANCViewName=null" \
     -O - "http://${GW_HOST}/common_page/PortForwarding_lua.lua" | \
     grep -q '<IF_ERRORSTR>SUCC</IF_ERRORSTR>' || {
@@ -92,9 +91,8 @@ elif [ "${1}" = '-a' ]; then
   POSTDATA="${POSTDATA}&Btn_cancel_PortForwarding=&Btn_apply_PortForwarding=&Protocol=${PRT}&WANCViewName=IGD.WANIF"
 
   # Port Forwarding Mapping - Apply
-  busybox wget \
-    -q --no-check-certificate \
-    --header "'Referer: ${REFERER}'" \
+  ${bb} wget \
+    -q --header "'Referer: ${REFERER}'" \
     --post-data "${POSTDATA}" \
     -O - "http://${GW_HOST}/common_page/PortForwarding_lua.lua" | \
     grep -q '<IF_ERRORSTR>SUCC</IF_ERRORSTR>' || {

@@ -6,6 +6,7 @@
 # Optional: export USER_NET=<user-network>
 # Depend: upnpc, route or ip, nc (netcat)
 # ----------------------------------------
+# Date: 2026-01-09 20:00 UTC
 # Date: 2026-05-29 17:00 UTC - last change
 # ----------------------------------------
 set -e -u -f
@@ -95,15 +96,15 @@ gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
 
 #FIX: error: ip: bind: Permission denied
 case ${gw} in " "|"")
-  if nc -w 1 -n -z 192.168.1.1 80; then
+  if nc -w 1 -n -z 192.168.1.1 '80' 2>/dev/null; then
     gw="192.168.1.1"
-  elif nc -w 1 -n -z 192.168.0.1 80; then
+  elif nc -w 1 -n -z 192.168.0.1 '80' 2>/dev/null; then
     gw="192.168.0.1"
   fi
 ;;
 esac
 
-[ -z "${g_port-}" ] && { nc -n -z ${gw:?} 52869 && port="52869";}  # FIX: for zte-router
+[ -z "${g_port-}" ] && { nc -w 1 -n -z ${gw:?} '52869' 2>/dev/null && port="52869"; }  # FIX: for zte-router
 [ -n "${UPNP_URI-}" ] || UPNP_URI="http://${gw:?}:${port:?}/gatedesc.xml"
 }
 

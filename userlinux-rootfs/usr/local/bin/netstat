@@ -1,0 +1,19 @@
+#!/bin/sh
+# ----------------------------------------
+# File: /usr/local/sbin/netstat
+# ----------------------------------------
+# Example: netstat -ln
+# ----------------------------------------
+# Date: 2026-10-02 11:00 UTC - last change
+# ----------------------------------------
+set -e -u -f
+
+IFS=$(printf '\n\t%1s')
+bb=$(command -v "busybox" ||:)
+
+port="1"
+while [ "${port}" -le '65535' ]; do
+  ${bb} nc -w1 -n -z 0.0.0.0 ${port} 2>/dev/null && echo "port: ${port} [TCP]... open"
+  ${bb} nc -w0 -n -z -u 0.0.0.0 ${port} 2>/dev/null && echo "port: ${port} [UDP]... open"
+  port=$((port+1))
+done

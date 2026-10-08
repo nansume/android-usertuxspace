@@ -14,3 +14,22 @@ allowing multiple programs (e.g. dnsmasq + xray) to share the same port.
 
 Using wolfIP with LD_PRELOAD | wolfSSL/wolfip | DeepWiki
 deepwiki.com/wolfSSL/wolfip/9.2-using-wolfip-with-ld_preload
+
+----
+
+https://github.com/topics/ld-preload
+https://github.com/gaul/awesome-ld-preload
+https://github.com/surban/memstop
+https://github.com/zliuva/ktlswrapper
+https://github.com/lilydjwg/openredir
+https://github.com/ericpruitt/homeishome
+https://github.com/msantos/libenospace
+https://github.com/damnever/hosts-hijacking
+https://github.com/johnsonjh/librlimit
+https://github.com/rios0rios0/termux-etc-redirect
+https://github.com/nagornin/ld-preload-static
+https://github.com/Meapri/alr-termux
+https://github.com/jktr/arg-inject
+https://github.com/jacereda/fsatrace
+https://github.com/DavidBuchanan314/libleakmydata
+https://github.com/mariusae/trickle

@@ -1,0 +1,17 @@
+Issue: no connect to 0.0.0.0 ip address
+Date: 2026-10-05
+Version: Android [all versions] - UserLAnd chroot
+========================================================
+
+DNS Server listen: 127.0.0.1
+
+--------------------------------------------------------
+  cat /etc/resolv.conf
+
+nameserver 0.0.0.0
+
+  getent ahostsv4 google.com
+
+BUG: No answer
+
+--------------------------------------------------------

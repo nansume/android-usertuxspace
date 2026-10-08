@@ -93,9 +93,9 @@ gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
 
 #FIX: error: ip: bind: Permission denied
 case ${gw} in " "|"")
-  if nc -w 1 -n -z 192.168.1.1 80; then
+  if nc -w 1 -n -z 192.168.1.1 '80' 2>/dev/null; then
     gw="192.168.1.1"
-  elif nc -w 1 -n -z 192.168.0.1 80; then
+  elif nc -w 1 -n -z 192.168.0.1 '80' 2>/dev/null; then
     gw="192.168.0.1"
   fi
 ;;

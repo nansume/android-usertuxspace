@@ -25,7 +25,7 @@ set -- "$(pgrep -n -x '.*/proot')" $(pgrep -x '.*/proot'); PID=${3:+$1}; [ -n "$
 
 [ -x "/usr/local/lib/ld-preload-socket.so" ] && {
   export LD_PRELOAD_SOCKET_INET_PORT_MAP="53:2053"
-  export LD_PRELOAD="/usr/local/lib/ld-preload-socket.so"
+  #export LD_PRELOAD="/usr/local/lib/ld-preload-socket.so"
 }
 
 export USER_NET=$(uidgetuser '2000')

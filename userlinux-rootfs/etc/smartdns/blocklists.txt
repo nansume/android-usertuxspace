@@ -1,0 +1,2 @@
+https://github.com/badmojr/1Hosts/raw/master/Lite/domains.wildcards -> blacklist-1Hosts-Lite.txt
+https://github.com/sjhgvr/oisd/raw/main/domainswild_small.txt

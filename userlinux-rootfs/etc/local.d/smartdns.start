@@ -6,4 +6,13 @@ PORT=$(cat /etc/smartdns/smartdns.conf | grep -om1 -- 'bind .*'); PORT=${PORT##*
 nc -w1 -n -z 0.0.0.0 ${PORT} 2>/dev/null && exit
 pgrep -x "smartdns" >/dev/null && exit
 
+bb=$(command -v "busybox" ||:)
+
+while IFS= read -r i; do
+  f="/etc/smartdns/${i##*[/[:space:]]}"
+  { [ -z "${i}" ] || [ -f "${f}" ]; } && continue
+  ${bb} wget -O "${f}" "${i%%[[:space:]]*}"
+  sed -e 's|^*.||;s|^[^#]*[[:space:]]\+||' -i "${f}"
+done < /etc/smartdns/blocklists.txt
+
 smartdns -c "/etc/smartdns/smartdns.conf" -p "/var/run/smartdns.pid" -R

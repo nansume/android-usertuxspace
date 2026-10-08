@@ -1,5 +1,6 @@
 #!/bin/sh
 # /etc/local.d/autossh.start
+# Desc: Client SSH - Daemon
 
 # TIP!: echo /bin/false >> /etc/shells
 
@@ -9,12 +10,16 @@ SSH_HOME="/root"
 AUTH_USER=$(head -n1 /etc/sysconfig/ssh-client/auth_user)
 AUTH_FILE="/etc/sysconfig/ssh-client/auth_pass"
 SSH_PORT=$(head -n1 /etc/sysconfig/ssh-client/ssh_port)
-DOMAINNAME=$(head -n1 /etc/sysconfig/ssh-client/domain)
-DOMAINNAME=$(hosttoip ${DOMAINNAME:?})
+MYHOST=$(head -n1 /etc/sysconfig/host/domain)          # your host
+MYHOST=$(hosttoip ${MYHOST:?})                         # your host
+SSH_HOST=$(head -n1 /etc/sysconfig/ssh-client/domain)  # remote host
+SSH_HOST=$(hosttoip ${SSH_HOST:?})                     # remote host
 LOGFILE="/var/log/${DAEMON_RUN}.log"
 
 export AUTOSSH_PATH="/usr/bin/dbclient"
 export AUTOSSH_GATETIME="0"
+
+[ x"${MYHOST}" != x"${SSH_HOST}" ] || exit 0
 
 pgrep -x ${DAEMON_RUN} >/dev/null && exit
 pgrep -x "dbclient" >/dev/null && exit
@@ -37,4 +42,4 @@ ${DAEMON_RUN} \
   -R 127.0.0.1:2223:127.0.0.1:2222 \
   -R 127.0.0.1:5901:127.0.0.1:5900 \
   -N -p ${SSH_PORT} \
-  ${AUTH_USER}@${DOMAINNAME} >> ${LOGFILE} 2>&1
+  ${AUTH_USER}@${SSH_HOST} >> ${LOGFILE} 2>&1

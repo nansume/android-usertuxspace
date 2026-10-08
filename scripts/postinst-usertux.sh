@@ -92,7 +92,7 @@ apk fix
 #apk cache clean
 
 apk add dropbear-dbclient dropbear-ssh dropbear-scp busybox-extras
-apk add miniupnpc inetutils-telnet microsocks 3proxy dante
+apk add inetutils-syslogd inetutils-telnet miniupnpc microsocks 3proxy dante
 apk add stunnel privoxy privoxy-doc shadowsocks-libev nano nano-syntax mc
 apk add tsocks make elinks qalc httplz ttyd openjdk11-jdk dnscrypt-proxy
 apk add 6tunnel tor i2pd ustream-ssl uhttpd pound sslh uacme inadyn fossil

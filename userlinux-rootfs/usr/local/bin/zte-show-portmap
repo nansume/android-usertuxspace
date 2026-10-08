@@ -11,6 +11,7 @@ IFS="$(printf '\n\t')"; IFS=${IFS%?}
 USER_NET=$(head -n1 /etc/sysconfig/netuser 2>/dev/null || echo nobody)
 ADMIN_USER=$(head -n1 /etc/sysconfig/router/login 2>/dev/null || echo admin)
 ADMIN_PASS=$(head -n1 /etc/sysconfig/router/passwd 2>/dev/null || echo admin)
+bb=$(command -v "busybox" ||:)
 
 groups ${USER_NET} >/dev/null 2>&1 && {
 case $(id -un) in
@@ -25,24 +26,22 @@ GW_HOST=${GW}
 REFERER="http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch"
 
 #FIX: error: private iprange: Permission denied
-if nc -w1 -n -z ${GW_HOST} 80 || { EXT_IP=$(ext-ip); false; }; then
+if ${bb} nc -w1 -n -z ${GW_HOST} '80' 2>/dev/null || { EXT_IP=$(ext-ip); false; }; then
   true
-elif nc -w1 -n -z ${EXT_IP} 80; then
+elif ${bb} nc -w1 -n -z ${EXT_IP} '80' 2>/dev/null; then
   GW_HOST=${EXT_IP}
 fi
 
-busybox wget \
-  -q --no-check-certificate --spider \
-  --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
+${bb} wget \
+  -q --spider --post-data "action=login&Username=${ADMIN_USER}&Password=${ADMIN_PASS}" \
   -O - "http://${GW_HOST}/getpage.lua?pid=1002&nextpage=Internet_PortForwarding_t.gch" \
   >/dev/null 2>&1
 
 printf %s\\n " i protocol  exPort->inAddr%inPort      description    enable"
 INDEX="-1"
 # return list for portforward mapping
-busybox wget \
-  -q --no-check-certificate \
-  --header "'Referer: ${REFERER}'" \
+${bb} wget \
+  -q --header "'Referer: ${REFERER}'" \
   -O - "http://${GW_HOST}/common_page/PortForwarding_lua.lua" | sed \
   -e "s|><Instance>|>\n<Instance>|g;s|</Instance><|</Instance>\n<|" \
   -e "s|.*><OBJ_FWPM_ID>\n||;s|^</OBJ_FWPM_ID><.*||" \
@@ -70,8 +69,8 @@ busybox wget \
       DESC=${S#*<ParaName>Name</ParaName><ParaValue>}; DESC=${DESC%%</ParaValue>*}
       ENABLE=${S#*<ParaName>Enable</ParaName><ParaValue>}; ENABLE=${ENABLE%%</ParaValue>*}
 
-      RPORT="          ${RPORT0}:${RPORT1}"; RPORT="${RPORT#${RPORT%??????????}}"
-      LPORT="${LPORT0}:${LPORT1}          "; LPORT="${LPORT%${LPORT#??????????}}"
+      RPORT="          ${RPORT0}:${RPORT1}"; RPORT="${RPORT#${RPORT%???????????}}"
+      LPORT="${LPORT0}:${LPORT1}          "; LPORT="${LPORT%${LPORT#???????????}}"
       DESC="${DESC}               "; DESC="${DESC%${DESC#???????????????}}"
 
       printf %s\\n "${INDEX} ${PROTO} ${RPORT}->${LANIP}%${LPORT} ${DESC} ${ENABLE}"

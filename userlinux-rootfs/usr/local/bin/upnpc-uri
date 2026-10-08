@@ -14,7 +14,7 @@ IFS="$(printf '\n\t')"
 OLDIFS=${IFS}
 runuser=${USER_NET:-nobody}
 port="80"
-busybox=
+bb=
 
 print_help() {
   cat >&2 <<_EOF_
@@ -56,7 +56,7 @@ while [ x"${1-}" != x ]; do
   shift
 done
 
-command -v busybox >/dev/null && busybox="busybox"
+command -v busybox >/dev/null && bb="busybox"
 
 if command -v ip >/dev/null; then
   #IFS="${IFS} "; set -- "$(ip route show default 2>/dev/null || exit 0)"
@@ -80,12 +80,12 @@ gw=${1%% *}; case ${gw} in *".0") gw="${gw%.*}.1";; esac  # gateway
 
 #FIX: error: ip: bind: Permission denied
 case ${gw} in " "|"")
-  if nc -w 1 -n -z 0.0.0.0 '0'; then
+  if nc -w 1 -n -z 0.0.0.0 '0' 2>/dev/null; then
     printf '%s\n' "network issue... exit" >&2
     exit 1
-  elif nc -w 1 -n -z 192.168.1.1 '80'; then
+  elif nc -w 1 -n -z 192.168.1.1 '80' 2>/dev/null; then
     gw="192.168.1.1"
-  elif nc -w 1 -n -z 192.168.0.1 '80'; then
+  elif nc -w 1 -n -z 192.168.0.1 '80' 2>/dev/null; then
     gw="192.168.0.1"
   fi
 ;;
@@ -97,13 +97,13 @@ esac
 # wget http://192.168.0.1:1900/igd.xml
 # busybox wget -q -T10 -SO - http://192.168.0.1:58673/rootDesc.xml >/dev/null && echo open
 [ -z "${g_port-}" ] && {
-  if nc -w 1 -n -z ${gw:?} 52869; then
+  if nc -w 1 -n -z ${gw:?} '52869' 2>/dev/null; then
     port="52869"  # FIX: for zte-router
     UPNP_URI="http://${gw}:${port}/gatedesc.xml"
-  elif nc -w 1 -n -z ${gw} 58673; then
+  elif nc -w 1 -n -z ${gw} '58673' 2>/dev/null; then
     port="58673"  # D-Link
     UPNP_URI="http://${gw}:${port}/rootDesc.xml"
-  elif nc -w 1 -n -z ${gw} 1900; then
+  elif nc -w 1 -n -z ${gw} '1900' 2>/dev/null; then
     port="1900"  # TP-Link
     UPNP_URI="http://${gw}:${port}/igd.xml"
   fi
@@ -112,7 +112,7 @@ esac
 
 [ -n "${UPNP_URI:?required variable: <UPNP_URI>}" ] || exit
 
-${busybox} wget -q -T10 -SO - "${UPNP_URI}" >/dev/null 2>&1 || {
+${bb} wget -q -T10 -SO - "${UPNP_URI}" >/dev/null 2>&1 || {
 export IFS="${IFS} "
 for UPNP_URI in "${UPNP_URI}" '' "${UPNP_URI}" "${UPNP_URI}"; do  # FIX: add repeat UPNP_URI for failed connect.
 command upnpc ${UPNP_URI:+-u }"${UPNP_URI}"${UPNP_URI:+ }-P | while IFS= read -r S; do  # Here child proc.
